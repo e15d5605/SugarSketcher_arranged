@@ -1,0 +1,18 @@
+version: '3'
+services:
+  api:
+    build: .
+    image: sugarsketcher-api
+    container_name:  sugarsketcher-api
+    ports:
+      - "0917:8118"
+    environment:
+      - VIRTUAL_HOST=sugarsketcher.glycosmos.org
+      - LETSENCRYPT_HOST=sugarsketcher.glycosmos.org
+      - LETSENCRYPT_EMAIL=support@glycosmos.org
+    restart: always
+networks:
+  default:
+    external:
+      name: webproxy
+
