@@ -23,7 +23,7 @@ var datasetLinkCarbon = [
  * Display the piechart for donor position for substituent
  */
 function displayPie() {
-    var carbons = getNumberCarbons(clickedNode);
+    var carbons = emFunc.getNumberCarbons(clickedNode);
     var width = 230, // Fixed width
         height = 150, // Fixed height
         radius = Math.min(width, height) /1.5;
@@ -116,4 +116,50 @@ function displayPie() {
             'font-size': '10px'
         });
 
+}
+
+/**
+ * Function called to create a new substituent in the glycan
+ * @param linkCarbon The link carbon value
+ */
+function createNewSubstituent (linkCarbon) {
+    if (infosTable[1] == "Substituent")
+        var subName = infosTable[2];
+    else
+        var subName = infosTable[1]; // Get the label of the substituent
+    var subType = sb.SubstituentType[subName]; // Get the SubstituentType
+    var generatedSubId = appFunc.randomString(7); // Random id for Substituent
+    var newSubstituent = new sb.Substituent(generatedSubId, subType); // Create a new substituent
+
+    // Try if we can bind them together
+    var newType = getMono(clickedNode.monosaccharideType.name + sb.SubstituentType[subName].label);
+    if (newType && sb.SubstituentsPositions[newType.name].position == linkCarbon) {
+        glycan = menuFunc.updateNodeType(clickedNode, newType, glycan);
+    }
+    else
+    {
+        var donorPosition = visFunc.getDonorPositionWithSelection(linkCarbon); // Get the donorPosition value
+        var generatedEdgeSubId = appFunc.randomString(7); // Random id for edge
+        // Create the linkage
+        var subLinkage = new sb.SubstituentLinkage(generatedEdgeSubId, clickedNode, newSubstituent, donorPosition);
+        glycan.addSubstituent(newSubstituent, subLinkage); // Add the substituent to the glycan, with the linkag;
+        treeData = visFunc.updateTreeVisualization(subLinkage, glycan, treeData);
+    }
+    displayTree(treeData, shapes, glycan);
+    updateMenu();
+    return generatedSubId;
+}
+
+function getMono(name)
+{
+    switch (name)
+    {
+        case "KdnNAc":
+            return sb.MonosaccharideType.Neu5Ac;
+        case "KdnNGc":
+            return sb.MonosaccharideType.Neu5Gc;
+        case "KdnN":
+            return sb.MonosaccharideType.Neu;
+    }
+    return sb.MonosaccharideType[name];
 }

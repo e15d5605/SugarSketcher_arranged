@@ -2,13 +2,11 @@
  * Created by Nicolas Hory on 04/08/16.
  */
 
-
-var progress; // amount of progress for the green progress bar throughout the menus (out of 7)
-
-
 /*
     Manage help button in informations svg
 */
+
+
 var infosHelpButton = d3.select("#infosHelp");
 infosHelpButton.on("click", function() {
     var svgInfos = d3.select("#svgInfos");
@@ -316,12 +314,12 @@ function manageHoverIO(menuItem,actions)
         }).on("click", function () {
             d3.select("#exportImage").style("display", "block").on("click", function() {
                 exporting = true;
-                displayTree();
+                displayTree(treeData, shapes, glycan);
                 var exporter = new sb.ImageExporter();
                 var img = exporter.save();
                 exporter.download(img);
                 exporting = false;
-                displayTree();
+                displayTree(treeData, shapes, glycan);
             });
             d3.select("#formula").style("display","block");
             d3.select("#validateFormula").style("display", "none");
@@ -379,15 +377,16 @@ function manageHoverIO(menuItem,actions)
             d3.select("#validateFormula")
                 .style("display", "block")
                 .on('click', function() {
-                    treeData = {};
+                    //treeData = {};
                     selectedNodes = [];
                     if (glycan)
                         glycan.clear();
                     var parser = new sb.GlycoCTParser($('#formula').val());
                     glycan = parser.parseGlycoCT();
-                    shapes = [];
-                    generateShapes();
-                    treeData = generateTree();
+//                    shapes = [];
+                    let ret = visFunc.generateShapes(glycan, shapes, treeData);
+                    shapes = ret[0];
+                    treeData = emFunc.generateTree(glycan);
                     updateRepeatingUnitsNodesInTree();
                     var i = 1;
                     // Select the latest selectable node
@@ -396,68 +395,9 @@ function manageHoverIO(menuItem,actions)
                         i++;
                     }
                     clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-i];
-                    displayTree();
+                    displayTree(treeData, shapes, glycan);
                 });
     });
-}
-
-/**
- * Creates a tree from the Glycan
- * Called after using the parser, which only returns a Glycan
- * @returns {Array}
- */
-function generateTree() {
-    // Put parentId in each node
-    var nodes = glycan.graph.nodes();
-    for (var nodePos in nodes)
-    {
-        var parent;
-        for (var edge of glycan.graph.edges())
-        {
-            if (edge.target == nodes[nodePos].id)
-            {
-                parent = edge.sourceNode;
-            }
-        }
-        if (parent !== undefined)
-            nodes[nodePos] = {"node":nodes[nodePos],"parentId":parent.id,"children":[]};
-        else
-            nodes[nodePos] = {"node":nodes[nodePos],"children":[]};
-    }
-
-    // Switch to tree view
-    var map = {}, node, roots = [];
-    var parentsIds = {};
-    var nodesDepths = {};
-    for (var i = 0; i < nodes.length; i += 1) {
-        node = nodes[i];
-        node.children = [];
-        map[node.node.id] = i; // use map to look-up the parents
-        if (node.parentId !== undefined) {
-            nodes[map[node.parentId]].children.push(node);
-            parentsIds[node.node.id] = node;
-            if (node.node.id !== node.parentId)
-                nodes[map[node.parentId]].parent = parentsIds[node.parentId];
-
-            if (nodesDepths[node.node.id] === undefined)
-            {
-                nodes[map[node.parentId]].depth = nodesDepths[node.parentId]+1;
-                nodesDepths[node.node.id] = nodesDepths[node.parentId]+1;
-            }
-
-            delete nodes[map[node.parentId]].parentId;
-        } else {
-            roots = node;
-            parentsIds[node.node.id] = node;
-            nodesDepths[node.node.id] = 0;
-            roots.depth = 0;
-        }
-    }
-
-    delete roots.parent;
-
-    return roots;
-
 }
 
 /**
@@ -484,7 +424,7 @@ function updateRepeatingUnitsNodesInTree()
         {
             if (node.repeatingUnit && node.repeatingUnit.id == rep.id)
             {
-                nodes.push(findNodeInTree(treeData,node));
+                nodes.push(visFunc.findNodeInTree(treeData,node));
             }
         }
         rep.nodes = nodes;
@@ -720,8 +660,12 @@ function checkSelectedQuickInfo() {
 
         reinitializeQuickInfos();
 
-        createNewNode();
-
+        console.log(shapes);
+        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress);
+        shapes = ret[1];
+        treeData = ret[2];
+        progress = ret[3];
+        console.log(shapes);
     }
 }
 
@@ -801,7 +745,7 @@ function addHoverManagerDonorPosition(quick = false) {
         choice = "donorPositionTitleChoice";
     var donorPositionTitle = d3.select("#"+choice); // Donor position title
     donorPositionTitle.on("mouseover", function () { // Mouseover event
-        var maxCarbons = getNumberCarbons(clickedNode);
+        var maxCarbons = emFunc.getNumberCarbons(clickedNode);
         var x = parseInt(d3.select("#"+choice).attr("x")); // Get the x of the donor position title
         var width = d3.select("#"+choice).attr("width"); // Get the width of the donor position title
         var idActions = ["donorPositionUnknownChoice", "donorPosition1Choice", "donorPosition2Choice", "donorPosition3Choice", "donorPosition4Choice", "donorPosition5Choice", "donorPosition6Choice", "donorPosition7Choice", "donorPosition8Choice", "donorPosition9Choice"];
@@ -931,13 +875,10 @@ function selectDonorPosition(target) {
             }
         }
         d3.select("#" + target).style("fill", "#000592").classed("selectedDonorPosition", true);
-        if (quickMode)
-        {
+        if (quickMode) {
             progress += 2;
             redrawProgress(prev);
-        }
-        else
-        {
+        } else {
             progress++;
             redrawProgress(prev);
         }
@@ -945,44 +886,6 @@ function selectDonorPosition(target) {
             checkSelectedQuickInfo();
         else
             checkSelectedAllCarbons(); // Check selected the two carbons values
-    }
-}
-
-
-/**
- * Returns the number of carbons the residue can be linked by
- */
-function getNumberCarbons(node)
-{
-    if (node == undefined)
-    {
-        return 6;
-    }
-    var monoType = sb.MonosaccharideGlycoCT[node.monosaccharideType.name];
-    if (monoType == undefined)
-    {
-        monoType = sb.MonosaccharideGlycoCT[node.monosaccharideType.name.substring(0,3)];
-        if (monoType == undefined)
-        {
-            monoType = sb.MonosaccharideGlycoCT[node.monosaccharideType.name.substring(0,4)];
-            if (monoType == undefined && node.monosaccharideType.name.substring(0,3) == "Neu")
-            {
-                monoType = sb.MonosaccharideGlycoCT.Kdn;
-            }
-        }
-    }
-    var glycoct = monoType.glycoct;
-    if (glycoct.indexOf("PEN") != -1)
-    {
-        return 5;
-    }
-    else if (glycoct.indexOf("NON") != -1)
-    {
-        return 9;
-    }
-    else
-    {
-        return 6;
     }
 }
 
@@ -1014,13 +917,14 @@ function addHoverManagerAcceptorPosition() {
                     var i = 1;
                     if (infosTable[0] == "addNode")
                         i++;
-                    var color = getColorCodeFromString(infosTable[i+1]);
+                    //var color = visFunc.getColorCodeFromString(infosTable[i+1]);
+                    var color = sb.colorDivisions.prototype.getColor(infosTable[i+1]);
                     var shape = infosTable[i];
                     var isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
                     if (isBisected) {
                         shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
                     }
-                    var newType = getMonoTypeWithColorAndShape(color, shape, isBisected);
+                    var newType = visFunc.getMonoTypeWithColorAndShape(color, shape, isBisected);
                     if (!(sb.SubstituentsPositions[newType.name] && sb.SubstituentsPositions[newType.name].position == parseInt(associatedValues[k]))) {
                             return 1;
                     }
@@ -1038,13 +942,14 @@ function addHoverManagerAcceptorPosition() {
                     var i = 1;
                     if (infosTable[0] == "addNode")
                         i++;
-                    var color = getColorCodeFromString(infosTable[i+1]);
+                    //var color = visFunc.getColorCodeFromString(infosTable[i+1]);
+                    var color = sb.colorDivisions.prototype.getColor(infosTable[i+1]);
                     var shape = infosTable[i];
                     var isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
                     if (isBisected) {
                         shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
                     }
-                    var newType = getMonoTypeWithColorAndShape(color, shape, isBisected);
+                    var newType = visFunc.getMonoTypeWithColorAndShape(color, shape, isBisected);
                     if (!(sb.SubstituentsPositions[newType.name] && sb.SubstituentsPositions[newType.name].position == parseInt(associatedValues[k]))) {
                         selectAcceptorPosition(this.id);
                     }
@@ -1123,11 +1028,14 @@ function checkSelectedAllCarbons() {
         reinitializeDisplayCarbons(); // Reinitialize the display of carbons rects and labels
         var methodToCall = infosTable[0]; // Get the method which has to be called
         if (methodToCall == "addNode") {
-            createNewNode(); // Manage add node
+            let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
+            shapes = ret[1];
+            treeData = ret[2];
+            progress = ret[3];
         } else if (methodToCall == "addStruct") {
             console.log("Need to add a structure"); // Manage add structure
         } else {
-            updateExistingNode(); // Manage update of node
+            visFunc.updateExistingNode(glycan, infosTable, treeData, shapes); // Manage update of node
             updateMenu();
         }
     }
@@ -1183,7 +1091,7 @@ function checkUsedCarbons() {
     }
 }
 
-function redrawProgress(prev, newValue = progress)
+function redrawProgress(prev, newValue = sb.progress)
 {
     d3.select("#progressBar").transition()
     .styleTween("width", function() { return d3.interpolate(prev/7*1000, newValue/7*1000); });

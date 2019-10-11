@@ -3,21 +3,8 @@
  * Version: 0.0.1
  */
 
-
-// The glycan we use as data structure, to be visualized using d3 tree
-var glycan;
-
-var repeatUnitConfirm = 0; // When only one node is selected, and the user clicks on Repeat Unit, he has to click a second time to confirm. This var keeps track of the number of clicks
-
-// When using the QuickMode we need to keep track of these info:
-var quickIsomer = "";
-var quickRingType = "";
-var quickAcceptorPosition = "";
-
-//var smilesinchiconvertbackendurl = "http://127.0.0.1:8889/getinchismiles.cgi" //local
-var smilesinchiconvertbackendurl = "http://129.194.71.205/cgi-bin/sugarsketcher.cgi" //test
-
 // Function called when document is ready
+
 
 $(document).ready(function() {
     progress = 0;
@@ -53,16 +40,19 @@ $(document).ready(function() {
     div.appendChild(submit);
 
     d3.select("#submitStructure").on('click', function() {
+        //console.log(test.getBoxValue());
+
         var glycoct = $('#structure').val();
-        treeData = {};
+        //treeData = {};
         selectedNodes = [];
         if (glycan)
             glycan.clear();
         var parser = new sb.GlycoCTParser(glycoct);
         glycan = parser.parseGlycoCT();
-        shapes = [];
-        generateShapes();
-        treeData = generateTree();
+//        shapes = [];
+        let ret = visFunc.generateShapes(glycan, shapes, treeData);
+        shapes = ret[0];
+        treeData = emFunc.generateTree(glycan);
         updateRepeatingUnitsNodesInTree();
         var i = 1;
         while (glycan.graph.nodes()[glycan.graph.nodes().length-i] instanceof sb.Substituent)
@@ -70,7 +60,7 @@ $(document).ready(function() {
             i++;
         }
         clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-i];
-        displayTree();
+        displayTree(treeData, shapes, glycan);
     });
 
     d3.select("#svgTree").on('click', function() {
@@ -93,17 +83,16 @@ $(document).ready(function() {
         });
     var subChoices = d3.selectAll(".subChoice"); // Substituent choices
     subChoices.on('click', function() {
-        if (infosTable.length == 2) { // If one substituent has already been clicked, remove it from infosTable
+        if (infosTable.length == 2) { // If one substituent has already been clicked, remove it from sb.infosTable
             infosTable.pop();
         }
-        // Push the new clicked substituent in infosTable
+        // Push the new clicked substituent in sb.infosTable
         infosTable.push(d3.select(d3.event.target).attr("value"));
         displayPie(); // Dispaly the piechart to choose donor position
     });
 });
 
 var menuChosenPath; // Path taken by user in the menu
-var infosTable = []; // Table with all informations selected by the user
 
 // Event listeners for the shape choice
 var shapeChoices= document.getElementsByClassName("shapeChoice");
@@ -169,39 +158,6 @@ carbonCancelButton.on("click", function() {
     reinitializeDisplayCarbons(); // Reinitialize display of carbons svg
     d3.select("#svgInfos").transition().style("display", "block"); // Display main menu
 });
-
-// Color Divisions with all possible colors
-var colorDivisions = [{
-    division: "whiteColor",
-    display_division: '#FFFFFF'
-}, {
-    division: "blueColor",
-    display_division: '#0090BC'
-}, {
-    division: "greenColor",
-    display_division: '#00A651'
-}, {
-    division: "yellowColor",
-    display_division: '#FFD400'
-}, {
-    division: "orangeColor",
-    display_division: '#F47920'
-}, {
-    division: "pinkColor",
-    display_division: '#F69EA1'
-}, {
-    division: "purpleColor",
-    display_division: '#A54399'
-}, {
-    division:"lightBlueColor",
-    display_division: '#8FCCE9'
-}, {
-    division:"brownColor",
-    display_division: '#A17A4D'
-}, {
-    division:"redColor",
-    display_division: '#ED1C24'
-}];
 
 // Menu, stocking the divisions of our menu, and subdivisions
 var menuAction = [{
@@ -432,12 +388,17 @@ function updateMenu(chosenDivision) {
                     infosTable.push("addNode");
                     infosTable.push("Monosaccharide");
                     infosTable.push(sb.MonosaccharideType[d.name].shape);
+
+                    /*
                     var color;
                     for (var c of colorDivisions) {
                         if (c.display_division == sb.MonosaccharideType[d.name].color) {
                             color = c.division;
                         }
                     }
+                     */
+
+                    var color = sb.colorDivisions.prototype.getDivision(sb.MonosaccharideType[d.name].color);
                     infosTable.push(color);
                     quickRingType = d.ringType;
                     quickAcceptorPosition = d.acceptorPosition;
@@ -514,7 +475,7 @@ function updateMenu(chosenDivision) {
                 return;
             } else {
                 // Get the subdivisions of chosen menu
-                newMenuAction = getSubDivisions(menuAction, chosenDivision)
+                newMenuAction = menuFunc.getSubDivisions(menuAction, chosenDivision);
             }
         }
     }
@@ -632,7 +593,8 @@ function updateMenu(chosenDivision) {
         });
 
     // If we are not displaying colors
-    if (newMenuAction != colorDivisions) {
+    //if (newMenuAction != colorDivisions) {
+    if (!isColorDivisions(newMenuAction)) {
         d3.select("#svgMenu").style("height", "50px"); // Set height of the menu bac kto 40 px
 
         // Append a rect with calculated width, height; x and y
@@ -676,7 +638,7 @@ function updateMenu(chosenDivision) {
                         var svgMenu = d3.select("#svgMenu");
                         if (repeatUnitConfirm > 0)
                         {
-                            handleRepetition();
+                            menuFunc.handleRepetition(shapes, treeData, glycan, clickedNode, selectedNodes);
                             repeatUnitConfirm = 0;
                         }
                         else if (selectedNodes.length == 0)
@@ -705,7 +667,7 @@ function updateMenu(chosenDivision) {
                         }
                         else if (selectedNodes.length > 0)
                         {
-                            handleRepetition();
+                            menuFunc.handleRepetition(shapes, treeData, glycan, clickedNode, selectedNodes);
                             repeatUnitConfirm = 0;
                         }
                     }
@@ -759,8 +721,9 @@ function updateMenu(chosenDivision) {
                     chosenShape = chosenShape.split("bisected")[1];
                     isBisected = true;
                 }
-                var color = getColorCodeFromString(d.division); // Get the clicked color
-                var existingMonoType = getMonoTypeWithColorAndShape(color, chosenShape, isBisected);
+                //var color = visFunc.getColorCodeFromString(d.division); // Get the clicked color
+                var color = sb.colorDivisions.prototype.getColor(d.division); // Get the clicked color
+                var existingMonoType = visFunc.getMonoTypeWithColorAndShape(color, chosenShape, isBisected);
                 // If there is no type for this combination, lower the opacity
                 if (existingMonoType == sb.MonosaccharideType.UNDEFINED) {
                     return 0.1
@@ -779,8 +742,9 @@ function updateMenu(chosenDivision) {
                     chosenShape = chosenShape.split("bisected")[1];
                     isBisected = true;
                 }
-                var color = getColorCodeFromString(d.division); // Get the clicked color
-                var existingMonoType = getMonoTypeWithColorAndShape(color, chosenShape, isBisected);
+                //var color = visFunc.getColorCodeFromString(d.division); // Get the clicked color
+                var color = sb.colorDivisions.prototype.getColor(d.division); // Get the clicked color
+                var existingMonoType = visFunc.getMonoTypeWithColorAndShape(color, chosenShape, isBisected);
                 // If there is no type for this combination, no action
                 if (existingMonoType != sb.MonosaccharideType.UNDEFINED) {
                     infosTable.push(d.division);
@@ -802,7 +766,7 @@ function updateMenu(chosenDivision) {
                     isBisected = true;
                 }
                 var color = d.display_division;
-                var monoType = getMonoTypeWithColorAndShape(color, shape, isBisected);
+                var monoType = visFunc.getMonoTypeWithColorAndShape(color, shape, isBisected);
                 var labelMono;
                 if (monoType == undefined)
                 {
@@ -823,11 +787,150 @@ function updateMenu(chosenDivision) {
 }
 
 /**
+ * Just to allow if you clicked on a node by mistake to shut down the appeared menus
+ * @param e
+ */
+document.onkeydown = function (e) {
+    if (e.keyCode == 17 || e.keyCode == 16) // Ctrl or Shift
+    {
+        ctrl = true;
+    }
+    if (e.keyCode == 27) { //Esc
+        // If tree is empty, don't hide menus because there would be no way to display them back
+        updateMenu();
+        selectedNodes = [];
+        displayTree(treeData, shapes, glycan);
+    } else if (e.keyCode == 46) { // Delete button keycode
+        if (clickedNode != null) { // If there is no clicked node, then no action
+            // Else delete the node from the graph, and then from the tree
+            if (selectedNodes.length != 0)
+            {
+                var wholeSelection = [clickedNode].concat(selectedNodes);
+                for (var n of wholeSelection)
+                {
+                    var parent = appFunc.getNodeParent(n, glycan);
+                    if (parent == undefined || !wholeSelection.includes(parent)) // highest node in selection
+                    {
+                        selectedNodes = [];
+                        deleteNode(n);
+
+                    }
+                }
+            }
+            else
+            {
+                deleteNode(clickedNode); // Delete the node clicked
+            }
+        }
+    }
+    else if (e.keyCode == 82) { // r key
+        menuFunc.handleRepetition(shapes, treeData, glycan, clickedNode, selectedNodes);
+    }
+};
+
+document.onkeyup = function(e) {
+    if (e.keyCode == 17 || e.keyCode == 16) // Ctrl or Shift
+    {
+        ctrl = false;
+    }
+};
+
+/**
+ * Delete the clicked node from the graph and the tree
+ * @param node The node to delete
+ */
+function deleteNode(node) {
+    if (node == glycan.getRootNode()) {
+        // Clear treeData
+        treeData = {};
+        glycan.clear();
+        shapes = [];
+        clickedNode = null;
+        d3.selectAll("#rootAttach").remove();
+    } else {
+        shapes = menuFunc.deleteAllShapesInGraph(node, glycan, shapes);
+        glycan = menuFunc.deleteAllChildrenInGraph(node, glycan);
+        node = visFunc.searchAndRemoveNodeInTree(treeData, node);
+        var nbNodes = glycan.graph.nodes().length;
+        var i = 1;
+        while (glycan.graph.nodes()[glycan.graph.nodes().length-i] instanceof sb.Substituent)
+        {
+            i++;
+        }
+        clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-i];
+    }
+    delete shapes[node.id];
+    if (node instanceof sb.Monosaccharide)
+        shapes = menuFunc.reassembleNodes(glycan, shapes);
+    displayTree(treeData, shapes, glycan); // Display back the tree
+    // Hide all menus
+    d3.select('#svgMenu').style("display", "none");
+    d3.select("#svgInfos").style("display", "none");
+    d3.select("#svgShape").style("display", "none");
+    d3.select("#svgMultiselectMenu").style("display", "none");
+    d3.select("#svgCarbons").style("display", "none");
+    d3.select("#svgSubstituents").style("display", "none");
+    d3.select("#pieLinkCarbon").style("display", "none");
+
+    updateMenu();
+}
+
+/**
+ * Find in the SubstituentType enum the corresponding type for a given label
+ * @param label The label of the SubstituentType
+ * @returns {*}
+ */
+function getSubstituentTypeFromLabel (label) {
+    // Loop on substituent types, and return the one we want
+    for (var type of sb.SubstituentType) {
+        if(type.label == label) {
+            return type;
+        }
+    }
+}
+
+/**
+ * Generates n glycan for testing purposes
+ * @param n
+ */
+function test(n)
+{
+    for (var i = 0; i < n; i++)
+    {
+        var linked = Math.abs(Math.floor(Math.random()*10) - 3);
+        if (linked == 0)
+            linked = "?";
+        const colorChoice = ["blue", "yellow", "green", "orange", "pink", "purple", "lightBlue", "brown"];
+        var color = colorChoice[Math.abs(Math.floor(Math.random()*10) - 2)];
+        infosTable = [];
+        infosTable.push("addNode");
+        infosTable.push("Monosaccharide");
+        infosTable.push("square");
+        infosTable.push(color+"Color");
+        infosTable.push("β");
+        infosTable.push("L");
+        infosTable.push("F");
+        infosTable.push(linked);
+        infosTable.push(linked);
+        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
+        shapes = ret[1];
+        treeData = ret[2];
+        progress = ret[3];
+        clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-1];
+    }
+    displayTree(treeData, shapes, glycan);
+}
+
+const isColorDivisions = (_newMenuActions) => {
+    return (_newMenuActions.length == 10);
+};
+
+/**
  * Add a cancel button (rectangle), enabling to come back to last step
  * @param actions The rects of the svg
  * @param labels The labels (texts) of the svg
  */
-function addCancelOperation (actions, labels) {
+const addCancelOperation = (actions, labels) => {
     // We add the rect and the label to cancel last click
     actions.append("rect")
         .attr("width", 40)
@@ -871,864 +974,4 @@ function addCancelOperation (actions, labels) {
         .attr("x", 1070)
         .attr("y", 8)
         .text("X");
-}
-/**
- * Get SubDivisions of a searched division, using recursive calls
- * @param divisionToCheck The currently checked division
- * @param searchedDivision The division searched
- * @returns {*}
- */
-function getSubDivisions (divisionToCheck, searchedDivision) {
-    // If current division is shape, next step is color choice
-    if (searchedDivision.indexOf("shape") > -1) {
-        return colorDivisions;
-    }
-    if (divisionToCheck) {
-        // Loop on divisions, recursive calls on subDivisions if needed
-        for (var div of divisionToCheck) {
-            if (div.division == searchedDivision) {
-                return div.subDivisions;
-            }
-
-            var found = getSubDivisions(div.subDivisions, searchedDivision);
-            if (found) return found;
-        }
-    }
-}
-
-/**
- * Just to allow if you clicked on a node by mistake to shut down the appeared menus
- * @param e
- */
-document.onkeydown = function (e) {
-    if (e.keyCode == 17 || e.keyCode == 16) // Ctrl or Shift
-    {
-        ctrl = true;
-    }
-    if (e.keyCode == 27) { //Esc
-        // If tree is empty, don't hide menus because there would be no way to display them back
-        updateMenu();
-        selectedNodes = [];
-        displayTree();
-    } else if (e.keyCode == 46) { // Delete button keycode
-        if (clickedNode != null) { // If there is no clicked node, then no action
-            // Else delete the node from the graph, and then from the tree
-            if (selectedNodes.length != 0)
-            {
-                var wholeSelection = [clickedNode].concat(selectedNodes);
-                for (var n of wholeSelection)
-                {
-                    var parent = getNodeParent(n);
-                    if (parent == undefined || !wholeSelection.includes(parent)) // highest node in selection
-                    {
-                        selectedNodes = [];
-                        deleteNode(n);
-
-                    }
-                }
-            }
-            else
-            {
-                deleteNode(clickedNode); // Delete the node clicked
-            }
-        }
-    }
-    else if (e.keyCode == 82) { // r key
-        handleRepetition();
-    }
 };
-
-// Checks if the selection array "nodes" is linear or has a fork
-function isBranchSelected(nodes)
-{
-    for (var node of nodes)
-    {
-        if (node.children != undefined)
-        {
-            var selectedChildren = 0;
-            for (var child of node.children)
-            {
-                if (nodes.includes(child))
-                {
-                    selectedChildren++;
-                }
-            }
-            if (selectedChildren > 1)
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-// Verifies if the selection is legal for a repetion, then creates it
-function handleRepetition()
-{
-    var nodes = [clickedNode].concat(selectedNodes);
-    if (!isRepeated(nodes))
-    {
-        findNodesInTree(nodes);
-        var repEntry, repExit;
-        if (isBranchSelected(nodes)) // BRANCH
-        {
-            repEntry = nodes[0].node;
-            repExit = findRepExit(nodes[0]);
-            if (repExit.length != 1) // If the rep unit has 2 exits
-            {
-                return;
-            }
-            repExit = repExit[0].node;
-        }
-        else // NO BRANCH
-        {
-            var entryExit = findEntryAndExit(nodes);
-            if (!entryExit)
-            {
-                return;
-            }
-            repEntry = entryExit[0];
-            repExit = entryExit[1];
-        }
-
-
-
-        if (repExit != undefined) // Doesn't finish by a fork
-        {
-            var min = prompt("Minimum number of repetitions");
-            if (min == null || min == "")
-            {
-                return;
-            }
-            var max = prompt("Maximum number of repetitions");
-            if (max == null || max == "")
-            {
-                return;
-            }
-            var donor = prompt("Donor Position on the "+repExit.monosaccharideType.name + " (\"?\" for unknown linkage)");
-            if (donor != "?" && (donor > getNumberCarbons(repExit) || donor < 1))
-                return;
-            var acceptor = prompt("Acceptor Position on the "+repEntry.monosaccharideType.name + " (\"?\" for unknown linkage)");
-            if (acceptor != "?" && (acceptor > 3 || acceptor < 1))
-                return;
-            var id = randomString(7);
-            var repeatingUnit = new sb.RepeatingUnit(id,nodes,min,max,repEntry,repExit,donor,acceptor);
-            for  (var node of nodes)
-            {
-                node.node.repeatingUnit = repeatingUnit;
-            }
-            moveNodesInsideRep();
-            displayTree();
-            updateMenu();
-        }
-    }
-}
-
-/* This function is used to visually move the nodes out of a repetition if they are not part of it
-   A repetition is shown on the screen as a rectangle area bordered by brackets. However there can be
-   nodes inside this rectangle even though they don't belong in the repetition. To avoid a confusion, this
-   function pushes them out of this area
-
-   However, if a node cannot escape (other nodes are blocking the way out), it won't move
-*/
-function moveNodesInsideRep()
-{
-    var nodes = tree.nodes(treeData);
-    var repeatingUnits = generateRepeatingUnits(nodes);
-    for (var rep of repeatingUnits) // for each Repeating unit
-    {
-        var repCoord = getRepCoord(rep);
-        for (var node of nodes) // and for each node
-        {
-            if (node.node instanceof sb.Monosaccharide)
-            {
-                var donorPosition;
-                var dontMove = false;
-                // if the node is not part of the repeating unit AND is located inside the square, move it
-                while (((node.node.repeatingUnit == undefined || node.node.repeatingUnit.id != rep.id) &&
-                    (shapes[node.node.id][0] >= repCoord[0] &&
-                    shapes[node.node.id][0] <= repCoord[1] &&
-                    shapes[node.node.id][1] >= repCoord[2] &&
-                    shapes[node.node.id][1] <= repCoord[3])) && !dontMove)
-                {
-                    var link;
-                    for (var e of glycan.graph.edges())
-                    {
-                        if (e.target == node.node.id)
-                            link = e;
-                    }
-                    donorPosition = link.donorPosition.value;
-                    if (!checkNodesInLine(shapes[node.node.id][0], shapes[node.node.id][1], XYvalues[donorPosition][0], XYvalues[donorPosition][1], repCoord))
-                        moveNodeAndChildren(node,XYvalues[donorPosition][1],XYvalues[donorPosition][0]);
-                    else
-                    {
-                        dontMove = true;
-                    }
-                }
-            }
-        }
-    }
-}
-
-/**
- *
- * @param startX
- * @param startY
- * @param dx
- * @param dy
- * @param repCoord
- * This function will check if a node can escape a repeating unit without hitting another node
- */
-function checkNodesInLine(startX, startY, dy, dx, repCoord)
-{
-    var limit;
-    var x = startX+dx, y = startY+dy;
-    if (dx == 0) // Horizontal
-    {
-        if (dy > 0) // going to the right
-        {
-            limit = repCoord[3];
-            while (y < limit)
-            {
-                if (isAvailible(x, y) != "")
-                    return true;
-                y += dy;
-            }
-        }
-        else if (dy < 0) // going to the left
-        {
-            limit = repCoord[2];
-            while (y > limit)
-            {
-                if (isAvailible(x, y) != "")
-                    return true;
-                y += dy;
-            }
-        }
-    }
-    else if (dy == 0) // Vertical
-    {
-        if (dx > 0) // going to the bottom
-        {
-            limit = repCoord[1];
-            while (x < limit)
-            {
-                if (isAvailible(x, y) != "")
-                    return true;
-                x += dx;
-            }
-        }
-        else if (dx < 0) // going to the top
-        {
-            limit = repCoord[0];
-            while (x > limit)
-            {
-                if (isAvailible(x, y) != "")
-                    return true;
-                x += dx;
-            }
-        }
-    }
-    return false;
-}
-
-// Visually moves a node and its children
-function moveNodeAndChildren(node, dx, dy)
-{
-    var stack = [node];
-    while (stack.length != 0)
-    {
-        var n = stack.pop();
-        shapes[n.node.id][0] += dx;
-        shapes[n.node.id][1] += dy;
-        if (n.children != undefined)
-        {
-            for (var child of n.children)
-            {
-                stack.push(child);
-            }
-        }
-    }
-}
-
-// Find the entry and exit of a bunch of nodes (for repeating units)
-function findEntryAndExit(nodes)
-{
-    var maxDepth = nodes[0].depth;
-    var minDepth = nodes[0].depth;
-    var maxNode = nodes[0].node;
-    var minNode = nodes[0].node;
-    var unselectedChildren = 0;
-    for (var node of nodes)
-    {
-        unselectedChildren += countUnselectedChildren(node, nodes);
-        if (node.depth > maxDepth)
-        {
-            maxDepth = node.depth;
-            maxNode = node.node;
-        }
-        if (node.depth < minDepth)
-        {
-            minDepth = node.depth;
-            minNode = node.node;
-        }
-    }
-    if (unselectedChildren > 1)
-    {
-        return false;
-    }
-    else
-    {
-        return [minNode,maxNode];
-    }
-}
-
-// Used to check if the repetition can be done on the array "nodes"
-// If there are more than 1 unselected children in the array, there are several exits to the repeating unit, which is impossible.
-// If there are 0 unselected children, the repetition is only possible if there are no branches selected:
-// if you select the end of a linear glycan, there are no exits because the last selected node is the last node of the glycan (Repetition OK)
-// however, if there is a branch an no unselected children, the group of nodes ends with a fork, which is impossible
-function countUnselectedChildren(node, nodes)
-{
-    var count = 0;
-    if (node.children != undefined)
-    {
-        for (var child of node.children)
-        {
-            if (!nodes.includes(child) && child.node instanceof sb.Monosaccharide)
-            {
-                count++
-            }
-        }
-        return count;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-// Find the exit(s) of a group of nodes (for repeating unit)
-function findRepExit(root)
-{
-    var wholeSelection = [clickedNode].concat(selectedNodes);
-    findNodesInTree(wholeSelection);
-    var exits = [];
-    var stack = [root];
-
-    while (stack.length > 0)
-    {
-        var node = stack.pop();
-        if (countUnselectedChildren(node, wholeSelection) == 1)
-        {
-            if (!exits.includes(node))
-                exits.push(node);
-        }
-        if (node.children != undefined)
-        {
-            for (var child of node.children)
-            {
-                if (wholeSelection.includes(child))
-                    stack.push(child);
-            }
-        }
-    }
-    return exits;
-}
-
-// Turns an array of Monosaccharides into an array of tree nodes
-function findNodesInTree(arr)
-{
-    for (var i in arr)
-    {
-        arr[i] = findNodeInTree(treeData,arr[i]);
-    }
-    return arr;
-}
-
-document.onkeyup = function(e) {
-    if (e.keyCode == 17 || e.keyCode == 16) // Ctrl or Shift
-    {
-        ctrl = false;
-    }
-};
-
-// Check if any of the nodes in arr are already in a REP
-function isRepeated(arr)
-{
-    for (var node of arr)
-    {
-        if (node.repeatingUnit !== undefined)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Delete the clicked node from the graph and the tree
- * @param node The node to delete
- */
-function deleteNode(node) {
-    if (node == glycan.getRootNode()) {
-        // Clear treeData
-        treeData = {};
-        glycan.clear();
-        shapes = [];
-        clickedNode = null;
-        d3.selectAll("#rootAttach").remove();
-    } else {
-        deleteAllShapesInGraph(node);
-        deleteAllChildrenInGraph(node);
-        searchAndRemoveNodeInTree(treeData, node);
-        var nbNodes = glycan.graph.nodes().length;
-        var i = 1;
-        while (glycan.graph.nodes()[glycan.graph.nodes().length-i] instanceof sb.Substituent)
-        {
-            i++;
-        }
-        clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-i];
-    }
-    delete shapes[node.id];
-    if (node instanceof sb.Monosaccharide)
-        reassembleNodes();
-    displayTree(); // Display back the tree
-    // Hide all menus
-    d3.select('#svgMenu').style("display", "none");
-    d3.select("#svgInfos").style("display", "none");
-    d3.select("#svgShape").style("display", "none");
-    d3.select("#svgMultiselectMenu").style("display", "none");
-    d3.select("#svgCarbons").style("display", "none");
-    d3.select("#svgSubstituents").style("display", "none");
-    d3.select("#pieLinkCarbon").style("display", "none");
-
-    updateMenu();
-}
-
-/**
- * Deletes all the subs of a node.
- * If the node is a mono+sub (e.g GulNAc), when called for the first time the function will only delete the substituents except NAc on donorPosition 2
- * If called again on it, the GulNAc will turn to Gul.
- * @param node
- */
-function deleteSubs(node)
-{
-    var name = node.monosaccharideType.name;
-    var deleted = 0;
-    for (var edge of glycan.graph.edges())
-    {
-        if (edge.sourceNode == node)
-        {
-            if (edge.targetNode instanceof sb.Substituent)
-            {
-                deleteNode(edge.targetNode);
-                deleted++;
-            }
-        }
-    }
-    if (deleted == 0 && sb.SubstituentsPositions[name])
-    { // Has an embedded sub to be deleted
-        if (name.substring(0,3) == "Neu")
-        {
-            updateNodeType(node, sb.MonosaccharideType.Kdn);
-        }
-        else
-        {
-            var i = 1;
-            while ((!sb.MonosaccharideType[name.substring(0,name.length-i)] || sb.SubstituentsPositions[name.substring(0,name.length-i)])&& i < 10)
-            {
-                i++;
-            }
-            updateNodeType(node, sb.MonosaccharideType[name.substring(0,name.length-i)]);
-        }
-    }
-    displayTree();
-    updateMenu();
-}
-
-/**
- * Visually gathers all the scattered nodes
- * (because after a deletion some nodes can stay far away for no reason anymore)
- */
-function reassembleNodes()
-{
-    for (var edge of glycan.graph.edges())
-    {
-        var source = edge.source;
-        var target = edge.target;
-        var donorPosition = edge.donorPosition.value;
-        var usualX = shapes[source][0]+XYvalues[donorPosition][1];
-        var usualY = shapes[source][1]+XYvalues[donorPosition][0];
-        if (shapes[target] != undefined && (shapes[target][0] != usualX || shapes[target][1] != usualY)) // If the node is not where it should be
-        {
-            if (isAvailible(usualX, usualY) == "")
-            {
-                shapes[target] = [usualX, usualY];
-            }
-            else
-            {
-                shapes[target] = findNewSpot(usualX, usualY, donorPosition);
-            }
-        }
-    }
-}
-
-
-/**
- * Delete all children nodes in the graph structure
- * @param node The node from which we want to delete children
- */
-function deleteAllChildrenInGraph(node) {
-    for (var edge of glycan.graph.edges()) {
-        if (edge.sourceNode == node) {
-            deleteAllChildrenInGraph(edge.targetNode);
-        }
-    }
-    if (node.children === undefined) // leaf
-    {
-        glycan.removeNodeById(node.id);
-    }
-}
-
-function deleteAllShapesInGraph(node) { // has to be separate from deleteAllChildrenInGraph because it updates the glycan on the fly
-    for (var edge of glycan.graph.edges()) {
-        if (edge.sourceNode == node) {
-            delete shapes[node.id];
-            delete shapes[edge.target];
-            deleteAllShapesInGraph(edge.targetNode);
-        }
-    }
-}
-
-/**
- * Create a new node using the informations selected by the user
- */
-function createNewNode() {
-    var typeNodeToAdd = infosTable[1]; // Selected type, monosaccharide or substituent
-    if (typeNodeToAdd == "Monosaccharide") {
-        var shape = infosTable[2]; // Selected shape
-        var isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
-        if (isBisected) {
-            shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
-        }
-        var color = getColorCodeFromString(infosTable[3]); // Selected color
-        var anomericity = getAnomericityWithSelection(infosTable[4]); // Anomericity
-        var isomer = getIsomerWithSelection(infosTable[5]); // Isomer
-        var ring = getRingTypeWithSelection(infosTable[6]); // Ring type
-        var donorPosition = getDonorPositionWithSelection(infosTable[7]); // Get the donor position
-        var acceptorPosition = getAcceptorPositionWithSelection(infosTable[8]); // Get the acceptor position
-        var monoType = getMonoTypeWithColorAndShape(color, shape, isBisected); // Get the monosaccharide type
-        var generatedNodeId = randomString(7); // Generate an id
-        var monosaccharide = new sb.Monosaccharide(generatedNodeId,monoType,anomericity, isomer, ring); // Create new monosaccharide
-
-
-        if (Object.keys(treeData).length === 0) { // If tree is empty, instantiate the glycan with the monosaccharide as the root
-            glycan = new sb.Glycan("Glycan", monosaccharide);
-            var node = {"node":monosaccharide};
-            var shape = calculateXandYNode(node);
-            shapes[generatedNodeId] = shape;
-            var rootShape = [origin[0],origin[1]+gap];
-            shapes["root"] = rootShape;
-            rootDonorPosition = donorPosition;
-            rootAcceptorPosition = acceptorPosition;
-            updateTreeVisualization(); // Update visualization in the svg
-        } else {
-            var generatedEdgeId = randomString(7); // If tree not empty, generate id, create linkage and update visualziation
-            var glycosidicLink = new sb.GlycosidicLinkage(generatedEdgeId, clickedNode, monosaccharide, acceptorPosition, donorPosition);
-            glycan.addMonosaccharide(monosaccharide, glycosidicLink);
-            updateTreeVisualization(glycosidicLink);
-            var parent = getNodeParent(monosaccharide);
-            var node = {"node":monosaccharide, "parent":parent};
-            var shape = calculateXandYNode(node);
-            shapes[generatedNodeId] = shape;
-        }
-        moveNodesInsideRep();
-        clickedNode = monosaccharide;
-        displayTree();
-        updateMenu();
-        redrawProgress(progress, 0);
-        progress = 0;
-        return generatedNodeId;
-    }
-}
-
-function getNodeParent(node)
-{
-    for (var e of glycan.graph.edges())
-    {
-        if (e.target == node.id)
-        {
-            return e.sourceNode;
-        }
-    }
-}
-
-/**
- * Function called to create a new substituent in the glycan
- * @param linkCarbon The link carbon value
- */
-function createNewSubstituent (linkCarbon) {
-    if (infosTable[1] == "Substituent")
-        var subName = infosTable[2];
-    else
-        var subName = infosTable[1]; // Get the label of the substituent
-    var subType = sb.SubstituentType[subName]; // Get the SubstituentType
-    var generatedSubId = randomString(7); // Random id for Substituent
-    var newSubstituent = new sb.Substituent(generatedSubId, subType); // Create a new substituent
-
-    // Try if we can bind them together
-    var newType = getMono(this.clickedNode.monosaccharideType.name + sb.SubstituentType[subName].label);
-    if (newType && sb.SubstituentsPositions[newType.name].position == linkCarbon) {
-        updateNodeType(this.clickedNode, newType);
-    }
-    else
-    {
-        var donorPosition = getDonorPositionWithSelection(linkCarbon); // Get the donorPosition value
-        var generatedEdgeSubId = randomString(7); // Random id for edge
-        // Create the linkage
-        var subLinkage = new sb.SubstituentLinkage(generatedEdgeSubId, clickedNode, newSubstituent, donorPosition);
-        glycan.addSubstituent(newSubstituent, subLinkage); // Add the substituent to the glycan, with the linkag;
-        updateTreeVisualization(subLinkage);
-    }
-    displayTree();
-    updateMenu();
-    return generatedSubId;
-}
-
-function getMono(name)
-{
-    switch (name)
-    {
-        case "KdnNAc":
-            return sb.MonosaccharideType.Neu5Ac;
-        case "KdnNGc":
-            return sb.MonosaccharideType.Neu5Gc;
-        case "KdnN":
-            return sb.MonosaccharideType.Neu;
-    }
-    return sb.MonosaccharideType[name];
-}
-
-function updateNodeType(node, type)
-{
-    for (var glycanNode of this.glycan.graph.nodes())
-    {
-        if (node === glycanNode)
-        {
-            glycanNode.monosaccharideType = type;
-        }
-    }
-}
-
-/**
- * Find in the SubstituentType enum the corresponding type for a given label
- * @param label The label of the SubstituentType
- * @returns {*}
- */
-function getSubstituentTypeFromLabel (label) {
-    // Loop on substituent types, and return the one we want
-    for (var type of sb.SubstituentType) {
-        if(type.label == label) {
-            return type;
-        }
-    }
-}
-
-/**
- * Find in the MonosaccharideType enum the corresponding type for a given color and shape
- * @param color The color of the MonosaccharideType
- * @param shape The shape of the MonosaccharideType
- * @param isBisected Boolean telling if the shape is bisected
- */
-function getMonoTypeWithColorAndShape(color, shape, isBisected) {
-    // Loop on monosaccharide types, and return the one we want
-    for (var type of sb.MonosaccharideType) {
-        if(type.color == color && type.shape == shape && type.bisected == isBisected) {
-            return type;
-        }
-    }
-    return sb.MonosaccharideType.UNDEFINED; // Return undefined if combination doesn't exist
-}
-
-/**
- * Find in the Anomericity enum the corresponding value for a given selected value
- * @param anomericity The anomericity we are seeking
- * @returns {*}
- */
-function getAnomericityWithSelection(anomericity) {
-    var anomericityName;
-    // Get the string associated to display label
-    if (anomericity == "α") {
-        anomericityName = "ALPHA";
-    } else if (anomericity == "β") {
-        anomericityName = "BETA"
-    }
-
-    // Loop on anomericity values, and return the one we want
-    for (var anom of sb.Anomericity) {
-        if (anom.name == anomericityName)
-            return anom;
-    }
-    return sb.Anomericity.UNDEFINED; // Return undefined if not found (not supposed to happen)
-}
-
-/**
- * Find in the Isomer enum the corresponding value for a given selected value
- * @param isomer The isomer we are seeking
- * @returns {*}
- */
-function getIsomerWithSelection(isomer) {
-    // Loop on isomers, and return the one we want
-    for (var anom of sb.Isomer) {
-        if (anom.name == isomer)
-            return anom;
-    }
-    return sb.Isomer.UNDEFINED; // Return undefined if not found (not supposed to happen)
-}
-
-/**
- * Find in the RingType enum the corresponding value for a given selected value
- * @param ringType The ring type we are seeking
- * @returns {*}
- */
-function getRingTypeWithSelection(ringType) {
-    // Loop on ring types, and return the one we want
-    for (var ring of sb.RingType) {
-        if (ring.name == ringType)
-            return ring;
-    }
-    return sb.RingType.UNDEFINED; // Return undefined if not found (not supposed to happen)
-}
-
-/**
- * Find in the AcceptorPosition enum the corresponding value for a given selected value
- * @param acceptorPosition The acceptor position we are seeking
- * @returns {*}
- */
-function getAcceptorPositionWithSelection(acceptorPosition) {
-    // Loop on acceptor positions, and return the one we want
-    for (var carbon of sb.AcceptorPosition) {
-        if (carbon.value == acceptorPosition)
-            return carbon;
-    }
-    return sb.AcceptorPosition.UNDEFINED; // Return undefined if not found (not supposed to happen)
-}
-
-/**
- * Find in the DonorPosition enum the corresponding value for a given selected value
- * @param donorPosition The donor position we are seeking
- * @returns {*}
- */
-function getDonorPositionWithSelection(donorPosition) {
-    // Loop on donor positions, and return the one we want
-    for (var carbon of sb.DonorPosition) {
-        if (carbon.value == donorPosition)
-            return carbon;
-    }
-    return sb.DonorPosition.UNDEFINED; // Return undefined if not found (not supposed to happen)
-}
-
-/**
- * Get color code from a string, using colorDivisions
- * @param colorName The color string we are seeking the translated code
- * @returns {string|string|string|string|string|string|*}
- */
-function getColorCodeFromString(colorName) {
-    // Loop on colors, and return the code when found
-    for (var color of colorDivisions) {
-        if (color.division == colorName) {
-            return color.display_division;
-        }
-    }
-}
-
-/**
- * Generate a random string (used for identifiers) with a given length
- * @param length The length of the string we want to generate
- * @returns {string}
- */
-function randomString(length) {
-    // Possible chars in the generated string
-    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
-
-    if (! length) { // If no length specified, get a random length
-        length = Math.floor(Math.random() * chars.length);
-    }
-
-    var str = '';
-    for (var i = 0; i < length; i++) { // Add random chars till length is the one specified
-        str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
-}
-
-
-/**
- * Generates n glycan for testing purposes
- * @param n
- */
-function test(n)
-{
-    for (var i = 0; i < n; i++)
-    {
-        var linked = Math.abs(Math.floor(Math.random()*10) - 3);
-        if (linked == 0)
-            linked = "?";
-        const colorChoice = ["blue", "yellow", "green", "orange", "pink", "purple", "lightBlue", "brown"];
-        var color = colorChoice[Math.abs(Math.floor(Math.random()*10) - 2)];
-        infosTable = [];
-        infosTable.push("addNode");
-        infosTable.push("Monosaccharide");
-        infosTable.push("square");
-        infosTable.push(color+"Color");
-        infosTable.push("β");
-        infosTable.push("L");
-        infosTable.push("F");
-        infosTable.push(linked);
-        infosTable.push(linked);
-        createNewNode();
-        clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-1];
-    }
-    displayTree();
-}
-
-
-/**
- * Generates the "shapes" array that contains all the nodes positions, from the glycan
- */
-function generateShapes()
-{
-    for (var mono of glycan.graph.nodes())
-    {
-        var link;
-        for (var edge of glycan.graph.edges())
-        {
-            if (edge.target == mono.id)
-            {
-                link = edge;
-            }
-        }
-        if (shapes.length === 0) { // If tree is empty, instantiate the glycan with the monosaccharide as the root
-            var node = {"node":mono};
-            var shape = calculateXandYNode(node);
-            shapes[node.node.id] = shape;
-            var rootShape = [origin[0],origin[1]+gap];
-            shapes["root"] = rootShape;
-            rootDonorPosition = sb.DonorPosition.UNDEFINED;
-            rootAcceptorPosition = sb.AcceptorPosition.ONE;
-            updateTreeVisualization(); // Update visualization in the svg
-        } else {
-            if (link instanceof sb.GlycosidicLinkage) {
-                updateTreeVisualization(link);
-                var node = {"node":mono};
-                var shape = calculateXandYNode(node);
-                shapes[node.node.id] = shape;
-            }
-            else
-            {
-                updateTreeVisualization(link);
-            }
-        }
-    }
-}
