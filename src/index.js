@@ -23,6 +23,9 @@ import SubstituentsPositions from './js/models/io/glycoCT/SubstituentsPositions'
 import MonosaccharideGlycoCT from './js/models/io/glycoCT/MonosaccharideGlycoCT';
 import QuickModeMonosaccharides from './js/models/glycomics/dictionary/QuickModeMonosaccharides';
 import Structures from './js/models/glycomics/dictionary/Structures';
+import XYvalues from "./js/views/parametors/XYvalues";
+import colorDivisions from "./js/views/parametors/colorDivisions";
+import SubstituentLabels from "./js/views/parametors/SubstituentLabels";
 
 //Linkages
 import GlycosidicLinkage from './js/models/glycomics/linkages/GlycosidicLinkage';
@@ -42,11 +45,18 @@ import GlycoCTWriter from './js/models/io/glycoCT/GlycoCTWriter';
 import NodeComparator from './js/models/io/NodeComparator';
 import ImageExporter from './js/models/io/ImageExporter';
 
+//Function
+import appFunction from "./js/guifunction/appFunction";
+import visFunction from "./js/guifunction/visFunction";
+import menuFunction from "./js/guifunction/menuFunction";
+import emFunction from "./js/guifunction/emFunction";
 
 
 export { Graph, GraphEdge, GraphNode, AcceptorPosition, Anomericity, Isomer,
-    DonorPosition, MonosaccharideType, RingType, Monosaccharide, SubstituentType, 
+    DonorPosition, MonosaccharideType, RingType, Monosaccharide, SubstituentType,
     GlycosidicLinkage, SubstituentLinkage, Substituent, Glycan, GlycoCTParser,
     GlycoCTWriter, GlycoCTSubstituents, NodeComparator, RepeatingUnit,
     SubstituentsPositions, MonosaccharideGlycoCT, QuickModeMonosaccharides,
-    Structures, ImageExporter};
+    Structures, ImageExporter, appFunction, visFunction, menuFunction, emFunction,
+    XYvalues, colorDivisions, SubstituentLabels
+};

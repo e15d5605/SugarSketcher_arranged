@@ -466,8 +466,8 @@ export default class GlycoCTWriter{
                     {
                         var prefix = "o";
                         var suffix = "d";
-                        var sourceRep = this.findNodeInTree(this.tree,edges[i].sourceNode).node.repeatingUnit;
-                        var targetRep = this.findNodeInTree(this.tree,edges[i].targetNode).node.repeatingUnit;
+                        var sourceRep = findNodeInTree(this.tree,edges[i].sourceNode).node.repeatingUnit;
+                        var targetRep = findNodeInTree(this.tree,edges[i].targetNode).node.repeatingUnit;
                         // Set the prefix and suffix to get the right ones according to repeating units
                         if (sourceRep !== targetRep)
                         {
@@ -505,7 +505,7 @@ export default class GlycoCTWriter{
         return [0, ""];
     }
 
-
+/*
     findNodeInTree(tree,node1)
     {
         var stack = [], node, i;
@@ -523,6 +523,7 @@ export default class GlycoCTWriter{
         }
         return null;
     }
+ */
 
 
     /**
@@ -573,6 +574,7 @@ export default class GlycoCTWriter{
                 lastResId = resInfo[0];
                 var exitId = lastResId;
                 formula += "REP" + repId[rep.id] + ":" + exitId + "o(";
+                //TODO: 結合位置がundefinedの場合に対応できていない
                 formula += rep.donorPosition === DonorPosition.UNDEFINED ? "-1" : rep.donorPosition;
                 formula += "+";
                 formula += rep.acceptorPosition === AcceptorPosition.UNDEFINED ? "-1" : rep.acceptorPosition;
@@ -613,3 +615,21 @@ export default class GlycoCTWriter{
 
 
 }
+
+const findNodeInTree = (tree,node1) =>
+{
+    let stack = [], node, i;
+    stack.push(tree);
+
+    while (stack.length > 0) {
+        node = stack.pop();
+        if (node.node == node1) {
+            return node;
+        } else if (node.children != undefined) {
+            for (i = 0; i < node.children.length; i += 1) {
+                stack.push(node.children[i]);
+            }
+        }
+    }
+    return null;
+};

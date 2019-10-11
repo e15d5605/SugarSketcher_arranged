@@ -2,6 +2,7 @@
  * Created by Renaud on 18/08/2017.
  */
 
+const vkbeautify = require("d3");
 export default class ImageExporter {
 
     constructor() {
@@ -29,7 +30,7 @@ export default class ImageExporter {
     }
 
     show_svg_code(div_svg, div_svg_code) {
-        var svg_xml = get_xml_svg_code(div_svg);
+        var svg_xml = this.get_xml_svg_code(div_svg);
 
         //Optional: prettify the XML with proper indentations
         svg_xml = vkbeautify.xml(svg_xml);
