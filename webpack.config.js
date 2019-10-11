@@ -1,5 +1,5 @@
 // webpack.config.js
-var webpack = require('webpack');
+const webpack = require("webpack");
 var libraryName = 'sb';
 var outputFile = libraryName + '.js';
 
@@ -25,7 +25,13 @@ var config = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })
+    ]
 };
 
 module.exports = config;
