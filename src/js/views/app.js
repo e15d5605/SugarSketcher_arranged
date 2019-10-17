@@ -519,8 +519,11 @@ function displayLabels(linkLabel, links, anom)
                 let usualX = (source[1] + target[1]) / 2; // Get x of the middle of the link
                 if (d.source.node.id == "root")
                     finalX = usualX+5; // Add value to have a visible display (not on the line)
-                else
-                    finalX = usualX + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][1]; // Add value to have a visible display (not on the line)
+                else {
+                    let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+                    finalX = usualX + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
+                    //finalX = usualX + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][1]; // Add value to have a visible display (not on the line)
+                }
             }
             else // Substituant
             {
@@ -543,8 +546,11 @@ function displayLabels(linkLabel, links, anom)
                 let usualY = (source[0] + target[0]) / 2; // Get y of the middle of the link
                 if (d.source.node.id == "root")
                     finalY = usualY + 5; // Add value to have a visible display
-                else
-                    finalY = usualY + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][0]; // Add value to have a visible display
+                else {
+                    let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+                    finalY = usualY + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
+                    //finalY = usualY + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][0]; // Add value to have a visible display
+                }
             }
             else // Substituant
             {
