@@ -32,6 +32,21 @@ export default class colorDivisions extends Enum {
         }
     }
 
+    getDivisionFromCode (value) {
+        switch (value) {
+            case "#FFFFFF": return colorDivisions.WHITE;
+            case "#0090BC": return colorDivisions.BLUE;
+            case "#00A651": return colorDivisions.GREEN;
+            case "#FFD400": return colorDivisions.YELLOW;
+            case "#F47920": return colorDivisions.ORANGE;
+            case "#F69EA1": return colorDivisions.PINK;
+            case "#A54399": return colorDivisions.PURPLE;
+            case "#8FCCE9": return colorDivisions.LIGHTBLUE;
+            case "#A17A4D": return colorDivisions.BROWN;
+            case "#ED1C24": return colorDivisions.RED;
+        }
+    }
+
     getDivision(value) {
         switch (value) {
             case "whiteColor": return colorDivisions.WHITE.division;

@@ -13,6 +13,7 @@ import MonosaccharideGlycoCT from "./MonosaccharideGlycoCT";
 import SubstituentLinkage from "../../glycomics/linkages/SubstituentLinkage";
 import SubstituentsPositions from "./SubstituentsPositions";
 import DonorPosition from "../../glycomics/dictionary/DonorPosition";
+import appFunction from "../../../guifunction/appFunction";
 
 export default class GlycoCTWriter{
 
@@ -24,6 +25,7 @@ export default class GlycoCTWriter{
         this.edges = [];
     }
 
+    /*
     randomString(length) {
         // Possible chars in the generated string
         var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
@@ -38,6 +40,7 @@ export default class GlycoCTWriter{
         }
         return str;
     }
+     */
 
     // Get SubstituentType
     getSub(label)
@@ -328,6 +331,7 @@ export default class GlycoCTWriter{
                 }
 
                 var transform;
+                let appFunc = new appFunction();
 
                 // These types either don't need a specified isomericity or already bear it by default in their glycoct in the database
                 const isoExceptions = ["Hex","dHex","HexA","HexN","ddHex","HexNAc","dHexNAc","Pen","Oli","Abe","Col","Nonu","LDManHep","DDManHep"];
@@ -363,7 +367,7 @@ export default class GlycoCTWriter{
                         formula += MonosaccharideGlycoCT[monoName].glycoct;
                         transform = MonosaccharideGlycoCT[monoName].transform;
                         assocSubType = this.getSub(subName);
-                        assocSub = new Substituent(this.randomString(7),assocSubType);
+                        assocSub = new Substituent(appFunc.randomString(7),assocSubType);
                         if (SubstituentsPositions[resName] !== undefined) // Should always be defined
                         {
                             donorPosition = SubstituentsPositions[resName].position;
@@ -378,7 +382,7 @@ export default class GlycoCTWriter{
                         formula += MonosaccharideGlycoCT[monoName].glycoct;
                         transform = MonosaccharideGlycoCT[monoName].transform;
                         assocSubType = this.getSub(subName);
-                        assocSub = new Substituent(this.randomString(7),assocSubType);
+                        assocSub = new Substituent(appFunc.randomString(7),assocSubType);
                         if (SubstituentsPositions[resName] !== undefined) // Should always be defined
                         {
                             donorPosition = SubstituentsPositions[resName].position;

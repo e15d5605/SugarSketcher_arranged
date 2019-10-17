@@ -295,18 +295,8 @@ function updateMenu(chosenDivision) {
                     infosTable["division"] = "addNode";
                     infosTable["display_division"] = "Monosaccharide";
                     infosTable["shape"] = sb.MonosaccharideType[d.name].shape;
-
-                    /*
-                    var color;
-                    for (var c of colorDivisions) {
-                        if (c.display_division == sb.MonosaccharideType[d.name].color) {
-                            color = c.division;
-                        }
-                    }
-                     */
-
-                    var color = sb.colorDivisions.prototype.getDivision(sb.MonosaccharideType[d.name].color);
-                    infosTable["color"] = color;
+                    var color = sb.colorDivisions.prototype.getDivisionFromCode(sb.MonosaccharideType[d.name].color);
+                    infosTable["color"] = color.division;
                     quickRingType = d.ringType;
                     quickAcceptorPosition = d.acceptorPosition;
                     quickIsomer = d.isomer;
@@ -819,10 +809,13 @@ function test(n)
         infosTable["ringType"] = "F";
         infosTable["donorPosition"] = linked;
         infosTable["acceptorPosition"] = linked;
-        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
+        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes); // Manage add node
+        updateMenu();
+        glycan = ret[0];
         shapes = ret[1];
         treeData = ret[2];
-        progress = ret[3];
+        displayTree(treeData, shapes, glycan);
+        progress = 0;
         clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-1];
     }
     displayTree(treeData, shapes, glycan);

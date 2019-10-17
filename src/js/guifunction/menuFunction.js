@@ -162,14 +162,10 @@ export default class menuFunction {
             let dy = XYvalues.prototype.getXYvalue(donorPosition).x;
             let usualX = _shapes[source][0]+dx;
             let usualY = _shapes[source][1]+dy;
-            if (_shapes[target] != undefined && (_shapes[target][0] != usualX || _shapes[target][1] != usualY)) // If the node is not where it should be
-            {
-                if (af.isAvailible(usualX, usualY, _shapes) == "")
-                {
+            if (_shapes[target] != undefined && (_shapes[target][0] != usualX || _shapes[target][1] != usualY)) { // If the node is not where it should be{
+                if (af.isAvailible(usualX, usualY, _shapes) == "") {
                     _shapes[target] = [usualX, usualY];
-                }
-                else
-                {
+                } else {
                     _shapes[target] = af.findNewSpot(usualX, usualY, _shapes, donorPosition);
                 }
             }
@@ -201,17 +197,16 @@ export default class menuFunction {
             if (edge.sourceNode == node) {
                 delete _shapes[node.id];
                 delete _shapes[edge.target];
-                this.deleteAllShapesInGraph(edge.targetNode, _glycan, _shapes);
+                _shapes = this.deleteAllShapesInGraph(edge.targetNode, _glycan, _shapes);
             }
         }
-
-        return _shapes
+        return _shapes;
     }
 
     /**
      * Create a new node using the informations selected by the user
      */
-    createNewNode(_infosTable, _glycan, _treeData, _shapes, _progress) {
+    createNewNode(_infosTable, _glycan, _treeData, _shapes) {
         let typeNodeToAdd = _infosTable.display_division; // Selected type, monosaccharide or substituent
         if (typeNodeToAdd == "Monosaccharide") {
             let shape = _infosTable.shape; // Selected shape
@@ -253,17 +248,12 @@ export default class menuFunction {
             }
             _shapes = moveNodesInsideRep(_shapes, _treeData, _glycan);
             clickedNode = monosaccharide;
-            displayTree(_treeData, _shapes, _glycan);
-            updateMenu();
-            redrawProgress(_progress, 0);
-            _progress = 0;
-            return [generatedNodeId, _shapes, _treeData, _progress];
+            return [_glycan, _shapes, _treeData];
         }
     }
 
     updateNodeType(node, type, _glycan)
     {
-        //this.glycan
         for (let glycanNode of _glycan.graph.nodes())
         {
             if (node === glycanNode)
@@ -271,7 +261,7 @@ export default class menuFunction {
                 glycanNode.monosaccharideType = type;
             }
         }
-//        return _glycan;
+        return _glycan;
     }
 }
 

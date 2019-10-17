@@ -110,6 +110,7 @@ export default class visFunction {
                 }
             }
         }
+        return node;
     }
 
     // Visually moves a node and its children
@@ -141,13 +142,12 @@ export default class visFunction {
      */
     getMonoTypeWithColorAndShape(color, shape, isBisected) {
         // Loop on monosaccharide types, and return the one we want
-        for (let type of MonosaccharideType) {//sb.MonosaccharideType) {
+        for (let type of MonosaccharideType) {
             if(type.color == color && type.shape == shape && type.bisected == isBisected) {
                 return type;
             }
         }
         return MonosaccharideType.UNDEFINED; // Return undefined if combination doesn't exist
-        //return sb.MonosaccharideType.UNDEFINED; // Return undefined if combination doesn't exist
     }
 
     /**

@@ -660,10 +660,14 @@ function checkSelectedQuickInfo() {
 
         reinitializeQuickInfos();
 
-        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress);
+        let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes);
+        updateMenu();
+        glycan = ret[0];
         shapes = ret[1];
         treeData = ret[2];
-        progress = ret[3];
+        displayTree(treeData, shapes, glycan);
+        redrawProgress(progress, 0);
+        progress = 0;
     }
 }
 
@@ -1018,10 +1022,14 @@ function checkSelectedAllCarbons() {
         reinitializeDisplayCarbons(); // Reinitialize the display of carbons rects and labels
         var methodToCall = infosTable.division; // Get the method which has to be called
         if (methodToCall == "addNode") {
-            let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
+            let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes); // Manage add node
+            updateMenu();
+            glycan = ret[0];
             shapes = ret[1];
             treeData = ret[2];
-            progress = ret[3];
+            displayTree(treeData, shapes, glycan);
+            redrawProgress(progress, 0);
+            progress = 0;
         } else if (methodToCall == "addStruct") {
             console.log("Need to add a structure"); // Manage add structure
         } else {
@@ -1081,7 +1089,7 @@ function checkUsedCarbons() {
     }
 }
 
-function redrawProgress(prev, newValue = sb.progress)
+function redrawProgress(prev, newValue = progress)
 {
     d3.select("#progressBar").transition()
     .styleTween("width", function() { return d3.interpolate(prev/7*1000, newValue/7*1000); });
