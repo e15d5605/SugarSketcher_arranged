@@ -55,14 +55,14 @@ export default class visFunction {
      * Update an existing node
      */
     updateExistingNode(_glycan, _infosTable, _treeData, _shapes) {
-        let newShape = _infosTable[1]; // Selected shape
+        let newShape = _infosTable.shape; // Selected shape
         //let newColor = this.getColorCodeFromString(_infosTable[2]); // Selected color
-        let newColor = colorDivisions.prototype.getColor(_infosTable[2]); // Selected color
-        let anomericity = this.getAnomericityWithSelection(_infosTable[3]); // Anomericity
-        let isomer = this.getIsomerWithSelection(_infosTable[4]); // Isomer
-        let ringType = this.getRingTypeWithSelection(_infosTable[5]); // Ring type
-        let donorPosition = this.getDonorPositionWithSelection(_infosTable[6]); // Donor position
-        let acceptorPosition = this.getAcceptorPositionWithSelection(_infosTable[7]); // Acceptor position
+        let newColor = colorDivisions.prototype.getColor(_infosTable.color); // Selected color
+        let anomericity = this.getAnomericityWithSelection(_infosTable.anomericity); // Anomericity
+        let isomer = this.getIsomerWithSelection(_infosTable.isomer); // Isomer
+        let ringType = this.getRingTypeWithSelection(_infosTable.ringType); // Ring type
+        let donorPosition = this.getDonorPositionWithSelection(_infosTable.donorPosition); // Donor position
+        let acceptorPosition = this.getAcceptorPositionWithSelection(_infosTable.acceptorPosition); // Acceptor position
         let monoToUpdate = _glycan.getNodeById(clickedNode.id); // Get the node we want to update in the graph
         monoToUpdate.anomericity = anomericity; // Update anomericity
         monoToUpdate.ringType = ringType; // Update ring type

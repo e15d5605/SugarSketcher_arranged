@@ -212,20 +212,19 @@ export default class menuFunction {
      * Create a new node using the informations selected by the user
      */
     createNewNode(_infosTable, _glycan, _treeData, _shapes, _progress) {
-        let typeNodeToAdd = _infosTable[1]; // Selected type, monosaccharide or substituent
+        let typeNodeToAdd = _infosTable.display_division; // Selected type, monosaccharide or substituent
         if (typeNodeToAdd == "Monosaccharide") {
-            let shape = _infosTable[2]; // Selected shape
+            let shape = _infosTable.shape; // Selected shape
             let isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
             if (isBisected) {
                 shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
             }
-            let color = colorDivisions.prototype.getColor(_infosTable[3]); // Selected color
-            //let color = vf.getColorCodeFromString(infosTable[3]); // Selected color
-            let anomericity = vf.getAnomericityWithSelection(_infosTable[4]); // Anomericity
-            let isomer = vf.getIsomerWithSelection(_infosTable[5]); // Isomer
-            let ring = vf.getRingTypeWithSelection(_infosTable[6]); // Ring type
-            let donorPosition = vf.getDonorPositionWithSelection(_infosTable[7]); // Get the donor position
-            let acceptorPosition = vf.getAcceptorPositionWithSelection(_infosTable[8]); // Get the acceptor position
+            let color = colorDivisions.prototype.getColor(_infosTable.color); // Selected color
+            let anomericity = vf.getAnomericityWithSelection(_infosTable.anomericity); // Anomericity
+            let isomer = vf.getIsomerWithSelection(_infosTable.isomer); // Isomer
+            let ring = vf.getRingTypeWithSelection(_infosTable.ringType); // Ring type
+            let donorPosition = vf.getDonorPositionWithSelection(_infosTable.donorPosition); // Get the donor position
+            let acceptorPosition = vf.getAcceptorPositionWithSelection(_infosTable.acceptorPosition); // Get the acceptor position
             let monoType = vf.getMonoTypeWithColorAndShape(color, shape, isBisected); // Get the monosaccharide type
             let generatedNodeId = af.randomString(7); // Generate an id
             let monosaccharide = new Monosaccharide(generatedNodeId,monoType,anomericity, isomer, ring); // Create new monosaccharide
