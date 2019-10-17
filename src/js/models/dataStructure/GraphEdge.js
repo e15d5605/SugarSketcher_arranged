@@ -3,7 +3,9 @@
  * Version: 0.0.1
  */
 
-export default class Edge {
+import createjs from "createjs-easeljs";
+
+export default class Edge extends createjs.Container {
     /**
      * Create a new Edge using nodes.
      * @param {string} id the edge id
@@ -11,6 +13,7 @@ export default class Edge {
      * @param {Node} targetNode The target Node
      */
     constructor(id, sourceNode, targetNode){
+        super();
         if (typeof id == 'undefined' || typeof sourceNode == 'undefined' || typeof targetNode  == 'undefined'){
             throw "The parameter id, sourceNode and targetNode cannot be undefined";
         }

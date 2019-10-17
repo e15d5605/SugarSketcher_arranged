@@ -12,10 +12,12 @@ import Substituent from './nodes/Substituent';
 import GlycosidicLinkage from './linkages/GlycosidicLinkage';
 import SubstituentLinkage from './linkages/SubstituentLinkage';
 import Graph from '../dataStructure/Graph';
+import createjs from "createjs-easeljs";
 
-export default class Glycan{
+export default class Glycan extends createjs.Container{
 
     constructor(id,rootNode){
+        super();
         if (typeof id !== 'string' && typeof id !== 'number'){
             throw 'The glycan must have a string or number id.';
         } else {

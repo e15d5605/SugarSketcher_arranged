@@ -23,6 +23,11 @@ var config = {
                 query: {
                     presets: ['es2015']
                 }
+            },
+            {
+                //EaselJSの読み込み,
+                test: require.resolve("createjs-easeljs"),
+                loader: "imports-loader?this=>window!exports-loader?window.createjs"
             }
         ]
     },

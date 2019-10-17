@@ -3,8 +3,11 @@
  * Version: 0.0.1
  */
 
-export default class Node {
+import createjs from "createjs-easeljs";
+
+export default class Node extends createjs.Container {
     constructor(id){
+        super();
         if(typeof id == 'undefined'){
             throw "The parameter id be undefined";
         } else{

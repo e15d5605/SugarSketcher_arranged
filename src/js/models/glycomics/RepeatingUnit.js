@@ -5,10 +5,12 @@
 
 import DonorPosition from "./dictionary/DonorPosition";
 import AcceptorPosition from "./dictionary/AcceptorPosition";
+import createjs from "createjs-easeljs";
 
-export default class RepeatingUnit {
+export default class RepeatingUnit extends createjs.Container {
     constructor(id,nodes,min,max,entry,exit,donorPosition,acceptorPosition)
     {
+        super();
         this.id = id;
         this.nodes = nodes;
 
