@@ -123,10 +123,10 @@ function displayPie() {
  * @param linkCarbon The link carbon value
  */
 function createNewSubstituent (linkCarbon) {
-    if (infosTable[1] == "Substituent")
-        var subName = infosTable[2];
+    if (infosTable.display_division == "Substituent")
+        var subName = infosTable.name;
     else
-        var subName = infosTable[1]; // Get the label of the substituent
+        var subName = infosTable.name; // Get the label of the substituent
     var subType = sb.SubstituentType[subName]; // Get the SubstituentType
     var generatedSubId = appFunc.randomString(7); // Random id for Substituent
     var newSubstituent = new sb.Substituent(generatedSubId, subType); // Create a new substituent

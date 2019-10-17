@@ -227,8 +227,8 @@ function manageHoverAddNode(menuItem,actions) {
                 d3.select("#updateNode").style("opacity", "1");
             }
         }).on("click", function () { // On click, simply update menu and push information to infosTable
-            infosTable.push(menuItem.division);
-            infosTable.push(menuItem.subDivisions[1].display_division);
+            infosTable["division"] = menuItem.division;
+            infosTable["display_division"] = menuItem.subDivisions[1].display_division;
             updateMenu(menuItem.subDivisions[1].division);
         });
 
@@ -252,8 +252,8 @@ function manageHoverAddNode(menuItem,actions) {
             }
         })
         .on("click", function () {
-            infosTable.push(menuItem.division);
-            infosTable.push(menuItem.subDivisions[0].display_division);
+            infosTable["division"] = menuItem.division;
+            infosTable["display_division"] = menuItem.subDivisions[0].display_division;
             // If root has not been set yet, then display an error popup
             if (Object.keys(treeData).length === 0) {
                 var svgMenu = d3.select("#svgMenu");
@@ -645,14 +645,14 @@ function checkSelectedQuickInfo() {
         var anomericity = d3.select(".selectedAnomericity").attr("value");
 
         // Add the values in infosTable
-        infosTable.push(anomericity);
-        infosTable.push(quickIsomer);
-        infosTable.push(quickRingType);
+        infosTable["anomericity"] = anomericity;
+        infosTable["isomer"] = quickIsomer;
+        infosTable["ringType"] = quickRingType;
 
         var donorPosition = d3.select(".selectedDonorPosition").attr("value"); // Donor Position value
 
-        infosTable.push(donorPosition); // Push the donor position to the infosTable
-        infosTable.push(quickAcceptorPosition); // Push the acceptor position to the infosTable
+        infosTable["donorPosition"] = donorPosition; // Push the donor position to the infosTable
+        infosTable["quickAcceptorPosition"] = quickAcceptorPosition; // Push the acceptor position to the infosTable
 
         quickIsomer = "";
         quickRingType = "";
@@ -660,12 +660,10 @@ function checkSelectedQuickInfo() {
 
         reinitializeQuickInfos();
 
-        console.log(shapes);
         let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress);
         shapes = ret[1];
         treeData = ret[2];
         progress = ret[3];
-        console.log(shapes);
     }
 }
 
@@ -683,9 +681,9 @@ function checkSelectedAllInfos() {
         var ringType = d3.select(".selectedRingType").attr("value");
 
         // Add the values in infosTable
-        infosTable.push(anomericity);
-        infosTable.push(isomer);
-        infosTable.push(ringType);
+        infosTable["anomericity"] = anomericity;
+        infosTable["isomer"] = isomer;
+        infosTable["ringType"] = ringType;
         reinitializeDisplayInfos(); // Reinitialize display of the infos svg
         reinitializeDisplayCarbons();
         d3.select("#svgCarbons").transition().style("display", "block"); // Display the carbon choice svg
@@ -914,12 +912,8 @@ function addHoverManagerAcceptorPosition() {
                 .attr("rx", 15)
                 .attr("value", associatedValues[k])
                 .attr("opacity", function() {
-                    var i = 1;
-                    if (infosTable[0] == "addNode")
-                        i++;
-                    //var color = visFunc.getColorCodeFromString(infosTable[i+1]);
-                    var color = sb.colorDivisions.prototype.getColor(infosTable[i+1]);
-                    var shape = infosTable[i];
+                    var color = sb.colorDivisions.prototype.getColor(infosTable.color);
+                    var shape = infosTable.shape;
                     var isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
                     if (isBisected) {
                         shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
@@ -939,12 +933,8 @@ function addHoverManagerAcceptorPosition() {
                     }
                 })
                 .on("click", function () {
-                    var i = 1;
-                    if (infosTable[0] == "addNode")
-                        i++;
-                    //var color = visFunc.getColorCodeFromString(infosTable[i+1]);
-                    var color = sb.colorDivisions.prototype.getColor(infosTable[i+1]);
-                    var shape = infosTable[i];
+                    var color = sb.colorDivisions.prototype.getColor(infosTable.color);
+                    var shape = infosTable.shape;
                     var isBisected = (shape.indexOf("bisected") != -1); // Check if the shape is bisected
                     if (isBisected) {
                         shape = shape.split("bisected")[1]; // We update the value of the shape by removing keywork "bisected"
@@ -1023,10 +1013,10 @@ function checkSelectedAllCarbons() {
     if (selectedDonorPosition && selectedAcceptorPosition) { // If both have been selected
         var donorPosition = d3.select(".selectedDonorPosition").attr("value"); // Donor Position value
         var acceptorPosition = d3.select(".selectedAcceptorPosition").attr("value"); // Acceptor Position value
-        infosTable.push(donorPosition); // Push the donor position to the infosTable
-        infosTable.push(acceptorPosition); // Push the acceptor position to the infosTable
+        infosTable["donorPosition"] = donorPosition; // Push the donor position to the infosTable
+        infosTable["acceptorPosition"] = acceptorPosition; // Push the acceptor position to the infosTable
         reinitializeDisplayCarbons(); // Reinitialize the display of carbons rects and labels
-        var methodToCall = infosTable[0]; // Get the method which has to be called
+        var methodToCall = infosTable.division; // Get the method which has to be called
         if (methodToCall == "addNode") {
             let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
             shapes = ret[1];
@@ -1074,7 +1064,7 @@ function checkUsedCarbons() {
         }
         var edges = glycan.graph.edges();
         // For each edge, if the source is the clickedNode, we add the donor position value to the array
-        if (clickedNode == treeData.node && infosTable[0] != "updateNode")// If first node
+        if (clickedNode == treeData.node && infosTable.division != "updateNode")// If first node
         {
             usedCarbons.push(rootAcceptorPosition.value);
         }
@@ -1083,7 +1073,7 @@ function checkUsedCarbons() {
                 usedCarbons.push(edge.donorPosition.value);
             }
             else if (edge.targetNode == clickedNode) {
-                if (infosTable[0] != "updateNode")
+                if (infosTable.division != "updateNode")
                     usedCarbons.push(edge.acceptorPosition.value);
             }
         }

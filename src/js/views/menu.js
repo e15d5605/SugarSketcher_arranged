@@ -3,95 +3,6 @@
  * Version: 0.0.1
  */
 
-// Function called when document is ready
-
-
-$(document).ready(function() {
-    progress = 0;
-    ctrl = false;
-    exporting = false;
-    quickMode = false;
-    updateMenu();  // Update menu
-    addHoverManagersInfos(); // Add hover managers for informations
-    addHoverManagersCarbons(); // Add hover managers for carbons
-
-    var svg = d3.select("#progressChart");
-    d3.selectAll("#progressBar").remove();
-    svg.append("rect")
-        .attr("width", progress/7*1000)
-        .attr("height", "4px")
-        .attr("id", "progressBar")
-        .attr("fill", "#02b600");
-
-    // Add structures to the select element
-    var div = document.getElementById("structuresDiv");
-    var selectList = document.createElement("select");
-    selectList.id = "structure";
-    div.appendChild(selectList);
-    for (var s of sb.Structures) {
-        var option = document.createElement("option");
-        option.value = s.glycoct;
-        option.text = s.name;
-        selectList.appendChild(option);
-    }
-    var submit = document.createElement("input");
-    submit.type = "submit";
-    submit.id = "submitStructure";
-    div.appendChild(submit);
-
-    d3.select("#submitStructure").on('click', function() {
-        //console.log(test.getBoxValue());
-
-        var glycoct = $('#structure').val();
-        //treeData = {};
-        selectedNodes = [];
-        if (glycan)
-            glycan.clear();
-        var parser = new sb.GlycoCTParser(glycoct);
-        glycan = parser.parseGlycoCT();
-//        shapes = [];
-        let ret = visFunc.generateShapes(glycan, shapes, treeData);
-        shapes = ret[0];
-        treeData = emFunc.generateTree(glycan);
-        updateRepeatingUnitsNodesInTree();
-        var i = 1;
-        while (glycan.graph.nodes()[glycan.graph.nodes().length-i] instanceof sb.Substituent)
-        {
-            i++;
-        }
-        clickedNode = glycan.graph.nodes()[glycan.graph.nodes().length-i];
-        displayTree(treeData, shapes, glycan);
-    });
-
-    d3.select("#svgTree").on('click', function() {
-        fadeOutContextMenu();
-    })
-        .on('contextmenu', function() {
-            d3.event.preventDefault();
-        });
-    d3.select("#svgMenu").on('click', function() {
-        fadeOutContextMenu();
-    })
-        .on('contextmenu', function() {
-            d3.event.preventDefault();
-        });
-    d3.select("#svgMenu2").on('click', function() {
-        fadeOutContextMenu();
-    })
-        .on('contextmenu', function() {
-            d3.event.preventDefault();
-        });
-    var subChoices = d3.selectAll(".subChoice"); // Substituent choices
-    subChoices.on('click', function() {
-        if (infosTable.length == 2) { // If one substituent has already been clicked, remove it from sb.infosTable
-            infosTable.pop();
-        }
-        // Push the new clicked substituent in sb.infosTable
-        infosTable.push(d3.select(d3.event.target).attr("value"));
-        displayPie(); // Dispaly the piechart to choose donor position
-    });
-});
-
 var menuChosenPath; // Path taken by user in the menu
 
 // Event listeners for the shape choice
@@ -101,7 +12,7 @@ for (var shape of shapeChoices) {
         // When a shape is clicked, we update the menu, and store the chosen shape in infosTable
         progress = 1;
         redrawProgress(0);
-        infosTable.push(e.target.parentNode.id.split("Shape")[0]);
+        infosTable["shape"] = e.target.parentNode.id.split("Shape")[0];
         d3.select("#svgShape").transition().style("display", "none");
         updateMenu("shape");
         if (!ctrl)
@@ -134,7 +45,6 @@ var infosCancelButton = d3.select("#cancelChoiceInfos");
 infosCancelButton.on("click", function() {
     redrawProgress(progress, 1);
     progress = 1;
-    infosTable.pop(); // Remove last chosen information
     // Remove last two paths taken in the menu
     menuChosenPath.pop();
     menuChosenPath.pop();
@@ -150,9 +60,6 @@ carbonCancelButton.on("click", function() {
     // Remove anomericity, isomer and ring type
     redrawProgress(progress, 2);
     progress = 2;
-    infosTable.pop();
-    infosTable.pop();
-    infosTable.pop();
     d3.select("#svgCarbons").transition().style("display", "none"); // Hide the svg of carbon choice
     reinitializeDisplayInfos(); // Reinitialize display of informations svg
     reinitializeDisplayCarbons(); // Reinitialize display of carbons svg
@@ -248,7 +155,7 @@ substituentDisplayMore.on("click", function() {
                 .attr("class", "bar choice subChoice createdSubChoice")
                 .on("click", function (d) {
                     // On click, add the information to the table and then display piechart to choose donor position
-                    infosTable.push(d);
+                    infosTable["name"] = d;
                     displayPie();
                 });
             moreSubs.selectAll("text").data(subTypes.slice(currentIndex, currentIndex + 5), function(d){return d;}).enter().append("text")
@@ -322,7 +229,7 @@ function updateMenu(chosenDivision) {
 
     d3.select("#actions").selectAll("*").remove(); // Reinitialize the svg rectangles menu
     d3.select("#labels").selectAll("*").remove(); // Reinitialize the svg labels menu
-    if (infosTable.length == 0)
+    if (Object.keys(infosTable).length == 0)
     {
         d3.select("#actions2").selectAll("*").remove();
         d3.select("#labels2").selectAll("*").remove();
@@ -358,7 +265,7 @@ function updateMenu(chosenDivision) {
     // This case happens when update is called with no parameter (first update)
     if (typeof chosenDivision === 'undefined') {
         menuChosenPath = []; // Reinitialize the path
-        infosTable = []; // Reinitialize the list of clicks
+        infosTable = {}; // Reinitialize the list of clicks
         // Hide all other svgs
         d3.select("#svgShape").transition().style("display", "none");
         d3.select("#svgMultiselectMenu").transition().style("display", "none");
@@ -385,9 +292,9 @@ function updateMenu(chosenDivision) {
                 })
                 .attr("class", "shapeChoice")
                 .on("click", function(d) {
-                    infosTable.push("addNode");
-                    infosTable.push("Monosaccharide");
-                    infosTable.push(sb.MonosaccharideType[d.name].shape);
+                    infosTable["division"] = "addNode";
+                    infosTable["display_division"] = "Monosaccharide";
+                    infosTable["shape"] = sb.MonosaccharideType[d.name].shape;
 
                     /*
                     var color;
@@ -399,7 +306,7 @@ function updateMenu(chosenDivision) {
                      */
 
                     var color = sb.colorDivisions.prototype.getDivision(sb.MonosaccharideType[d.name].color);
-                    infosTable.push(color);
+                    infosTable["color"] = color;
                     quickRingType = d.ringType;
                     quickAcceptorPosition = d.acceptorPosition;
                     quickIsomer = d.isomer;
@@ -568,7 +475,7 @@ function updateMenu(chosenDivision) {
         }).on("mouseover", function (d) {
         // On hover of addNode, we display its two subdivisions
         if (d.division == "io") {
-            if (infosTable.length == 0) // If the user is not creating a node
+            if (Object.keys(infosTable).length == 0) // If the user is not creating a node
             {
                 manageHoverIO(d, actions2);
                 if (labels2.selectAll("text")[0][2])
@@ -628,7 +535,7 @@ function updateMenu(chosenDivision) {
                         return;
                     }
                     // Push the information in the table and update the menu
-                    infosTable.push(d.division);
+                    infosTable["division"] = d.division;
                     updateMenu(d.division);
                 }
                 else if (d.division == "repeatUnit")
@@ -714,7 +621,7 @@ function updateMenu(chosenDivision) {
             })
             .style("opacity", function(d) {
                 // Check if the color is possible with the chosen shape, and change opacity in consequence
-                var chosenShape = infosTable[infosTable.length - 1]; // Get the selected shape
+                var chosenShape = infosTable.shape; // Get the selected shape
                 // Check if the shape is bisected
                 var isBisected = false;
                 if (chosenShape.indexOf("bisected") > -1) {
@@ -735,7 +642,7 @@ function updateMenu(chosenDivision) {
                 progress = 2;
                 redrawProgress(1);
                 // Manage click, if combination impossible the click is not doing anything
-                var chosenShape = infosTable[infosTable.length - 1]; // Get the selected shape
+                var chosenShape = infosTable.shape; // Get the selected shape
                 // Check if the shape is bisected
                 var isBisected = false;
                 if (chosenShape.indexOf("bisected") > -1) {
@@ -747,7 +654,7 @@ function updateMenu(chosenDivision) {
                 var existingMonoType = visFunc.getMonoTypeWithColorAndShape(color, chosenShape, isBisected);
                 // If there is no type for this combination, no action
                 if (existingMonoType != sb.MonosaccharideType.UNDEFINED) {
-                    infosTable.push(d.division);
+                    infosTable["color"] = d.division;
                     reinitializeDisplayInfos();
                     updateMenu(d.division);
                 }
@@ -759,7 +666,7 @@ function updateMenu(chosenDivision) {
             })
             .attr("y", 45)
             .text(function(d) {
-                var shape = infosTable[infosTable.length-1];
+                var shape = infosTable.shape;
                 var isBisected = false;
                 if (shape.indexOf("bisected") != -1) {
                     shape = shape.split("bisected")[1];
@@ -902,16 +809,16 @@ function test(n)
             linked = "?";
         const colorChoice = ["blue", "yellow", "green", "orange", "pink", "purple", "lightBlue", "brown"];
         var color = colorChoice[Math.abs(Math.floor(Math.random()*10) - 2)];
-        infosTable = [];
-        infosTable.push("addNode");
-        infosTable.push("Monosaccharide");
-        infosTable.push("square");
-        infosTable.push(color+"Color");
-        infosTable.push("β");
-        infosTable.push("L");
-        infosTable.push("F");
-        infosTable.push(linked);
-        infosTable.push(linked);
+        infosTable = {};
+        infosTable["addNode"] = "addNode";
+        infosTable["display_division"] = "Monosaccharide";
+        infosTable["shape"] = "square";
+        infosTable["color"] = color+"Color";
+        infosTable["anomericity"] = "β";
+        infosTable["isomer"] = "L";
+        infosTable["ringType"] = "F";
+        infosTable["donorPosition"] = linked;
+        infosTable["acceptorPosition"] = linked;
         let ret = menuFunc.createNewNode(infosTable, glycan, treeData, shapes, progress); // Manage add node
         shapes = ret[1];
         treeData = ret[2];
@@ -944,7 +851,6 @@ const addCancelOperation = (actions, labels) => {
             redrawProgress(progress+1);
             menuChosenPath.pop(); // Remove last information from menuChosenPath
             updateMenu(menuChosenPath.pop()); // Update menu from last step
-            infosTable.pop(); // Remove the last added information in infosTable
         });
 
     actions.append("rect")
@@ -960,7 +866,7 @@ const addCancelOperation = (actions, labels) => {
             menuChosenPath = []; // Remove all information from menuChosenPath
             removeInfosChoices();
             updateMenu(); // Update menu
-            infosTable = []; // Remove all added information in infosTable
+            infosTable = {}; // Remove all added information in infosTable
         });
 
     labels.append("text")
