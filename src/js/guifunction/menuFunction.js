@@ -9,7 +9,6 @@ import MonosaccharideType from "../views/glycomics/dictionary/MonosaccharideType
 import Glycan from "../models/glycomics/Glycan";
 import GlycosidicLinkage from "../models/glycomics/linkages/GlycosidicLinkage";
 import XYvalues from "../views/parametors/XYvalues";
-import OriginalPosition from "../views/parametors/OriginalPosition";
 import colorDivisions from "../views/parametors/colorDivisions";
 const vf = new visFunction();
 const af = new appFunction();
@@ -231,7 +230,8 @@ export default class menuFunction {
                 node = {"node":monosaccharide};
                 shape = vf.calculateXandYNode(node, _glycan, _shapes);
                 _shapes[generatedNodeId] = shape;
-                let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+gap];
+                //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+gap];
+                let rootShape = [rootPos.x, rootPos.y+gap];
                 _shapes.root = rootShape;
                 rootDonorPosition = donorPosition;
                 rootAcceptorPosition = acceptorPosition;

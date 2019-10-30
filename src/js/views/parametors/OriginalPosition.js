@@ -1,13 +1,23 @@
-const {Enum} = require("enumify");
 
-export default class OriginalPosition extends Enum {
-}
-
-OriginalPosition.initEnum({
-    x: {
-        value: 200
-    },
-    y: {
-        value: 600
+export default class OriginalPosition {
+    constructor (_x, _y) {
+        this.x = (_x === undefined) ? 200 : _x;
+        this.y = (_y === undefined) ? 600 : _y;
     }
-});
+
+    set posX (_x) {
+        this.x = _x;
+    }
+
+    set posY (_y) {
+        this.y = _y;
+    }
+
+    get posX () {
+        return this.x;
+    }
+
+    get posY () {
+        return this.y;
+    }
+}

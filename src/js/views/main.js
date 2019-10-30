@@ -1,5 +1,6 @@
 //Values
 //let smilesinchiconvertbackendurl = "http://127.0.0.1:8889/getinchismiles.cgi"; //local
+
 let smilesinchiconvertbackendurl = "http://129.194.71.205/cgi-bin/sugarsketcher.cgi"; //test
 
 let glycan;
@@ -20,6 +21,7 @@ let progress; // amount of progress for the green progress bar throughout the me
 let mouseX, mouseY; // lets to stock the mouse position
 let infosTable = {}; // Table with all informations selected by the user
 
+const rootPos = new sb.OriginalPosition();
 const emFunc = new sb.emFunction();
 const appFunc = new sb.appFunction();
 const visFunc = new sb.visFunction();

@@ -6,7 +6,6 @@ import Anomericity from "../models/glycomics/dictionary/Anomericity";
 import Isomer from "../models/glycomics/dictionary/Isomer";
 import RingType from "../models/glycomics/dictionary/RingType";
 import XYvalues from "../views/parametors/XYvalues";
-import OriginalPosition from "../views/parametors/OriginalPosition";
 import colorDivisions from "../views/parametors/colorDivisions";
 
 export default class visFunction {
@@ -266,7 +265,9 @@ export default class visFunction {
                 node = {"node":mono};
                 shape = this.calculateXandYNode(node, _glycan, _shapes);
                 _shapes[node.node.id] = shape;
-                let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+50];
+
+                //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+50]; //バグの原因
+                let rootShape = [rootPos.x, rootPos.y+50];
                 _shapes.root = rootShape;
                 rootDonorPosition = DonorPosition.UNDEFINED;
                 rootAcceptorPosition = AcceptorPosition.ONE;
@@ -331,7 +332,8 @@ export default class visFunction {
             return [newX, newY]; // Return the obtained coordinates
 
         } else { // If the node is the root, just add 150 to the x and 900 to y to display it on the right of the svg
-            return [OriginalPosition.x.value, OriginalPosition.y.value];
+            //return [OriginalPosition.x, OriginalPosition.y.value];
+            return [rootPos.x, rootPos.y];
         }
     }
 
