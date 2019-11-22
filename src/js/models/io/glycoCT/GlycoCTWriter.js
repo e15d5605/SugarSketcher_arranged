@@ -25,23 +25,6 @@ export default class GlycoCTWriter{
         this.edges = [];
     }
 
-    /*
-    randomString(length) {
-        // Possible chars in the generated string
-        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
-
-        if (! length) { // If no length specified, get a random length
-            length = Math.floor(Math.random() * chars.length);
-        }
-
-        var str = '';
-        for (var i = 0; i < length; i++) { // Add random chars till length is the one specified
-            str += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return str;
-    }
-     */
-
     // Get SubstituentType
     getSub(label)
     {

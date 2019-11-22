@@ -7,6 +7,7 @@ import Isomer from "../models/glycomics/dictionary/Isomer";
 import RingType from "../models/glycomics/dictionary/RingType";
 import XYvalues from "../views/parametors/XYvalues";
 import colorDivisions from "../views/parametors/colorDivisions";
+import emFunction from "./emFunction";
 
 export default class visFunction {
 
@@ -303,6 +304,7 @@ export default class visFunction {
             let sourceX;
             let sourceY;
             let sourceId;
+            let sourceNode;
 
             // Calculate new coordinates for the wanted node
             for (let n of _glycan.graph.nodes()) {
@@ -311,15 +313,17 @@ export default class visFunction {
                     let source = _shapes[sourceId];
                     sourceX = source[0];
                     sourceY = source[1];
+                    sourceNode = n;
                 }
             }
 
             // Modifications we have to do on the obtained value
-            //let modificationsXY = XYvalues[donorPosition];
+            const usablePos = this.extractUsablePosition(sourceNode, _glycan);
+            if (donorPosition === "undefined" && !("undefined" in usablePos)) {
+                donorPosition = parseInt(Object.keys(usablePos)[0]);
+            }
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).y; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).x; // Apply the modification on y
-            //let newX = sourceX  + modificationsXY[1]; // Apply the modification on x
-            //let newY = sourceY + modificationsXY[0]; // Apply the modification on y
 
             let availible = this.isAvailible(newX, newY, _shapes);
             if (availible != "")
@@ -468,6 +472,52 @@ export default class visFunction {
             }
         }
         return null;
+    }
+
+    extractUsablePosition (_sourceNode, _glycan) {
+        let ret = {
+            "undefined": true
+        };
+
+        if (this.getNodeChild(_sourceNode, _glycan).length < 2) return ret;
+
+        const emFunc = new emFunction();
+
+        for (let i = 1; i < emFunc.getNumberCarbons(_sourceNode) + 1; i++) {
+            ret[i] = true;
+        }
+
+        let undefCnt = 0;
+        for(let edge of _glycan.graph.edges()) {
+            if (edge.targetNode === _sourceNode && edge.acceptorPosition !== AcceptorPosition.UNDEFINED) {
+                delete ret[edge.acceptorPosition.value];
+            }
+            if (edge.sourceNode === _sourceNode) {
+                if (edge.donorPosition !== DonorPosition.UNDEFINED) {
+                    delete ret[edge.donorPosition.value];
+                } else {
+                    if (undefCnt === 0) {
+                        delete ret.undefined;
+                    } else {
+                        delete ret[parseInt(Object.keys(ret)[0])];
+                    }
+                    undefCnt++;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    getNodeChild (_node, _glycan) {
+        let ret = [];
+        _glycan.graph.edges().map( function (edge) {
+            if (edge.source === _node.id) {
+                ret.push(edge.targetNode);
+            }
+        });
+
+        return ret;
     }
 }
 
