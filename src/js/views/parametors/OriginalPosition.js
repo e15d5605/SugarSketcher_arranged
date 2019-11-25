@@ -1,8 +1,8 @@
 
 export default class OriginalPosition {
     constructor (_x, _y) {
-        this.x = (_x === undefined) ? 200 : _x;
-        this.y = (_y === undefined) ? 600 : _y;
+        this.x = (_x === undefined) ? 600 : _x;
+        this.y = (_y === undefined) ? 200 : _y;
     }
 
     set posX (_x) {

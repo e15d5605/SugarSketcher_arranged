@@ -231,7 +231,7 @@ export default class menuFunction {
                 shape = vf.calculateXandYNode(node, _glycan, _shapes);
                 _shapes[generatedNodeId] = shape;
                 //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+gap];
-                let rootShape = [rootPos.x, rootPos.y+gap];
+                let rootShape = [rootPos.x, rootPos.y];
                 _shapes.root = rootShape;
                 rootDonorPosition = donorPosition;
                 rootAcceptorPosition = acceptorPosition;

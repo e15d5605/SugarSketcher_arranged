@@ -86,8 +86,8 @@ export default class visFunction {
                 linkToUpdate.donorPosition = donorPosition; // Update donor position
                 linkToUpdate.acceptorPosition = acceptorPosition; // Update acceptor position
             }
-            let dx = XYvalues.prototype.getXYvalue(donorPosition.value).y - XYvalues.prototype.getXYvalue(prevDonorPosition).y;
-            let dy = XYvalues.prototype.getXYvalue(donorPosition.value).x - XYvalues.prototype.getXYvalue(prevDonorPosition).x;
+            let dx = XYvalues.prototype.getXYvalue(donorPosition.value).x - XYvalues.prototype.getXYvalue(prevDonorPosition).x;
+            let dy = XYvalues.prototype.getXYvalue(donorPosition.value).y - XYvalues.prototype.getXYvalue(prevDonorPosition).y;
             _shapes = this.moveNodeAndChildren(this.findNodeInTree(_treeData,monoToUpdate), dx, dy, _shapes);
         }
         updateNodeInTree(_treeData,monoToUpdate, _treeData, _shapes, _glycan); // Update the node in the tree
@@ -268,12 +268,11 @@ export default class visFunction {
                 _shapes[node.node.id] = shape;
 
                 //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+50]; //バグの原因
-                let rootShape = [rootPos.x, rootPos.y+50];
+                let rootShape = [rootPos.x, rootPos.y];
                 _shapes.root = rootShape;
                 rootDonorPosition = DonorPosition.UNDEFINED;
                 rootAcceptorPosition = AcceptorPosition.ONE;
                 _treeData = this.updateTreeVisualization(undefined, _glycan, _treeData); // Update visualization in the svg
-                //this.updateTreeVisualization(); // Update visualization in the svg
             } else {
                 if (link instanceof GlycosidicLinkage) {//sb.GlycosidicLinkage) {
                     _treeData = this.updateTreeVisualization(link, _glycan, _treeData);
@@ -322,8 +321,8 @@ export default class visFunction {
             if (donorPosition === "undefined" && !("undefined" in usablePos)) {
                 donorPosition = parseInt(Object.keys(usablePos)[0]);
             }
-            let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).y; // Apply the modification on x
-            let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).x; // Apply the modification on y
+            let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x; // Apply the modification on x
+            let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y; // Apply the modification on y
 
             let availible = this.isAvailible(newX, newY, _shapes);
             if (availible != "")

@@ -85,22 +85,22 @@ function displayTree(_treeData, _shapes, _glycan) {
             // Calculate X and Y of source and targets, and draw the line
             .attr("x1", function (d) {
                 if (d.target.node["anomericity"]) // Monosaccharide
-                    return shapes[d.source.node.id][1];
+                    return shapes[d.source.node.id][0];
                 return 0;
             })
             .attr("y1", function (d) {
                 if (d.target.node["anomericity"]) // Monosaccharide
-                    return shapes[d.source.node.id][0];
+                    return shapes[d.source.node.id][1];
                 return 0;
             })
             .attr("x2", function (d) {
                 if (d.target.node["anomericity"]) // Monosaccharide
-                    return shapes[d.target.node.id][1];
+                    return shapes[d.target.node.id][0];
                 return 0;
             })
             .attr("y2", function (d) {
                 if (d.target.node["anomericity"]) // Monosaccharide
-                    return shapes[d.target.node.id][0];
+                    return shapes[d.target.node.id][1];
                 return 0;
             })
             .style("stroke", function (d) {
@@ -145,7 +145,7 @@ function displayTree(_treeData, _shapes, _glycan) {
             .attr("transform", function (d) {
                 // Translation for display
                 if (d.node["anomericity"]) // Monosaccharide
-                    return "translate(" + shapes[d.node.id][1] + "," + shapes[d.node.id][0] + ")";
+                    return "translate(" + shapes[d.node.id][0] + "," + shapes[d.node.id][1] + ")";
             })
             .on('click', function () {
                 // On click, simply display menu and hide all other svg's
@@ -186,7 +186,6 @@ function displayTree(_treeData, _shapes, _glycan) {
                             {
                                 selectedNodes = [];
                                 deleteNode(n);
-
                             }
                         }
                     }
@@ -246,8 +245,6 @@ function displayTree(_treeData, _shapes, _glycan) {
                     });
                     yPos += 22;
                 }
-
-
             });
 
         // Root attach point ~
@@ -516,13 +513,13 @@ function displayLabels(linkLabel, links, anom)
             if (d.target.node["anomericity"]) // Monosaccharide
             {
                 let target = shapes[d.target.node.id]; // Calculate target coordinates
-                let usualX = (source[1] + target[1]) / 2; // Get x of the middle of the link
+                let usualX = (source[0] + target[0]) / 2; // Get x of the middle of the link
                 if (d.source.node.id == "root")
-                    finalX = usualX+5; // Add value to have a visible display (not on the line)
+                    finalX = (shapes["root"][0]*2 + 50) / 2;
+                    // Add value to have a visible display (not on the line)
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
                     finalX = usualX + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
-                    //finalX = usualX + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][1]; // Add value to have a visible display (not on the line)
                 }
             }
             else // Substituant
@@ -531,8 +528,10 @@ function displayLabels(linkLabel, links, anom)
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
                 let y = source[1] + sb.SubstituentLabels.prototype.getSubstituentLabel(donorPos).y;
                 finalX = y;
+                finalX = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[0];
  */
-                finalX = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[1];
+                let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+                finalX = sb.SubstituentLables.prototype.getSubstituentLable(donorPos).x + source[0];
             }
 
             return finalX; // Return the obtained value
@@ -543,13 +542,13 @@ function displayLabels(linkLabel, links, anom)
             if (d.target.node["anomericity"]) // Monosaccharide
             {
                 let target = shapes[d.target.node.id]; // Calculate target coordinates
-                let usualY = (source[0] + target[0]) / 2; // Get y of the middle of the link
+                let usualY = (source[1] + target[1]) / 2; // Get y of the middle of the link
                 if (d.source.node.id == "root")
-                    finalY = usualY + 5; // Add value to have a visible display
+                    finalY = shapes["root"][1] + 4;
+                    // Add value to have a visible display
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
                     finalY = usualY + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
-                    //finalY = usualY + XYlinkLabels[visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value][0]; // Add value to have a visible display
                 }
             }
             else // Substituant
@@ -557,8 +556,10 @@ function displayLabels(linkLabel, links, anom)
 /*
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
                 let x = source[0] + sb.SubstituentLabels.prototype.getSubstituentLabel(donorPos).x;
+                finalY = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[1];
  */
-                finalY = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[0];
+                let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+                finalY = sb.SubstituentLables.prototype.getSubstituentLable(donorPos).y + source[1];
             }
             return finalY; // Return the obtained value
         })
