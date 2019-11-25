@@ -25,7 +25,7 @@ import QuickModeMonosaccharides from './js/models/glycomics/dictionary/QuickMode
 import Structures from './js/models/glycomics/dictionary/Structures';
 import XYvalues from "./js/views/parametors/XYvalues";
 import colorDivisions from "./js/views/parametors/colorDivisions";
-import SubstituentLabels from "./js/views/parametors/SubstituentLabels";
+import SubstituentLables from "./js/views/parametors/SubstituentLables";
 import XYLinkLabels from "./js/views/parametors/XYLinkLabels";
 import OriginalPosition from "./js/views/parametors/OriginalPosition";
 
@@ -60,5 +60,5 @@ export { Graph, GraphEdge, GraphNode, AcceptorPosition, Anomericity, Isomer,
     GlycoCTWriter, GlycoCTSubstituents, NodeComparator, RepeatingUnit,
     SubstituentsPositions, MonosaccharideGlycoCT, QuickModeMonosaccharides,
     Structures, ImageExporter, appFunction, visFunction, menuFunction, emFunction,
-    XYvalues, colorDivisions, SubstituentLabels, XYLinkLabels, OriginalPosition
+    XYvalues, colorDivisions, XYLinkLabels, OriginalPosition, SubstituentLables
 };
