@@ -86,8 +86,8 @@ export default class visFunction {
                 linkToUpdate.donorPosition = donorPosition; // Update donor position
                 linkToUpdate.acceptorPosition = acceptorPosition; // Update acceptor position
             }
-            let dx = XYvalues.prototype.getXYvalue(donorPosition.value).x - XYvalues.prototype.getXYvalue(prevDonorPosition).x;
-            let dy = XYvalues.prototype.getXYvalue(donorPosition.value).y - XYvalues.prototype.getXYvalue(prevDonorPosition).y;
+            let dx = XYvalues.prototype.getXYvalue(donorPosition.value).x*50 - XYvalues.prototype.getXYvalue(prevDonorPosition).x*50;
+            let dy = XYvalues.prototype.getXYvalue(donorPosition.value).y*50 - XYvalues.prototype.getXYvalue(prevDonorPosition).y*50;
             _shapes = this.moveNodeAndChildren(this.findNodeInTree(_treeData,monoToUpdate), dx, dy, _shapes);
         }
         updateNodeInTree(_treeData,monoToUpdate, _treeData, _shapes, _glycan); // Update the node in the tree
@@ -321,8 +321,8 @@ export default class visFunction {
             if (donorPosition === "undefined" && !("undefined" in usablePos)) {
                 donorPosition = parseInt(Object.keys(usablePos)[0]);
             }
-            let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x; // Apply the modification on x
-            let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y; // Apply the modification on y
+            let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
+            let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
 
             let availible = this.isAvailible(newX, newY, _shapes);
             if (availible != "")

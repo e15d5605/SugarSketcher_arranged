@@ -157,8 +157,8 @@ export default class menuFunction {
             let source = edge.source;
             let target = edge.target;
             let donorPosition = edge.donorPosition.value;
-            let dx = XYvalues.prototype.getXYvalue(donorPosition).y;
-            let dy = XYvalues.prototype.getXYvalue(donorPosition).x;
+            let dx = XYvalues.prototype.getXYvalue(donorPosition).x * 50;
+            let dy = XYvalues.prototype.getXYvalue(donorPosition).y * 50;
             let usualX = _shapes[source][0]+dx;
             let usualY = _shapes[source][1]+dy;
             if (_shapes[target] != undefined && (_shapes[target][0] != usualX || _shapes[target][1] != usualY)) { // If the node is not where it should be{
@@ -224,7 +224,6 @@ export default class menuFunction {
             let monosaccharide = new Monosaccharide(generatedNodeId,monoType,anomericity, isomer, ring); // Create new monosaccharide
 
             let node;
-            const gap = 50;
             if (Object.keys(_treeData).length === 0) { // If tree is empty, instantiate the glycan with the monosaccharide as the root
                 _glycan = new Glycan("glycan", monosaccharide);
                 node = {"node":monosaccharide};
@@ -507,8 +506,8 @@ const moveNodesInsideRep = (_shapes, _treeData, _glycan) =>
                             link = e;
                     }
                     donorPosition = link.donorPosition.value;
-                    let dy = XYvalues.prototype.getXYvalue(donorPosition).x;
-                    let dx = XYvalues.prototype.getXYvalue(donorPosition).y;
+                    let dy = XYvalues.prototype.getXYvalue(donorPosition).y * 50;
+                    let dx = XYvalues.prototype.getXYvalue(donorPosition).x * 50;
                     let startX = _shapes[node.node.id][0];
                     let startY = _shapes[node.node.id][1];
                     if (!checkNodesInLine(startX, startY, dy, dx, repCoord, _shapes))
