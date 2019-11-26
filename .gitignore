@@ -6,3 +6,4 @@ dest
 .babelrc
 gulpfile.js
 src/img/
+app.bundle.js.map

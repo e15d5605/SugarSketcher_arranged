@@ -25,7 +25,7 @@ import QuickModeMonosaccharides from './js/models/glycomics/dictionary/QuickMode
 import Structures from './js/models/glycomics/dictionary/Structures';
 import XYvalues from "./js/views/parametors/XYvalues";
 import colorDivisions from "./js/views/parametors/colorDivisions";
-import SubstituentLables from "./js/views/parametors/SubstituentLables";
+import SubstituentLables from "./js/views/parametors/SubstituentLabels";
 import XYLinkLabels from "./js/views/parametors/XYLinkLabels";
 import OriginalPosition from "./js/views/parametors/OriginalPosition";
 

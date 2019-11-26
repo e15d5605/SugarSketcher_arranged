@@ -13,62 +13,64 @@ export default class SubstituentLabels extends Enum {
             case 7: return SubstituentLabels.SEVEN;
             case 8: return SubstituentLabels.EIGHT;
             case 9: return SubstituentLabels.NINE;
-            case 'undefined': return SubstituentLabels.UNDEFINED;
+            case "undefined": return SubstituentLabels.UNDEFINED;
         }
     }
 }
 
 /*
-1: [x-7, y+20],
-2: [x+16, y],
-3: [x+16,y-16],
-4: [x-7, y-28],
-5: [x+16, y+8],
-6: [x-28, y-16],
-7: [x-28, y+8],
-8: [x-28, y+16],
-9: [x+16, y+16],
-"undefined": [x-28, y]
-*/
+            1: [x+14, y],
+            2: [x+14, y+13],
+            3: [x,y+13],
+            4: [x-16,y+13],
+
+            5: [x-22,y+5],
+            6: [x-22,y-7],
+            7: [x-22,y-19],
+
+            8: [x-16,y-26],
+            9: [x,y-26],
+            "undefined": [x+14,y-26]
+ */
 SubstituentLabels.initEnum({
     ONE: {
-        x: -7,
-        y: 20
+        x:14,
+        y:0
     },
     TWO: {
-        x: 16,
-        y: 0
+        x:14,
+        y:13
     },
     THREE: {
-        x: 16,
-        y: -16
+        x:0,
+        y:13
     },
     FOUR: {
-        x: -7,
-        y: -28
+        x:-16,
+        y:13
     },
     FIVE: {
-        x: 16,
-        y: 8
+        x:-22,
+        y:5
     },
     SIX: {
-        x: -28,
-        y: -16
+        x:-22,
+        y:-7
     },
     SEVEN: {
-        x: -28,
-        y: 8
+        x:-22,
+        y:-19
     },
     EIGHT: {
-        x: -28,
-        y: 16
+        x:-16,
+        y:-26
     },
     NINE: {
-        x: 16,
-        y: 16
+        x:0,
+        y:-26
     },
     UNDEFINED: {
-        x: -28,
-        y: 0
+        x:14,
+        y:-26
     }
 });

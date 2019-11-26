@@ -531,7 +531,7 @@ function displayLabels(linkLabel, links, anom)
                 finalX = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[0];
  */
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                finalX = sb.SubstituentLables.prototype.getSubstituentLable(donorPos).x + source[0];
+                finalX = sb.SubstituentLables.prototype.getSubstituentLabel(donorPos).x + source[0];
             }
 
             return finalX; // Return the obtained value
@@ -559,7 +559,7 @@ function displayLabels(linkLabel, links, anom)
                 finalY = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[1];
  */
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                finalY = sb.SubstituentLables.prototype.getSubstituentLable(donorPos).y + source[1];
+                finalY = sb.SubstituentLables.prototype.getSubstituentLabel(donorPos).y + source[1];
             }
             return finalY; // Return the obtained value
         })
