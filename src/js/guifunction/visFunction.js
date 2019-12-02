@@ -318,8 +318,8 @@ export default class visFunction {
 
             // Modifications we have to do on the obtained value
             const usablePos = this.extractUsablePosition(sourceNode, _glycan);
-            if (donorPosition === "undefined" && !("undefined" in usablePos)) {
-                donorPosition = parseInt(Object.keys(usablePos)[0]);
+            if (donorPosition === "undefined" && usablePos.undefined === false) {
+                donorPosition = parseInt(this._pickUsablePosition(usablePos));
             }
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
@@ -489,16 +489,20 @@ export default class visFunction {
         let undefCnt = 0;
         for(let edge of _glycan.graph.edges()) {
             if (edge.targetNode === _sourceNode && edge.acceptorPosition !== AcceptorPosition.UNDEFINED) {
-                delete ret[edge.acceptorPosition.value];
+                ret[edge.acceptorPosition.value] = false;
+                //delete ret[edge.acceptorPosition.value];
             }
             if (edge.sourceNode === _sourceNode) {
                 if (edge.donorPosition !== DonorPosition.UNDEFINED) {
-                    delete ret[edge.donorPosition.value];
+                    //delete ret[edge.donorPosition.value];
+                    ret[edge.donorPosition.value] = false;
                 } else {
                     if (undefCnt === 0) {
-                        delete ret.undefined;
+                        //delete ret.undefined;
+                        ret.undefined = false;
                     } else {
-                        delete ret[parseInt(Object.keys(ret)[0])];
+                        //delete ret[parseInt(Object.keys(ret)[0])];
+                        ret[this._pickUsablePosition(ret)] = false;
                     }
                     undefCnt++;
                 }
@@ -517,6 +521,18 @@ export default class visFunction {
         });
 
         return ret;
+    }
+
+    _pickUsablePosition (_usablePosition) {
+        let usableKey = -1;
+        Object.keys(_usablePosition).map(function(key) {
+            if (_usablePosition[key] === true) {
+                usableKey = key;
+                return usableKey;
+            }
+        });
+
+        return usableKey;
     }
 }
 
