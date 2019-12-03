@@ -317,9 +317,9 @@ export default class visFunction {
             }
 
             // Modifications we have to do on the obtained value
-            const usablePos = this.extractUsablePosition(sourceNode, _glycan);
-            if (donorPosition === "undefined" && usablePos.undefined === false) {
-                donorPosition = parseInt(this._pickUsablePosition(usablePos));
+            const usablePos = this.extractUsablePosition(link, _glycan);
+            if (donorPosition === "undefined" && usablePos.undefined !== "") {
+                donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
             }
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
@@ -473,36 +473,32 @@ export default class visFunction {
         return null;
     }
 
-    extractUsablePosition (_sourceNode, _glycan) {
+    extractUsablePosition (_edge, _glycan) {
         let ret = {
-            "undefined": true
+            "undefined": ""
         };
 
-        if (this.getNodeChild(_sourceNode, _glycan).length < 2) return ret;
+        if (this.getNodeChild(_edge.sourceNode, _glycan).length < 2) return ret;
 
         const emFunc = new emFunction();
 
-        for (let i = 1; i < emFunc.getNumberCarbons(_sourceNode) + 1; i++) {
-            ret[i] = true;
+        for (let i = 1; i < emFunc.getNumberCarbons(_edge.sourceNode); i++) {
+            ret[i] = "";
         }
 
         let undefCnt = 0;
         for(let edge of _glycan.graph.edges()) {
-            if (edge.targetNode === _sourceNode && edge.acceptorPosition !== AcceptorPosition.UNDEFINED) {
-                ret[edge.acceptorPosition.value] = false;
-                //delete ret[edge.acceptorPosition.value];
+            if (edge.targetNode === _edge.sourceNode && edge.acceptorPosition !== AcceptorPosition.UNDEFINED) {
+                ret[edge.acceptorPosition.value] = edge;
             }
-            if (edge.sourceNode === _sourceNode) {
+            if (edge.sourceNode === _edge.sourceNode) {
                 if (edge.donorPosition !== DonorPosition.UNDEFINED) {
-                    //delete ret[edge.donorPosition.value];
-                    ret[edge.donorPosition.value] = false;
+                    ret[edge.donorPosition.value] = edge;
                 } else {
                     if (undefCnt === 0) {
-                        //delete ret.undefined;
-                        ret.undefined = false;
+                        ret.undefined = edge;
                     } else {
-                        //delete ret[parseInt(Object.keys(ret)[0])];
-                        ret[this._pickUsablePosition(ret)] = false;
+                        ret[this._pickUsablePosition(ret, edge)] = edge;
                     }
                     undefCnt++;
                 }
@@ -523,16 +519,22 @@ export default class visFunction {
         return ret;
     }
 
+    _pickUsedPosition (_usablePosition, _value) {
+        let key = Object.keys(_usablePosition).filter(function (key) {
+            if (_usablePosition[key] === _value) return key;
+        });
+
+        return key[0];
+    }
+
     _pickUsablePosition (_usablePosition) {
-        let usableKey = -1;
-        Object.keys(_usablePosition).map(function(key) {
-            if (_usablePosition[key] === true) {
-                usableKey = key;
-                return usableKey;
+        let key = Object.keys(_usablePosition).filter(function (key) {
+            if (_usablePosition[key] === "") {
+                return key;
             }
         });
 
-        return usableKey;
+        return (key.length === 0 ? -1 : key[0]);
     }
 }
 
