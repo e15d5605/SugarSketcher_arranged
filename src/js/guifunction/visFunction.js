@@ -318,9 +318,24 @@ export default class visFunction {
 
             // Modifications we have to do on the obtained value
             const usablePos = this.extractUsablePosition(link, _glycan);
-            if (donorPosition === "undefined" && usablePos.undefined !== "") {
-                donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
+            if (donorPosition !== "undefined") {
+                let currentPos = parseInt(this._pickUsedPosition(usablePos, link));
+                if (donorPosition !== currentPos) {
+                    //TODO: バックアップをとる
+                    const temp = usablePos[donorPosition];
+                    //TODO: 新しい入居者へ充てがう
+                    usablePos[donorPosition] = link;
+                    //TODO: usablePosの位置を更新する
+                    usablePos[this._pickUsablePosition(usablePos)] = temp;
+                } else {
+                    donorPosition = currentPos;
+                }
+            } else {
+                if (usablePos.undefined !== "") {
+                    donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
+                }
             }
+
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
 
@@ -486,7 +501,6 @@ export default class visFunction {
             ret[i] = "";
         }
 
-        let undefCnt = 0;
         for(let edge of _glycan.graph.edges()) {
             if (edge.targetNode === _edge.sourceNode && edge.acceptorPosition !== AcceptorPosition.UNDEFINED) {
                 ret[edge.acceptorPosition.value] = edge;
@@ -495,12 +509,11 @@ export default class visFunction {
                 if (edge.donorPosition !== DonorPosition.UNDEFINED) {
                     ret[edge.donorPosition.value] = edge;
                 } else {
-                    if (undefCnt === 0) {
+                    if (ret.undefined === "") {
                         ret.undefined = edge;
                     } else {
-                        ret[this._pickUsablePosition(ret, edge)] = edge;
+                        ret[this._pickUsablePosition(ret)] = edge;
                     }
-                    undefCnt++;
                 }
             }
         }
