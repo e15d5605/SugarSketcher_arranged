@@ -317,13 +317,10 @@ export default class visFunction {
             // Modifications we have to do on the obtained value
             const usablePos = this.extractUsablePosition(link, _glycan);
             if (donorPosition !== "undefined") {
-                let currentPos = this._pickUsedPosition(usablePos, link);
+                let currentPos = parseInt(this._pickUsedPosition(usablePos, link));
                 if (donorPosition !== currentPos) {
-                    //TODO: バックアップをとる
                     const temp = usablePos[donorPosition];
-                    //TODO: 新しい入居者へ充てがう
                     usablePos[donorPosition] = link;
-                    //TODO: usablePosの位置を更新する
                     usablePos[this._pickUsablePosition(usablePos)] = temp;
                 } else {
                     donorPosition = currentPos;
