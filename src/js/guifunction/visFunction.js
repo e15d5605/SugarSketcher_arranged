@@ -265,21 +265,19 @@ export default class visFunction {
             if (_shapes.length === 0) { // If tree is empty, instantiate the glycan with the monosaccharide as the root
                 node = {"node":mono};
                 shape = this.calculateXandYNode(node, _glycan, _shapes);
-                _shapes[node.node.id] = shape;
+                _shapes[mono.id] = shape;
 
-                //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+50]; //バグの原因
                 let rootShape = [rootPos.x, rootPos.y];
                 _shapes.root = rootShape;
                 rootDonorPosition = DonorPosition.UNDEFINED;
                 rootAcceptorPosition = AcceptorPosition.ONE;
                 _treeData = this.updateTreeVisualization(undefined, _glycan, _treeData); // Update visualization in the svg
             } else {
-                if (link instanceof GlycosidicLinkage) {//sb.GlycosidicLinkage) {
+                if (link instanceof GlycosidicLinkage) {
                     _treeData = this.updateTreeVisualization(link, _glycan, _treeData);
-                    //this.updateTreeVisualization(link);
                     node = {"node":mono};
                     shape = this.calculateXandYNode(node, _glycan, _shapes);
-                    _shapes[node.node.id] = shape;
+                    _shapes[mono.id] = shape;
                 }
                 else
                 {
@@ -319,7 +317,7 @@ export default class visFunction {
             // Modifications we have to do on the obtained value
             const usablePos = this.extractUsablePosition(link, _glycan);
             if (donorPosition !== "undefined") {
-                let currentPos = parseInt(this._pickUsedPosition(usablePos, link));
+                let currentPos = this._pickUsedPosition(usablePos, link);
                 if (donorPosition !== currentPos) {
                     //TODO: バックアップをとる
                     const temp = usablePos[donorPosition];
@@ -332,9 +330,12 @@ export default class visFunction {
                 }
             } else {
                 if (usablePos.undefined !== "") {
-                    donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
+                    donorPosition = this._pickUsedPosition(usablePos, link);
                 }
             }
+
+            if (donorPosition !== "undefined")
+                donorPosition = parseInt(donorPosition);
 
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
@@ -542,9 +543,7 @@ export default class visFunction {
 
     _pickUsablePosition (_usablePosition) {
         let key = Object.keys(_usablePosition).filter(function (key) {
-            if (_usablePosition[key] === "") {
-                return key;
-            }
+            if (_usablePosition[key] === "") return key;
         });
 
         return (key.length === 0 ? -1 : key[0]);
