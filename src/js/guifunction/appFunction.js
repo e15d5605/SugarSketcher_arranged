@@ -4,6 +4,7 @@ import SubstituentsPositions from "../models/io/glycoCT/SubstituentsPositions";
 import Substituent from "../models/glycomics/nodes/Substituent";
 import DonorPosition from "../models/glycomics/dictionary/DonorPosition";
 import AcceptorPosition from "../models/glycomics/dictionary/AcceptorPosition";
+
 const vf = new visFunction();
 
 // Get an array of all Repeating Units
@@ -16,13 +17,13 @@ export default class appFunction {
         let output = [];
         for (let node of nodes)
         {
-            if (node.node.repeatingUnit != undefined) // the node is in a repeating unit
+            if (node.node.repeatingUnit !== undefined) // the node is in a repeating unit
             {
                 if (output.includes(node.node.repeatingUnit))
                 {
                     for (let repUnit of output)
                     {
-                        if (repUnit == node.node.repeatingUnit)
+                        if (repUnit === node.node.repeatingUnit)
                         {
                             if (!repUnit.nodes.includes(node))
                             {
@@ -64,11 +65,13 @@ export default class appFunction {
      * @param y : Coordinates of the source
      * @param donorPosition
      */
+    /*
     findSubstituantLabelSpot (x, y, donorPosition)
     {
         let subsXY = {1: [x-7, y+20], 2: [x+16, y], 3: [x+16,y-16], 4: [x-7, y-28], 5: [x+16, y+8], 6: [x-28, y-16], 7: [x-28, y+8], 8: [x-28, y+16], 9: [x+16, y+16], "undefined": [x-28, y]};
         return subsXY[donorPosition];
     }
+     */
 
     clickedNodeHasSubs (_clickedNode, _glycan)
     {
@@ -77,7 +80,7 @@ export default class appFunction {
             return true;
         for (let edge of _glycan.graph.edges())
         {
-            if (edge.sourceNode == _clickedNode && edge.targetNode instanceof Substituent)//sb.Substituent)
+            if (edge.sourceNode === _clickedNode && edge.targetNode instanceof Substituent)//sb.Substituent)
             {
                 return true;
             }
@@ -161,7 +164,7 @@ export default class appFunction {
         // Update the source of the first linkage (search the copied node which corresponds to the first of the copy)
         for (let i = 0; i < copyOfNode.length; i++) {
             let idBeforeChange = copyOfNode[i].node.id.substring(0, copyOfNode[i].node.id.length - 7);
-            if (idBeforeChange == copyOfLinkage.source) {
+            if (idBeforeChange === copyOfLinkage.source) {
                 copyOfLinkage.source = copyOfNode[i].node.id;
                 copyOfLinkage.sourceNode = copyOfNode[i].node;
             }
@@ -210,7 +213,7 @@ export default class appFunction {
     {
         for (var e of _glycan.graph.edges())
         {
-            if (e.target == node.id)
+            if (e.target === node.id)
             {
                 return e.sourceNode;
             }
@@ -236,7 +239,7 @@ const getSelectedNodeIndex = (node, _selectedNodes) =>
 {
     for (let i in _selectedNodes)
     {
-        if (_selectedNodes[i].id == node.id)
+        if (_selectedNodes[i].id === node.id)
         {
             return i;
         }
@@ -251,7 +254,7 @@ const getSelectedNodeIndex = (node, _selectedNodes) =>
  */
 const searchFirstPasteNodeAndUpdateLink = (root, linkageToUpdate) => {
     let idBeforeChange = root.node.id; // Get the id of the current node
-    if (idBeforeChange == linkageToUpdate.source) { // If it corresponds to the source of the linkage
+    if (idBeforeChange === linkageToUpdate.source) { // If it corresponds to the source of the linkage
         if (root.children != null) { // If the node has children
             linkageToUpdate.target = root.children[root.children.length -1].node.id; // Update target with last child of node id
             linkageToUpdate.targetNode = root.children[root.children.length -1].node; // Update targetNode with last child of node
@@ -273,11 +276,11 @@ const searchFirstPasteNodeAndUpdateLink = (root, linkageToUpdate) => {
 const updateLinksRelated = (node, links) => {
     let idBeforeChange = node.node.id.substring(0, node.node.id.length - 7); // Get teh id before the update (we add 7 chars each time)
     for (let i = 0; i < links.length; i++) { // Loop on links
-        if (links[i].source == idBeforeChange) { // If source correspondance, update it
+        if (links[i].source === idBeforeChange) { // If source correspondance, update it
             links[i].source = node.node.id;
             links[i].sourceNode = node.node;
         }
-        if (links[i].target == idBeforeChange) { // If target correspondance, update it
+        if (links[i].target === idBeforeChange) { // If target correspondance, update it
             links[i].target = node.node.id;
             links[i].targetNode = node.node;
         }
@@ -292,6 +295,7 @@ const updateLinksRelated = (node, links) => {
 /**
  * Find all links in relation with a node and its children
  * @param node The root node of the copy
+ * @param _glycan
  */
 const findLinksForCopy = (node, _glycan) => {
     let allLinks = [];
@@ -307,6 +311,7 @@ const findLinksForCopy = (node, _glycan) => {
 /**
  * Add a node from d3js tree and its children in the sigma graph, copying links
  * @param node The node to add
+ * @param _glycan
  */
 const addNodeCopyInGraph = (node, _glycan) => {
     _glycan.graph.addNode(node.node);
@@ -324,7 +329,7 @@ const addNodeCopyInGraph = (node, _glycan) => {
  * @param root The root from which we want to search
  */
 const searchNodeInTree = (root, node) => {
-    if(root.node.id == node.id){
+    if(root.node.id === node.id){
         return root;
     }else if (root.children != null){
         // If the node has children, recursivity on each child to find the source node
@@ -344,9 +349,9 @@ const findNodeInTree = (tree,node1) =>
 
     while (stack.length > 0) {
         node = stack.pop();
-        if (node.node == node1) {
+        if (node.node === node1) {
             return node;
-        } else if (node.children != undefined) {
+        } else if (node.children !== undefined) {
             for (i = 0; i < node.children.length; i += 1) {
                 stack.push(node.children[i]);
             }
@@ -359,7 +364,7 @@ const findNodeInTree = (tree,node1) =>
 const removeChildrenFromSelection = (node, _treeData, _selectedNodes) =>
 {
     let finedNode = findNodeInTree(_treeData,node);
-    if (finedNode.children != undefined)
+    if (finedNode.children !== undefined)
     {
         for (let child of finedNode.children)
         {
@@ -376,15 +381,14 @@ const removeChildrenFromSelection = (node, _treeData, _selectedNodes) =>
 
 const selectAllParentsBetween = (node1, node2, _treeData, _selectedNodes) => {
     let selectParents = [];
-    let root = findNodeInTree(_treeData,node1);
-    let currentNode = root;
-    if (node1 != clickedNode && !_selectedNodes.includes(node1) && !selectParents.includes(node1))
+    let currentNode = findNodeInTree(_treeData, node1);
+    if (node1 !== clickedNode && !_selectedNodes.includes(node1) && !selectParents.includes(node1))
         selectParents.push(node1);
-    while (currentNode.parent != undefined)
+    while (currentNode.parent !== undefined)
     {
-        if (currentNode.parent.node != clickedNode && !_selectedNodes.includes(currentNode.parent.node) && !selectParents.includes(currentNode.parent.node))
+        if (currentNode.parent.node !== clickedNode && !_selectedNodes.includes(currentNode.parent.node) && !selectParents.includes(currentNode.parent.node))
             selectParents.push(currentNode.parent.node);
-        if (currentNode.parent.node == node2)
+        if (currentNode.parent.node === node2)
         {
             _selectedNodes = _selectedNodes.concat(selectParents);
             return _selectedNodes;
@@ -397,7 +401,7 @@ const selectAllParentsBetween = (node1, node2, _treeData, _selectedNodes) => {
 
 const selectAllChildrenBetween = (node1, node2, rootDepth, _treeData, _selectedNodes) =>
 {
-    if (_selectedNodes.length == 0 || rootDepth > findNodeInTree(_treeData,_selectedNodes[0]).depth)
+    if (_selectedNodes.length === 0 || rootDepth > findNodeInTree(_treeData,_selectedNodes[0]).depth)
     {
         _selectedNodes = [];
     }

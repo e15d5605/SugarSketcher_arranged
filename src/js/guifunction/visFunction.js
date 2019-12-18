@@ -317,22 +317,15 @@ export default class visFunction {
             // Modifications we have to do on the obtained value
             const usablePos = this.extractUsablePosition(link, _glycan);
             if (donorPosition !== "undefined") {
-                let currentPos = parseInt(this._pickUsedPosition(usablePos, link));
-                if (donorPosition !== currentPos) {
-                    const temp = usablePos[donorPosition];
-                    usablePos[donorPosition] = link;
-                    usablePos[this._pickUsablePosition(usablePos)] = temp;
-                } else {
-                    donorPosition = currentPos;
-                }
+                donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
             } else {
                 if (usablePos.undefined !== "") {
                     donorPosition = this._pickUsedPosition(usablePos, link);
                 }
+                if (donorPosition !== "undefined") {
+                    donorPosition = parseInt(donorPosition)
+                }
             }
-
-            if (donorPosition !== "undefined")
-                donorPosition = parseInt(donorPosition);
 
             let newX = sourceX + XYvalues.prototype.getXYvalue(donorPosition).x*50; // Apply the modification on x
             let newY = sourceY + XYvalues.prototype.getXYvalue(donorPosition).y*50; // Apply the modification on y
@@ -491,7 +484,7 @@ export default class visFunction {
             "undefined": ""
         };
 
-        if (this.getNodeChild(_edge.sourceNode, _glycan).length < 2) return ret;
+        //if (this.getNodeChild(_edge.sourceNode, _glycan).length === 1) return ret;
 
         const emFunc = new emFunction();
 

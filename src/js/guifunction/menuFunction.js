@@ -10,6 +10,7 @@ import Glycan from "../models/glycomics/Glycan";
 import GlycosidicLinkage from "../models/glycomics/linkages/GlycosidicLinkage";
 import XYvalues from "../views/parametors/XYvalues";
 import colorDivisions from "../views/parametors/colorDivisions";
+import RepetitionUtility from "../utils/RepetitionUtility";
 const vf = new visFunction();
 const af = new appFunction();
 const ef = new emFunction();
@@ -45,64 +46,13 @@ export default class menuFunction {
     // Verifies if the selection is legal for a repetion, then creates it
     handleRepetition (_shapes, _treeData, _glycan, _clickedNode, _selectedNodes)
     {
-        let nodes = [_clickedNode].concat(_selectedNodes);
-        if (!isRepeated(nodes))
-        {
-            findNodesInTree(nodes, _treeData);
-            let repEntry, repExit;
-            if (isBranchSelected(nodes)) // BRANCH
-            {
-                repEntry = nodes[0].node;
-                repExit = findRepExit(nodes[0], _treeData, _clickedNode, _selectedNodes);
-                if (repExit.length != 1) // If the rep unit has 2 exits
-                {
-                    return;
-                }
-                repExit = repExit[0].node;
-            }
-            else // NO BRANCH
-            {
-                let entryExit = findEntryAndExit(nodes);
-                if (!entryExit)
-                {
-                    return;
-                }
-                repEntry = entryExit[0];
-                repExit = entryExit[1];
-            }
+        let repFunc = new RepetitionUtility(_glycan, _treeData, _shapes);
+        repFunc.start(_clickedNode, _selectedNodes);
+        _shapes = moveNodesInsideRep(repFunc.shapes, repFunc.treeData, repFunc.glycan);
+        displayTree(repFunc.treeData, _shapes, repFunc.glycan);
+        updateMenu();
 
-            if (repExit != undefined) // Doesn't finish by a fork
-            {
-                let min = prompt("Minimum number of repetitions");
-                if (min == null || min == "")
-                {
-                    return;
-                }
-                let max = prompt("Maximum number of repetitions");
-                if (max == null || max == "")
-                {
-                    return;
-                }
-                let donor = prompt("Donor Position on the "+repExit.monosaccharideType.name + " (\"?\" for unknown linkage)");
-                if (donor != "?" && (donor > ef.getNumberCarbons(repExit) || donor < 1))
-                    return;
-                let acceptor = prompt("Acceptor Position on the "+repEntry.monosaccharideType.name + " (\"?\" for unknown linkage)");
-                if (acceptor != "?" && (acceptor > 3 || acceptor < 1))
-                    return;
-                let id = af.randomString(7);
-                let repeatingUnit = new RepeatingUnit(id,nodes,min,max,repEntry,repExit,donor,acceptor);
-                //let repeatingUnit = new sb.RepeatingUnit(id,nodes,min,max,repEntry,repExit,donor,acceptor);
-                for  (let node of nodes)
-                {
-                    node.node.repeatingUnit = repeatingUnit;
-                }
-                _shapes = moveNodesInsideRep(_shapes, _treeData, _glycan);
-                displayTree(_treeData, _shapes, _glycan);
-                updateMenu();
-            }
-        }
-
-        return;
+        return _shapes;
     }
 
     /**
@@ -229,7 +179,6 @@ export default class menuFunction {
                 node = {"node":monosaccharide};
                 shape = vf.calculateXandYNode(node, _glycan, _shapes);
                 _shapes[generatedNodeId] = shape;
-                //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+gap];
                 let rootShape = [rootPos.x, rootPos.y];
                 _shapes.root = rootShape;
                 rootDonorPosition = donorPosition;
@@ -263,30 +212,6 @@ export default class menuFunction {
         return _glycan;
     }
 }
-
-// Checks if the selection array "nodes" is linear or has a fork
-const isBranchSelected = (nodes) =>
-{
-    for (let node of nodes)
-    {
-        if (node.children != undefined)
-        {
-            let selectedChildren = 0;
-            for (let child of node.children)
-            {
-                if (nodes.includes(child))
-                {
-                    selectedChildren++;
-                }
-            }
-            if (selectedChildren > 1)
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-};
 
 /**
  *
@@ -345,115 +270,6 @@ const checkNodesInLine = (startX, startY, dy, dx, repCoord, _shapes) =>
                     return true;
                 x += dx;
             }
-        }
-    }
-    return false;
-};
-
-// Find the entry and exit of a bunch of nodes (for repeating units)
-const findEntryAndExit = (nodes) =>
-{
-    let maxDepth = nodes[0].depth;
-    let minDepth = nodes[0].depth;
-    let maxNode = nodes[0].node;
-    let minNode = nodes[0].node;
-    let unselectedChildren = 0;
-    for (let node of nodes)
-    {
-        unselectedChildren += countUnselectedChildren(node, nodes);
-        if (node.depth > maxDepth)
-        {
-            maxDepth = node.depth;
-            maxNode = node.node;
-        }
-        if (node.depth < minDepth)
-        {
-            minDepth = node.depth;
-            minNode = node.node;
-        }
-    }
-    if (unselectedChildren > 1)
-    {
-        return false;
-    }
-    else
-    {
-        return [minNode,maxNode];
-    }
-};
-
-// Used to check if the repetition can be done on the array "nodes"
-// If there are more than 1 unselected children in the array, there are several exits to the repeating unit, which is impossible.
-// If there are 0 unselected children, the repetition is only possible if there are no branches selected:
-// if you select the end of a linear glycan, there are no exits because the last selected node is the last node of the glycan (Repetition OK)
-// however, if there is a branch an no unselected children, the group of nodes ends with a fork, which is impossible
-const countUnselectedChildren = (node, nodes) =>
-{
-    let count = 0;
-    if (node.children != undefined)
-    {
-        for (let child of node.children)
-        {
-            if (!nodes.includes(child) && child.node instanceof Monosaccharide)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
-    else
-    {
-        return 0;
-    }
-};
-
-// Find the exit(s) of a group of nodes (for repeating unit)
-const findRepExit = (root, _treeData, _clickedNode, _selectedNodes) =>
-{
-    let wholeSelection = [_clickedNode].concat(_selectedNodes);
-    findNodesInTree(wholeSelection, _treeData);
-    let exits = [];
-    let stack = [root];
-
-    while (stack.length > 0)
-    {
-        let node = stack.pop();
-        if (countUnselectedChildren(node, wholeSelection) == 1)
-        {
-            if (!exits.includes(node))
-                exits.push(node);
-        }
-        if (node.children != undefined)
-        {
-            for (let child of node.children)
-            {
-                if (wholeSelection.includes(child))
-                    stack.push(child);
-            }
-        }
-    }
-    return exits;
-};
-
-
-// Turns an array of Monosaccharides into an array of tree nodes
-const findNodesInTree = (arr, _treeData) =>
-{
-    for (let i in arr)
-    {
-        arr[i] = vf.findNodeInTree(_treeData,arr[i]);
-    }
-    return arr;
-};
-
-// Check if any of the nodes in arr are already in a REP
-const isRepeated = (arr) =>
-{
-    for (let node of arr)
-    {
-        if (node.repeatingUnit !== undefined)
-        {
-            return true;
         }
     }
     return false;

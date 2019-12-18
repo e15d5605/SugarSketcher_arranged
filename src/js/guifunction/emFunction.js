@@ -65,29 +65,45 @@ export default class emFunction {
      */
     getNumberCarbons(node)
     {
-        if (node == undefined)
+        if (node === undefined)
         {
             return 6;
         }
-        let monoType = MonosaccharideGlycoCT[node.monosaccharideType.name];
-        if (monoType == undefined)
+        const monoName = node.monosaccharideType.name;
+        let monoType = MonosaccharideGlycoCT[monoName];
+        if (monoType === undefined)
         {
-            monoType = MonosaccharideGlycoCT[node.monosaccharideType.name.substring(0,3)];
-            if (monoType == undefined)
+            if (monoName.startsWith("d")) {
+                monoType = MonosaccharideGlycoCT[monoName.substring(0, 4)];
+            }
+            if (monoName.startsWith("Sixd")) {
+                monoType = MonosaccharideGlycoCT[monoName.substring(0, 7)];
+            }
+            if (monoName.startsWith("Neu")) {
+                monoType = MonosaccharideGlycoCT.Kdn;
+            }
+            if (monoType === undefined) {
+                monoType = MonosaccharideGlycoCT[monoName.substring(0, 3)];
+            }
+
+            /*
+            monoType = MonosaccharideGlycoCT[monoName.substring(0,3)];
+            if (monoType === undefined)
             {
-                monoType = MonosaccharideGlycoCT[node.monosaccharideType.name.substring(0,4)];
-                if (monoType == undefined && node.monosaccharideType.name.substring(0,3) == "Neu")
+                monoType = MonosaccharideGlycoCT[monoName.substring(0,4)];
+                if (monoType === undefined && monoName.substring(0,3) === "Neu")
                 {
                     monoType = MonosaccharideGlycoCT.Kdn;
                 }
             }
+             */
         }
         let glycoct = monoType.glycoct;
-        if (glycoct.indexOf("PEN") != -1)
+        if (glycoct.indexOf("PEN") !== -1)
         {
             return 5;
         }
-        else if (glycoct.indexOf("NON") != -1)
+        else if (glycoct.indexOf("NON") !== -1)
         {
             return 9;
         }
