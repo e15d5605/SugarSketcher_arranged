@@ -153,6 +153,11 @@ MonosaccharideGlycoCT.initEnum({
         transform: "|6:d"
     },
 
+    SixdGul: {
+        glycoct: "gul-HEX",
+        transform: "|6:d"
+    },
+
     Xyl: {
         glycoct: "xyl-PEN",
         transform: ""
