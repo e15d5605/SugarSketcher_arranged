@@ -43,39 +43,39 @@ XYLinkLabels.initEnum({
         y: 0
     },
     TWO: {
-        x: -3,
-        y: 14
+        x: 15,
+        y: 0
     },
     THREE: {
-        x: 0,
-        y: 10
+        x: 13,
+        y: 0
     },
     FOUR: {
-        x: 4,
-        y: 0
+        x: 0,
+        y: 5
     },
     FIVE: {
         x: 0,
-        y: 0
+        y: 5
     },
     SIX: {
-        x: -10,
-        y: 13
+        x: 13,
+        y: -10
     },
     SEVEN: {
-        x: 0,
-        y: 14
+        x: 13,
+        y: -10
     },
     EIGHT: {
-        x: 0,
-        y: 14
+        x: 15,
+        y: -6
     },
     NINE: {
-        x: 0,
-        y: 14
+        x: 15,
+        y: -6
     },
     UNDEFINED: {
         x: 0,
-        y: 14
+        y: 5
     }
 });

@@ -214,6 +214,11 @@ MonosaccharideType.initEnum({
         color: '#8FCCE9',
         bisected: false
     },
+    SixdGul: {
+        shape: "triangle",
+        color: "#F47920",
+        bisected: false
+    },
     Fuc: {
         shape: 'triangle',
         color: '#ED1C24',
@@ -237,6 +242,21 @@ MonosaccharideType.initEnum({
     FucNAc: {
         shape: 'triangle',
         color: '#ED1C24',
+        bisected: true
+    },
+    SixdAltNAc: {
+        shape: 'triangle',
+        color: '#F69EA1',
+        bisected: true
+    },
+    SixdGulNAc: {
+        shape: 'triangle',
+        color: '#F47920',
+        bisected: true
+    },
+    SixdTalNAc: {
+        shape: 'triangle',
+        color: '#8FCCE9',
         bisected: true
     },
     ddHex: {
@@ -376,8 +396,6 @@ MonosaccharideType.initEnum({
         color: '#A17A4D',
         bisected: false
     },
-
-
     Assigned: {
         shape: 'Pentagon',
         color: '#FFFFFF',

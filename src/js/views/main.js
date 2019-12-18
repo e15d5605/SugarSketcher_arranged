@@ -10,9 +10,9 @@ let quickRingType = "";
 let quickAcceptorPosition = "";
 let treeData = {};
 let shapes = {};
-let clickedNode = null;
+let clickedNode = undefined;
 let selectedNodes = [];
-let copiedNode = null;
+let copiedNode = undefined;
 let rootDonorPosition, rootAcceptorPosition;
 let ctrl; // Boolean if ctrl is held
 let quickMode; // Boolean if Quick Mode button is toggled on

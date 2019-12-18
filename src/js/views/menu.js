@@ -742,7 +742,7 @@ function deleteNode(node) {
         treeData = {};
         glycan.clear();
         shapes = [];
-        clickedNode = null;
+        clickedNode = undefined;
         d3.selectAll("#rootAttach").remove();
     } else {
         shapes = menuFunc.deleteAllShapesInGraph(node, glycan, shapes);

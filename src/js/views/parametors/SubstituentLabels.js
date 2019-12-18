@@ -19,58 +19,58 @@ export default class SubstituentLabels extends Enum {
 }
 
 /*
-            1: [x+14, y],
-            2: [x+14, y+13],
-            3: [x,y+13],
-            4: [x-16,y+13],
-
-            5: [x-22,y+5],
-            6: [x-22,y-7],
-            7: [x-22,y-19],
-
-            8: [x-16,y-26],
-            9: [x,y-26],
-            "undefined": [x+14,y-26]
+var subsXY = {
+1: [x-7, y+20],
+2: [x+16, y],
+3: [x+16,y-16],
+4: [x-7, y-28],
+5: [x+16, y+8],
+6: [x-28, y-16],
+7: [x-28, y+8],
+8: [x-28, y+16],
+9: [x+16, y+16],
+"undefined": [x-28, y]
+};
  */
 SubstituentLabels.initEnum({
     ONE: {
-        x:14,
-        y:0
-    },
-    TWO: {
-        x:14,
-        y:13
-    },
-    THREE: {
-        x:0,
-        y:13
-    },
-    FOUR: {
-        x:-16,
-        y:13
-    },
-    FIVE: {
-        x:-22,
-        y:5
-    },
-    SIX: {
-        x:-22,
+        x:20,
         y:-7
     },
+    TWO: {
+        x:0,
+        y:16
+    },
+    THREE: {
+        x:-16,
+        y:16
+    },
+    FOUR: {
+        x:-28,
+        y:-7
+    },
+    FIVE: {
+        x:8,
+        y:16
+    },
+    SIX: {
+        x:-16,
+        y:-28
+    },
     SEVEN: {
-        x:-22,
-        y:-19
+        x:8,
+        y:-28
     },
     EIGHT: {
-        x:-16,
-        y:-26
+        x:16,
+        y:-28
     },
     NINE: {
-        x:0,
-        y:-26
+        x:16,
+        y:16
     },
     UNDEFINED: {
-        x:14,
-        y:-26
+        x:0,
+        y:-28
     }
 });

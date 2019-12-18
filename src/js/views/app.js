@@ -379,14 +379,14 @@ function displayTree(_treeData, _shapes, _glycan) {
             })
             .attr("transform", function (d) {
                 let repInfo = appFunc.getRepCoord(d, shapes);
-                return "translate(" + repInfo[2] + "," + repInfo[0] + ")";
+                return "translate(" + repInfo[0] + "," + repInfo[2] + ")";
             })
             .attr("d", function (d) {
                 let repInfo = appFunc.getRepCoord(d, shapes);
-                return "M 10 0 L 0 0 L 0 " + (repInfo[1] - repInfo[0]) + " L 10 " + (repInfo[1] - repInfo[0])
-                    + "M " + (repInfo[3] - repInfo[2]) + " 0 L " + ((repInfo[3] - repInfo[2]) + 10) + " 0 L " +
-                    ((repInfo[3] - repInfo[2]) + 10) + " " + (repInfo[1] - repInfo[0]) + " L " +
-                    (repInfo[3] - repInfo[2]) + " " + (repInfo[1] - repInfo[0]);
+                return "M 15 0 L 5 0 L 5 " + ((repInfo[3] - repInfo[2]) + 10) + " L 15 " + ((repInfo[3] - repInfo[2]) + 10)
+                    + "M " + ((repInfo[1] - repInfo[0]) - 15) + " 0 L " + ((repInfo[1] - repInfo[0]) - 5) + " 0 L " +
+                    ((repInfo[1] - repInfo[0]) - 5) + " " + ((repInfo[3] - repInfo[2]) + 10) + " L " +
+                    ((repInfo[1] - repInfo[0]) - 15) + " " + ((repInfo[3] - repInfo[2]) + 10);
             })
             .attr("fill", "none")
             .attr("stroke", "gray")
@@ -396,10 +396,10 @@ function displayTree(_treeData, _shapes, _glycan) {
         rep.append("text")
             .attr("class", "repLabel")
             .attr("x", function (d) {
-                return appFunc.getRepCoord(d, shapes)[2];
+                return appFunc.getRepCoord(d, shapes)[0] + 5;
             })
             .attr("y", function (d) {
-                return appFunc.getRepCoord(d, shapes)[1] + 15;
+                return appFunc.getRepCoord(d, shapes)[3] + 25;
             })
             .style("stroke", "gray")
             .style("font-family", "Lato light")
@@ -410,10 +410,10 @@ function displayTree(_treeData, _shapes, _glycan) {
         rep.append("text")
             .attr("class", "repLabel")
             .attr("x", function (d) {
-                return appFunc.getRepCoord(d, shapes)[2];
+                return appFunc.getRepCoord(d, shapes)[0] + 5;
             })
             .attr("y", function (d) {
-                return appFunc.getRepCoord(d, shapes)[0] - 5;
+                return appFunc.getRepCoord(d, shapes)[2] - 5;
             })
             .style("stroke", "gray")
             .style("font-family", "Lato light")
@@ -519,7 +519,7 @@ function displayLabels(linkLabel, links, anom)
                     // Add value to have a visible display (not on the line)
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                    finalX = usualX + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
+                    finalX = usualX + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
                 }
             }
             else // Substituant
@@ -548,7 +548,7 @@ function displayLabels(linkLabel, links, anom)
                     // Add value to have a visible display
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                    finalY = usualY + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
+                    finalY = usualY + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
                 }
             }
             else // Substituant
