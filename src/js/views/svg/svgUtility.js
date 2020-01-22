@@ -1,3 +1,9 @@
+
+import Substituent from "../../models/glycomics/nodes/Substituent";
+import XYLinkLabels from "../parametors/XYLinkLabels";
+import visFunction from "../../guifunction/visFunction";
+import SubstituentLabels from "../parametors/SubstituentLabels";
+
 /**
  * Create a linear gradient for a square
  * @param color The color that the square has to have
@@ -42,7 +48,7 @@ export const createDiamondLinearGradient = (type, gradientId) => {
     let svg = d3.select("#svgTree"); // Get the svgTree
     let linearGradient;
     // AltA and IdoA are reverted diamonds so we don't append the same linearGradient
-    if (type === sb.MonosaccharideType.AltA || type === sb.MonosaccharideType.IdoA) {
+    if (type === MonosaccharideType.AltA || type === MonosaccharideType.IdoA) {
         linearGradient = svg.append("linearGradient")
             .attr("id", gradientId)
             .attr("x1", "0%")
@@ -125,6 +131,7 @@ export const createTriangleLinearGradient = (color, gradientId) => {
 export const displayLabels = (linkLabel, links, anom) => {
     let root = {"node":{"id":"root"}};
     let rootLink = {"source":root,"target":treeData};
+    const visFunc = new visFunction();
     links.push(rootLink);
     linkLabel.data(links)
         .enter().append("text")
@@ -133,11 +140,11 @@ export const displayLabels = (linkLabel, links, anom) => {
             if (!exporting)
             {
                 let allSelectedNodes = [clickedNode].concat(selectedNodes);
-                if (d.target.node instanceof sb.Substituent && d.source.node === clickedNode && selectedNodes.length === 0)
+                if (d.target.node instanceof Substituent && d.source.node === clickedNode && selectedNodes.length === 0)
                 {
                     return "red";
                 }
-                if ((d.target.node instanceof sb.Substituent && allSelectedNodes.includes(d.source.node)) || // If it's a sub and its parent is selected
+                if ((d.target.node instanceof Substituent && allSelectedNodes.includes(d.source.node)) || // If it's a sub and its parent is selected
                     (allSelectedNodes.includes(d.target.node) && allSelectedNodes.includes(d.source.node))) { // or both are monosaccharides are selected
                     return "#58ACFA";
                 }
@@ -207,19 +214,19 @@ export const displayLabels = (linkLabel, links, anom) => {
                 // Add value to have a visible display (not on the line)
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                    finalX = usualX + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
+                    finalX = usualX + XYLinkLabels.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
                 }
             }
             else // Substituant
             {
                 /*
                                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                                let y = source[1] + sb.SubstituentLabels.prototype.getSubstituentLabel(donorPos).y;
+                                let y = source[1] + SubstituentLabels.prototype.getSubstituentLabel(donorPos).y;
                                 finalX = y;
                                 finalX = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[0];
                  */
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                finalX = sb.SubstituentLables.prototype.getSubstituentLabel(donorPos).x + source[0];
+                finalX = SubstituentLabels.prototype.getSubstituentLabel(donorPos).x + source[0];
             }
 
             return finalX; // Return the obtained value
@@ -236,18 +243,18 @@ export const displayLabels = (linkLabel, links, anom) => {
                 // Add value to have a visible display
                 else {
                     let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                    finalY = usualY + sb.XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
+                    finalY = usualY + XYLinkLabels.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
                 }
             }
             else // Substituant
             {
                 /*
                                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                                let x = source[0] + sb.SubstituentLabels.prototype.getSubstituentLabel(donorPos).x;
+                                let x = source[0] + SubstituentLabels.prototype.getSubstituentLabel(donorPos).x;
                                 finalY = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[1];
                  */
                 let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
-                finalY = sb.SubstituentLables.prototype.getSubstituentLabel(donorPos).y + source[1];
+                finalY = SubstituentLabels.prototype.getSubstituentLabel(donorPos).y + source[1];
             }
             return finalY; // Return the obtained value
         })
@@ -255,11 +262,11 @@ export const displayLabels = (linkLabel, links, anom) => {
             if (!exporting)
             {
                 let allSelectedNodes = [clickedNode].concat(selectedNodes);
-                if (d.target.node instanceof sb.Substituent && d.source.node === clickedNode && selectedNodes.length === 0)
+                if (d.target.node instanceof Substituent && d.source.node === clickedNode && selectedNodes.length === 0)
                 {
                     return "red";
                 }
-                if ((d.target.node instanceof sb.Substituent && allSelectedNodes.includes(d.source.node)) || // If it's a sub and its parent is selected
+                if ((d.target.node instanceof Substituent && allSelectedNodes.includes(d.source.node)) || // If it's a sub and its parent is selected
                     (allSelectedNodes.includes(d.target.node) && allSelectedNodes.includes(d.source.node))) { // or both are monosaccharides are selected
                     return "#58ACFA";
                 }
