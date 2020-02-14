@@ -23,6 +23,12 @@ export default class SubstituentLinkage extends Edge{
         return this._donorPosition;
     }
 
+    /*
+    get linkageType () {
+        return this._linkageType;
+    }
+     */
+
     set donorPosition(donorPosition){
         if(donorPosition instanceof DonorPosition) {
             this._donorPosition = donorPosition;
@@ -31,4 +37,14 @@ export default class SubstituentLinkage extends Edge{
         }
         return donorPosition;
     }
+
+    /*
+    set linkageType (_linkageType) {
+        if (_linkageType instanceof LinkageType) {
+            this._linkageType = _linkageType;
+        } else {
+            throw "The Linkage Type must be LinkageType. Please use the enum under src/js/glycomics/dictionary/LinkageType.js";
+        }
+    }
+     */
 }

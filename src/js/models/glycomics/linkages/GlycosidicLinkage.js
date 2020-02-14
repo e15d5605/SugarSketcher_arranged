@@ -37,6 +37,12 @@ export default class GlycosidicLinkage extends Edge{
         return this._donorPosition;
     }
 
+    /*
+    get linkageType () {
+        return this._linkageType;
+    }
+     */
+
     set acceptorPosition(acceptorPosition){
         if(acceptorPosition instanceof AcceptorPosition) {
             this._acceptorPosition = acceptorPosition;
@@ -54,4 +60,13 @@ export default class GlycosidicLinkage extends Edge{
         }
         return donorPosition;
     }
+    /*
+   set linkageType (_linkageType) {
+       if (_linkageType instanceof LinkageType) {
+           this._linkageType = _linkageType;
+       } else {
+           throw "The Linkage Type must be LinkageType. Please use the enum under src/js/glycomics/dictionary/LinkageType.js";
+       }
+   }
+    */
 }

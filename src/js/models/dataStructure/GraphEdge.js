@@ -3,7 +3,8 @@
  * Version: 0.0.1
  */
 
-import createjs from "createjs-easeljs";
+//import createjs from "createjs-easeljs";
+const createjs = require("createjs-easeljs");
 
 export default class Edge extends createjs.Container {
     /**

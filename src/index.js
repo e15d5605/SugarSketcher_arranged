@@ -53,6 +53,9 @@ import visFunction from "./js/guifunction/visFunction";
 import menuFunction from "./js/guifunction/menuFunction";
 import emFunction from "./js/guifunction/emFunction";
 
+//
+import {displayLabels} from "./js/views/svg/svgUtility";
+//import svgUtility from "./js/views/svg/svgUtility";
 
 export { Graph, GraphEdge, GraphNode, AcceptorPosition, Anomericity, Isomer,
     DonorPosition, MonosaccharideType, RingType, Monosaccharide, SubstituentType,
@@ -60,5 +63,6 @@ export { Graph, GraphEdge, GraphNode, AcceptorPosition, Anomericity, Isomer,
     GlycoCTWriter, GlycoCTSubstituents, NodeComparator, RepeatingUnit,
     SubstituentsPositions, MonosaccharideGlycoCT, QuickModeMonosaccharides,
     Structures, ImageExporter, appFunction, visFunction, menuFunction, emFunction,
-    XYvalues, colorDivisions, XYLinkLabels, OriginalPosition, SubstituentLables
+    XYvalues, colorDivisions, XYLinkLabels, OriginalPosition, SubstituentLables,
+    displayLabels
 };
