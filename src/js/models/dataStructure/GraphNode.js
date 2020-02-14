@@ -3,10 +3,10 @@
  * Version: 0.0.1
  */
 
-//let createjs;
-//if (typeof window !== "undefined") {
-    let createjs = require("createjs-easeljs");
-//}
+let createjs;
+if (typeof window !== "undefined") {
+    createjs = require("createjs-easeljs");
+}
 
 export default class Node extends createjs.Container {
     constructor(id){
