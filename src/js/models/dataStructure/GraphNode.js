@@ -4,7 +4,9 @@
  */
 
 //import createjs from "createjs-easeljs";
-const createjs = require("createjs-easeljs");
+if (typeof window !== "undefined") {
+    createjs = require("createjs-easeljs");
+}
 
 export default class Node extends createjs.Container {
     constructor(id){
