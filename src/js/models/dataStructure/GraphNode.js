@@ -4,6 +4,7 @@
  */
 
 //import createjs from "createjs-easeljs";
+let createjs;
 if (typeof window !== "undefined") {
     createjs = require("createjs-easeljs");
 }
