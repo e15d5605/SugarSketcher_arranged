@@ -12,11 +12,11 @@ import Substituent from './nodes/Substituent';
 import GlycosidicLinkage from './linkages/GlycosidicLinkage';
 import SubstituentLinkage from './linkages/SubstituentLinkage';
 import Graph from '../dataStructure/Graph';
-//import createjs from "createjs-easeljs";
-let createjs;
-if (typeof window !== "undefined") {
-    createjs = require("createjs-easeljs");
-}
+
+//let createjs;
+//if (typeof window !== "undefined") {
+    let createjs = require("createjs-easeljs");
+//}
 
 export default class Glycan extends createjs.Container{
 
