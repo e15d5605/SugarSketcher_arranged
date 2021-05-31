@@ -13,6 +13,7 @@ import MonosaccharideGlycoCT from "./MonosaccharideGlycoCT";
 import SubstituentLinkage from "../../glycomics/linkages/SubstituentLinkage";
 import SubstituentsPositions from "./SubstituentsPositions";
 import DonorPosition from "../../glycomics/dictionary/DonorPosition";
+import AcceptorPosition from "../../glycomics/dictionary/AcceptorPosition";
 import appFunction from "../../../guifunction/appFunction";
 
 export default class GlycoCTWriter{
@@ -406,7 +407,7 @@ export default class GlycoCTWriter{
             var associatedSub = pair[0];
             formula += this.writeSub(i+offset, associatedSub);
             i++;
-            pair[0] = i;
+            pair[0] = i + offset;
         }
 
         return [i+offset,formula];
@@ -484,7 +485,7 @@ export default class GlycoCTWriter{
 
             for (var pair of associatedSubs)
             {
-                formula += this.writeSubLink(i+offset, pair[1], pair[0]+offset, pair[2], 1);
+                formula += this.writeSubLink(i+offset, pair[1], pair[0], pair[2], 1);
                 i++;
             }
             return [i+offset, formula];

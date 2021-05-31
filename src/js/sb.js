@@ -59,7 +59,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.OriginalPosition = exports.XYLinkLabels = exports.SubstituentLabels = exports.colorDivisions = exports.XYvalues = exports.emFunction = exports.menuFunction = exports.visFunction = exports.appFunction = exports.ImageExporter = exports.Structures = exports.QuickModeMonosaccharides = exports.MonosaccharideGlycoCT = exports.SubstituentsPositions = exports.RepeatingUnit = exports.NodeComparator = exports.GlycoCTSubstituents = exports.GlycoCTWriter = exports.GlycoCTParser = exports.Glycan = exports.Substituent = exports.SubstituentLinkage = exports.GlycosidicLinkage = exports.SubstituentType = exports.Monosaccharide = exports.RingType = exports.MonosaccharideType = exports.DonorPosition = exports.Isomer = exports.Anomericity = exports.AcceptorPosition = exports.GraphNode = exports.GraphEdge = exports.Graph = undefined;
+	exports.displayLabels = exports.SubstituentLables = exports.OriginalPosition = exports.XYLinkLabels = exports.colorDivisions = exports.XYvalues = exports.emFunction = exports.menuFunction = exports.visFunction = exports.appFunction = exports.ImageExporter = exports.Structures = exports.QuickModeMonosaccharides = exports.MonosaccharideGlycoCT = exports.SubstituentsPositions = exports.RepeatingUnit = exports.NodeComparator = exports.GlycoCTSubstituents = exports.GlycoCTWriter = exports.GlycoCTParser = exports.Glycan = exports.Substituent = exports.SubstituentLinkage = exports.GlycosidicLinkage = exports.SubstituentType = exports.Monosaccharide = exports.RingType = exports.MonosaccharideType = exports.DonorPosition = exports.Isomer = exports.Anomericity = exports.AcceptorPosition = exports.GraphNode = exports.GraphEdge = exports.Graph = undefined;
 	
 	var _Graph = __webpack_require__(1);
 	
@@ -153,15 +153,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Monosaccharide2 = _interopRequireDefault(_Monosaccharide);
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
-	var _Glycan = __webpack_require__(27);
+	var _Glycan = __webpack_require__(28);
 	
 	var _Glycan2 = _interopRequireDefault(_Glycan);
 	
-	var _RepeatingUnit = __webpack_require__(28);
+	var _RepeatingUnit = __webpack_require__(26);
 	
 	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
@@ -177,7 +177,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _NodeComparator2 = _interopRequireDefault(_NodeComparator);
 	
-	var _ImageExporter = __webpack_require__(35);
+	var _ImageExporter = __webpack_require__(36);
 	
 	var _ImageExporter2 = _interopRequireDefault(_ImageExporter);
 	
@@ -189,36 +189,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _visFunction2 = _interopRequireDefault(_visFunction);
 	
-	var _menuFunction = __webpack_require__(37);
+	var _menuFunction = __webpack_require__(38);
 	
 	var _menuFunction2 = _interopRequireDefault(_menuFunction);
 	
-	var _emFunction = __webpack_require__(38);
+	var _emFunction = __webpack_require__(35);
 	
 	var _emFunction2 = _interopRequireDefault(_emFunction);
 	
+	var _svgUtility = __webpack_require__(40);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	//Function
+	//import svgUtility from "./js/views/svg/svgUtility";
 	
-	
-	//IO
-	
-	
-	//Glycan
-	
-	
-	//Nodes
-	
-	
-	//Linkages
-	/**
-	 * This file allows the creation of a bundle library. 
-	 * Author:  Davide Alocci
-	 * Version: 0.0.1
-	 */
-	
-	//Data Structure
+	//Glycomics Structure
+	//Dictionary
 	exports.Graph = _Graph2.default;
 	exports.GraphEdge = _GraphEdge2.default;
 	exports.GraphNode = _GraphNode2.default;
@@ -250,12 +236,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.emFunction = _emFunction2.default;
 	exports.XYvalues = _XYvalues2.default;
 	exports.colorDivisions = _colorDivisions2.default;
-	exports.SubstituentLabels = _SubstituentLabels2.default;
 	exports.XYLinkLabels = _XYLinkLabels2.default;
 	exports.OriginalPosition = _OriginalPosition2.default;
+	exports.SubstituentLables = _SubstituentLabels2.default;
+	exports.displayLabels = _svgUtility.displayLabels;
 	
-	//Glycomics Structure
-	//Dictionary
+	//
+	
+	
+	//Function
+	
+	
+	//IO
+	
+	
+	//Glycan
+	
+	
+	//Nodes
+	
+	
+	//Linkages
+	/**
+	 * This file allows the creation of a bundle library. 
+	 * Author:  Davide Alocci
+	 * Version: 0.0.1
+	 */
+	
+	//Data Structure
 
 /***/ }),
 /* 1 */
@@ -1074,6 +1082,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Version: 0.0.1
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
+	/*
+	let createjs;
+	if (typeof window !== "undefined") {
+	    createjs = require("createjs-easeljs");
+	}
+	 */
+	
 	var Edge = function (_createjs$Container) {
 	    _inherits(Edge, _createjs$Container);
 	
@@ -1182,6 +1197,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Author:  Davide Alocci
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Version: 0.0.1
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	/*
+	let createjs;
+	if (typeof window !== "undefined") {
+	    createjs = require("createjs-easeljs");
+	}
+	 */
 	
 	var Node = function (_createjs$Container) {
 	    _inherits(Node, _createjs$Container);
@@ -1911,6 +1933,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        color: '#8FCCE9',
 	        bisected: false
 	    },
+	    SixdGul: {
+	        shape: "triangle",
+	        color: "#F47920",
+	        bisected: false
+	    },
 	    Fuc: {
 	        shape: 'triangle',
 	        color: '#ED1C24',
@@ -1934,6 +1961,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    FucNAc: {
 	        shape: 'triangle',
 	        color: '#ED1C24',
+	        bisected: true
+	    },
+	    SixdAltNAc: {
+	        shape: 'triangle',
+	        color: '#F69EA1',
+	        bisected: true
+	    },
+	    SixdGulNAc: {
+	        shape: 'triangle',
+	        color: '#F47920',
+	        bisected: true
+	    },
+	    SixdTalNAc: {
+	        shape: 'triangle',
+	        color: '#8FCCE9',
 	        bisected: true
 	    },
 	    ddHex: {
@@ -2072,7 +2114,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        color: '#A17A4D',
 	        bisected: false
 	    },
-	
 	    Assigned: {
 	        shape: 'Pentagon',
 	        color: '#FFFFFF',
@@ -2758,6 +2799,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        transform: "|6:d"
 	    },
 	
+	    SixdGul: {
+	        glycoct: "gul-HEX",
+	        transform: "|6:d"
+	    },
+	
 	    Xyl: {
 	        glycoct: "xyl-PEN",
 	        transform: ""
@@ -3314,8 +3360,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
 	
-	var gap = 50;
-	
 	var XYvalues = function (_Enum) {
 	    _inherits(XYvalues, _Enum);
 	
@@ -3356,49 +3400,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return XYvalues;
 	}(_enumify.Enum);
 	
+	/*
+	gap: 50
+	
+	1: [gap, 0]
+	2: [0, gap]
+	3: [-1*gap, gap]
+	4: [-1*gap, 0]
+	5: [-1*gap, 0]
+	6: [-1*gap, -1*gap]
+	7: [0,-1*gap]
+	8: [0,-1*gap]
+	9: [0,-1*gap]
+	'undefined': [0,-1*gap]
+	 */
+	
 	exports.default = XYvalues;
-	
-	
 	XYvalues.initEnum({
 	    ONE: {
-	        x: gap,
+	        x: 1,
 	        y: 0
 	    },
 	    TWO: {
 	        x: 0,
-	        y: gap
+	        y: 1
 	    },
 	    THREE: {
-	        x: -1 * gap,
-	        y: gap
+	        x: -1,
+	        y: 1
 	    },
 	    FOUR: {
-	        x: -1 * gap,
+	        x: -1,
 	        y: 0
 	    },
 	    FIVE: {
-	        x: -1 * gap,
+	        x: -1,
 	        y: 0
 	    },
 	    SIX: {
-	        x: -1 * gap,
-	        y: -1 * gap
+	        x: -1,
+	        y: -1
 	    },
 	    SEVEN: {
-	        x: 0,
-	        y: -1 * gap
+	        x: -1,
+	        y: -1
 	    },
 	    EIGHT: {
 	        x: 0,
-	        y: -1 * gap
+	        y: -1
 	    },
 	    NINE: {
 	        x: 0,
-	        y: -1 * gap
+	        y: -1
 	    },
 	    UNDEFINED: {
-	        x: 0,
-	        y: -1 * gap
+	        x: -1,
+	        y: 0
 	    }
 	});
 
@@ -3691,7 +3748,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return SubstituentLabels.EIGHT;
 	                case 9:
 	                    return SubstituentLabels.NINE;
-	                case 'undefined':
+	                case "undefined":
 	                    return SubstituentLabels.UNDEFINED;
 	            }
 	        }
@@ -3701,6 +3758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_enumify.Enum);
 	
 	/*
+	var subsXY = {
 	1: [x-7, y+20],
 	2: [x+16, y],
 	3: [x+16,y-16],
@@ -3711,50 +3769,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	8: [x-28, y+16],
 	9: [x+16, y+16],
 	"undefined": [x-28, y]
-	*/
+	};
+	 */
 	
 	
 	exports.default = SubstituentLabels;
 	SubstituentLabels.initEnum({
 	    ONE: {
-	        x: -7,
-	        y: 20
+	        x: 20,
+	        y: -7
 	    },
 	    TWO: {
-	        x: 16,
-	        y: 0
+	        x: 0,
+	        y: 16
 	    },
 	    THREE: {
-	        x: 16,
-	        y: -16
+	        x: -16,
+	        y: 16
 	    },
 	    FOUR: {
-	        x: -7,
-	        y: -28
+	        x: -28,
+	        y: -7
 	    },
 	    FIVE: {
-	        x: 16,
-	        y: 8
+	        x: 8,
+	        y: 16
 	    },
 	    SIX: {
-	        x: -28,
-	        y: -16
+	        x: -16,
+	        y: -28
 	    },
 	    SEVEN: {
-	        x: -28,
-	        y: 8
+	        x: 8,
+	        y: -28
 	    },
 	    EIGHT: {
-	        x: -28,
-	        y: 16
+	        x: 16,
+	        y: -28
 	    },
 	    NINE: {
 	        x: 16,
 	        y: 16
 	    },
 	    UNDEFINED: {
-	        x: -28,
-	        y: 0
+	        x: 0,
+	        y: -28
 	    }
 	});
 
@@ -3841,40 +3900,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	        y: 0
 	    },
 	    TWO: {
-	        x: -3,
-	        y: 14
+	        x: 15,
+	        y: 0
 	    },
 	    THREE: {
-	        x: 0,
-	        y: 10
+	        x: 13,
+	        y: 0
 	    },
 	    FOUR: {
-	        x: 4,
-	        y: 0
+	        x: 0,
+	        y: 5
 	    },
 	    FIVE: {
 	        x: 0,
-	        y: 0
+	        y: 5
 	    },
 	    SIX: {
-	        x: -10,
-	        y: 13
+	        x: 13,
+	        y: -10
 	    },
 	    SEVEN: {
-	        x: 0,
-	        y: 14
+	        x: 13,
+	        y: -10
 	    },
 	    EIGHT: {
-	        x: 0,
-	        y: 14
+	        x: 15,
+	        y: -6
 	    },
 	    NINE: {
-	        x: 0,
-	        y: 14
+	        x: 15,
+	        y: -6
 	    },
 	    UNDEFINED: {
 	        x: 0,
-	        y: 14
+	        y: 5
 	    }
 	});
 
@@ -3896,8 +3955,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function OriginalPosition(_x, _y) {
 	        _classCallCheck(this, OriginalPosition);
 	
-	        this.x = _x === undefined ? 200 : _x;
-	        this.y = _y === undefined ? 600 : _y;
+	        this.x = _x === undefined ? 600 : _x;
+	        this.y = _y === undefined ? 200 : _y;
 	    }
 	
 	    _createClass(OriginalPosition, [{
@@ -3990,6 +4049,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        get: function get() {
 	            return this._acceptorPosition;
 	        },
+	
+	
+	        /*
+	        get linkageType () {
+	            return this._linkageType;
+	        }
+	         */
+	
 	        set: function set(acceptorPosition) {
 	            if (acceptorPosition instanceof _AcceptorPosition2.default) {
 	                this._acceptorPosition = acceptorPosition;
@@ -4011,6 +4078,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return donorPosition;
 	        }
+	        /*
+	        set linkageType (_linkageType) {
+	           if (_linkageType instanceof LinkageType) {
+	               this._linkageType = _linkageType;
+	           } else {
+	               throw "The Linkage Type must be LinkageType. Please use the enum under src/js/glycomics/dictionary/LinkageType.js";
+	           }
+	        }
+	        */
+	
 	    }]);
 	
 	    return GlycosidicLinkage;
@@ -4072,7 +4149,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'donorPosition',
 	        get: function get() {
 	            return this._donorPosition;
-	        },
+	        }
+	
+	        /*
+	        get linkageType () {
+	            return this._linkageType;
+	        }
+	         */
+	
+	        ,
 	        set: function set(donorPosition) {
 	            if (donorPosition instanceof _DonorPosition2.default) {
 	                this._donorPosition = donorPosition;
@@ -4081,6 +4166,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return donorPosition;
 	        }
+	
+	        /*
+	        set linkageType (_linkageType) {
+	            if (_linkageType instanceof LinkageType) {
+	                this._linkageType = _linkageType;
+	            } else {
+	                throw "The Linkage Type must be LinkageType. Please use the enum under src/js/glycomics/dictionary/LinkageType.js";
+	            }
+	        }
+	         */
+	
 	    }]);
 	
 	    return SubstituentLinkage;
@@ -4119,6 +4215,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _MonosaccharideType = __webpack_require__(10);
 	
 	var _MonosaccharideType2 = _interopRequireDefault(_MonosaccharideType);
+	
+	var _RepeatingUnit = __webpack_require__(26);
+	
+	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4222,6 +4322,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                throw 'Please use the Anomericity class and forget about string. Extend the enum if you need a specific value';
 	            }
 	        }
+	    }, {
+	        key: 'repeatingUnit',
+	        get: function get() {
+	            return this._repeatingUnit;
+	        },
+	        set: function set(_repeatingUnit) {
+	            if (_repeatingUnit instanceof _RepeatingUnit2.default) {
+	                this._repeatingUnit = _repeatingUnit;
+	            } else {
+	                throw "Please use the RepeatingUnit class and forget about string. Extend the enum if you need a specific value";
+	            }
+	        }
 	    }]);
 	
 	    return Monosaccharide;
@@ -4231,6 +4343,80 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _DonorPosition = __webpack_require__(9);
+	
+	var _DonorPosition2 = _interopRequireDefault(_DonorPosition);
+	
+	var _AcceptorPosition = __webpack_require__(5);
+	
+	var _AcceptorPosition2 = _interopRequireDefault(_AcceptorPosition);
+	
+	var _createjsEaseljs = __webpack_require__(3);
+	
+	var _createjsEaseljs2 = _interopRequireDefault(_createjsEaseljs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Renaud on 17/07/2017.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	var RepeatingUnit = function (_createjs$Container) {
+	    _inherits(RepeatingUnit, _createjs$Container);
+	
+	    function RepeatingUnit(id, nodes, min, max, entry, exit, donorPosition, acceptorPosition) {
+	        _classCallCheck(this, RepeatingUnit);
+	
+	        var _this = _possibleConstructorReturn(this, (RepeatingUnit.__proto__ || Object.getPrototypeOf(RepeatingUnit)).call(this));
+	
+	        _this.id = id;
+	        _this.nodes = nodes;
+	
+	        if (min === "?") {
+	            _this.min = min;
+	        } else {
+	            _this.min = parseInt(min);
+	        }
+	
+	        if (max === "?") {
+	            _this.max = max;
+	        } else {
+	            _this.max = parseInt(max);
+	        }
+	
+	        if (donorPosition === "?") {
+	            _this.donorPosition = _DonorPosition2.default.UNDEFINED;
+	        } else {
+	            _this.donorPosition = donorPosition;
+	        }
+	
+	        if (acceptorPosition === "?") {
+	            _this.acceptorPosition = _AcceptorPosition2.default.UNDEFINED;
+	        } else {
+	            _this.acceptorPosition = acceptorPosition;
+	        }
+	        return _this;
+	    }
+	
+	    return RepeatingUnit;
+	}(_createjsEaseljs2.default.Container);
+	
+	exports.default = RepeatingUnit;
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4248,6 +4434,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _SubstituentType = __webpack_require__(12);
 	
 	var _SubstituentType2 = _interopRequireDefault(_SubstituentType);
+	
+	var _RepeatingUnit = __webpack_require__(26);
+	
+	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4290,6 +4480,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	                throw 'Please use the SubstituentType class and forget about string. Extend the enum if you need a specific value';
 	            }
 	        }
+	    }, {
+	        key: 'repeatingUnit',
+	        get: function get() {
+	            return this._repeatingUnit;
+	        },
+	        set: function set(_repeatingUnit) {
+	            if (_repeatingUnit instanceof _RepeatingUnit2.default) {
+	                this._repeatingUnit = _repeatingUnit;
+	            } else {
+	                throw "Please use the RepeatingUnit class and forget about string. Extend the enum if you need a specific value";
+	            }
+	        }
 	    }]);
 	
 	    return Substituent;
@@ -4298,7 +4500,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Substituent;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4313,7 +4515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Monosaccharide2 = _interopRequireDefault(_Monosaccharide);
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
@@ -4349,6 +4551,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 	
+	
+	/*
+	let createjs;
+	if (typeof window !== "undefined") {
+	    createjs = require("createjs-easeljs");
+	}
+	 */
 	
 	var Glycan = function (_createjs$Container) {
 	    _inherits(Glycan, _createjs$Container);
@@ -4891,80 +5100,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Glycan;
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _DonorPosition = __webpack_require__(9);
-	
-	var _DonorPosition2 = _interopRequireDefault(_DonorPosition);
-	
-	var _AcceptorPosition = __webpack_require__(5);
-	
-	var _AcceptorPosition2 = _interopRequireDefault(_AcceptorPosition);
-	
-	var _createjsEaseljs = __webpack_require__(3);
-	
-	var _createjsEaseljs2 = _interopRequireDefault(_createjsEaseljs);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Renaud on 17/07/2017.
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-	
-	var RepeatingUnit = function (_createjs$Container) {
-	    _inherits(RepeatingUnit, _createjs$Container);
-	
-	    function RepeatingUnit(id, nodes, min, max, entry, exit, donorPosition, acceptorPosition) {
-	        _classCallCheck(this, RepeatingUnit);
-	
-	        var _this = _possibleConstructorReturn(this, (RepeatingUnit.__proto__ || Object.getPrototypeOf(RepeatingUnit)).call(this));
-	
-	        _this.id = id;
-	        _this.nodes = nodes;
-	
-	        if (min === "?") {
-	            _this.min = min;
-	        } else {
-	            _this.min = parseInt(min);
-	        }
-	
-	        if (max === "?") {
-	            _this.max = max;
-	        } else {
-	            _this.max = parseInt(max);
-	        }
-	
-	        if (donorPosition === "?") {
-	            _this.donorPosition = _DonorPosition2.default.UNDEFINED;
-	        } else {
-	            _this.donorPosition = donorPosition;
-	        }
-	
-	        if (acceptorPosition === "?") {
-	            _this.acceptorPosition = _AcceptorPosition2.default.UNDEFINED;
-	        } else {
-	            _this.acceptorPosition = acceptorPosition;
-	        }
-	        return _this;
-	    }
-	
-	    return RepeatingUnit;
-	}(_createjsEaseljs2.default.Container);
-	
-	exports.default = RepeatingUnit;
-
-/***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4979,7 +5114,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Version: 0.0.1
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 	
-	var _Glycan = __webpack_require__(27);
+	var _Glycan = __webpack_require__(28);
 	
 	var _Glycan2 = _interopRequireDefault(_Glycan);
 	
@@ -5015,7 +5150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _DonorPosition2 = _interopRequireDefault(_DonorPosition);
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
@@ -5035,7 +5170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _SubstituentsPositions2 = _interopRequireDefault(_SubstituentsPositions);
 	
-	var _RepeatingUnit = __webpack_require__(28);
+	var _RepeatingUnit = __webpack_require__(26);
 	
 	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
@@ -6069,7 +6204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by Renaud on 05/07/2017.
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
@@ -6093,7 +6228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _EdgeComparator2 = _interopRequireDefault(_EdgeComparator);
 	
-	var _RepeatingUnit = __webpack_require__(28);
+	var _RepeatingUnit = __webpack_require__(26);
 	
 	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
@@ -6131,21 +6266,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.rep = [];
 	        this.edges = [];
 	    }
-	
-	    /*
-	    randomString(length) {
-	        // Possible chars in the generated string
-	        var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz'.split('');
-	         if (! length) { // If no length specified, get a random length
-	            length = Math.floor(Math.random() * chars.length);
-	        }
-	         var str = '';
-	        for (var i = 0; i < length; i++) { // Add random chars till length is the one specified
-	            str += chars[Math.floor(Math.random() * chars.length)];
-	        }
-	        return str;
-	    }
-	     */
 	
 	    // Get SubstituentType
 	
@@ -7349,7 +7469,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _SubstituentsPositions2 = _interopRequireDefault(_SubstituentsPositions);
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
@@ -7386,7 +7506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                for (var _iterator = nodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                    var node = _step.value;
 	
-	                    if (node.node.repeatingUnit != undefined) // the node is in a repeating unit
+	                    if (node.node.repeatingUnit !== undefined) // the node is in a repeating unit
 	                        {
 	                            if (output.includes(node.node.repeatingUnit)) {
 	                                var _iteratorNormalCompletion2 = true;
@@ -7397,7 +7517,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                                    for (var _iterator2 = output[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 	                                        var repUnit = _step2.value;
 	
-	                                        if (repUnit == node.node.repeatingUnit) {
+	                                        if (repUnit === node.node.repeatingUnit) {
 	                                            if (!repUnit.nodes.includes(node)) {
 	                                                repUnit.nodes.push(node);
 	                                            }
@@ -7463,13 +7583,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	         * @param y : Coordinates of the source
 	         * @param donorPosition
 	         */
-	
-	    }, {
-	        key: "findSubstituantLabelSpot",
-	        value: function findSubstituantLabelSpot(x, y, donorPosition) {
-	            var subsXY = { 1: [x - 7, y + 20], 2: [x + 16, y], 3: [x + 16, y - 16], 4: [x - 7, y - 28], 5: [x + 16, y + 8], 6: [x - 28, y - 16], 7: [x - 28, y + 8], 8: [x - 28, y + 16], 9: [x + 16, y + 16], "undefined": [x - 28, y] };
+	        /*
+	        findSubstituantLabelSpot (x, y, donorPosition)
+	        {
+	            let subsXY = {1: [x-7, y+20], 2: [x+16, y], 3: [x+16,y-16], 4: [x-7, y-28], 5: [x+16, y+8], 6: [x-28, y-16], 7: [x-28, y+8], 8: [x-28, y+16], 9: [x+16, y+16], "undefined": [x-28, y]};
 	            return subsXY[donorPosition];
 	        }
+	         */
+	
 	    }, {
 	        key: "clickedNodeHasSubs",
 	        value: function clickedNodeHasSubs(_clickedNode, _glycan) {
@@ -7484,7 +7605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                for (var _iterator3 = _glycan.graph.edges()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
 	                    var edge = _step3.value;
 	
-	                    if (edge.sourceNode == _clickedNode && edge.targetNode instanceof _Substituent2.default) //sb.Substituent)
+	                    if (edge.sourceNode === _clickedNode && edge.targetNode instanceof _Substituent2.default) //sb.Substituent)
 	                        {
 	                            return true;
 	                        }
@@ -7665,7 +7786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // Update the source of the first linkage (search the copied node which corresponds to the first of the copy)
 	            for (var i = 0; i < copyOfNode.length; i++) {
 	                var idBeforeChange = copyOfNode[i].node.id.substring(0, copyOfNode[i].node.id.length - 7);
-	                if (idBeforeChange == copyOfLinkage.source) {
+	                if (idBeforeChange === copyOfLinkage.source) {
 	                    copyOfLinkage.source = copyOfNode[i].node.id;
 	                    copyOfLinkage.sourceNode = copyOfNode[i].node;
 	                }
@@ -7747,7 +7868,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                for (var _iterator9 = _glycan.graph.edges()[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
 	                    var e = _step9.value;
 	
-	                    if (e.target == node.id) {
+	                    if (e.target === node.id) {
 	                        return e.sourceNode;
 	                    }
 	                }
@@ -7789,7 +7910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var getSelectedNodeIndex = function getSelectedNodeIndex(node, _selectedNodes) {
 	    for (var i in _selectedNodes) {
-	        if (_selectedNodes[i].id == node.id) {
+	        if (_selectedNodes[i].id === node.id) {
 	            return i;
 	        }
 	    }
@@ -7803,7 +7924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	var searchFirstPasteNodeAndUpdateLink = function searchFirstPasteNodeAndUpdateLink(root, linkageToUpdate) {
 	    var idBeforeChange = root.node.id; // Get the id of the current node
-	    if (idBeforeChange == linkageToUpdate.source) {
+	    if (idBeforeChange === linkageToUpdate.source) {
 	        // If it corresponds to the source of the linkage
 	        if (root.children != null) {
 	            // If the node has children
@@ -7830,12 +7951,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var idBeforeChange = node.node.id.substring(0, node.node.id.length - 7); // Get teh id before the update (we add 7 chars each time)
 	    for (var i = 0; i < links.length; i++) {
 	        // Loop on links
-	        if (links[i].source == idBeforeChange) {
+	        if (links[i].source === idBeforeChange) {
 	            // If source correspondance, update it
 	            links[i].source = node.node.id;
 	            links[i].sourceNode = node.node;
 	        }
-	        if (links[i].target == idBeforeChange) {
+	        if (links[i].target === idBeforeChange) {
 	            // If target correspondance, update it
 	            links[i].target = node.node.id;
 	            links[i].targetNode = node.node;
@@ -7852,6 +7973,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Find all links in relation with a node and its children
 	 * @param node The root node of the copy
+	 * @param _glycan
 	 */
 	var findLinksForCopy = function findLinksForCopy(node, _glycan) {
 	    var allLinks = [];
@@ -7867,6 +7989,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Add a node from d3js tree and its children in the sigma graph, copying links
 	 * @param node The node to add
+	 * @param _glycan
 	 */
 	var addNodeCopyInGraph = function addNodeCopyInGraph(node, _glycan) {
 	    _glycan.graph.addNode(node.node);
@@ -7884,7 +8007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param root The root from which we want to search
 	 */
 	var searchNodeInTree = function searchNodeInTree(root, node) {
-	    if (root.node.id == node.id) {
+	    if (root.node.id === node.id) {
 	        return root;
 	    } else if (root.children != null) {
 	        // If the node has children, recursivity on each child to find the source node
@@ -7905,9 +8028,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    while (stack.length > 0) {
 	        node = stack.pop();
-	        if (node.node == node1) {
+	        if (node.node === node1) {
 	            return node;
-	        } else if (node.children != undefined) {
+	        } else if (node.children !== undefined) {
 	            for (i = 0; i < node.children.length; i += 1) {
 	                stack.push(node.children[i]);
 	            }
@@ -7919,7 +8042,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Unselect a node's children (used when we already have a selection, and we make a new smaller selection over it)
 	var removeChildrenFromSelection = function removeChildrenFromSelection(node, _treeData, _selectedNodes) {
 	    var finedNode = findNodeInTree(_treeData, node);
-	    if (finedNode.children != undefined) {
+	    if (finedNode.children !== undefined) {
 	        var _iteratorNormalCompletion10 = true;
 	        var _didIteratorError10 = false;
 	        var _iteratorError10 = undefined;
@@ -7954,12 +8077,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var selectAllParentsBetween = function selectAllParentsBetween(node1, node2, _treeData, _selectedNodes) {
 	    var selectParents = [];
-	    var root = findNodeInTree(_treeData, node1);
-	    var currentNode = root;
-	    if (node1 != clickedNode && !_selectedNodes.includes(node1) && !selectParents.includes(node1)) selectParents.push(node1);
-	    while (currentNode.parent != undefined) {
-	        if (currentNode.parent.node != clickedNode && !_selectedNodes.includes(currentNode.parent.node) && !selectParents.includes(currentNode.parent.node)) selectParents.push(currentNode.parent.node);
-	        if (currentNode.parent.node == node2) {
+	    var currentNode = findNodeInTree(_treeData, node1);
+	    if (node1 !== clickedNode && !_selectedNodes.includes(node1) && !selectParents.includes(node1)) selectParents.push(node1);
+	    while (currentNode.parent !== undefined) {
+	        if (currentNode.parent.node !== clickedNode && !_selectedNodes.includes(currentNode.parent.node) && !selectParents.includes(currentNode.parent.node)) selectParents.push(currentNode.parent.node);
+	        if (currentNode.parent.node === node2) {
 	            _selectedNodes = _selectedNodes.concat(selectParents);
 	            return _selectedNodes;
 	        }
@@ -7970,7 +8092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	var selectAllChildrenBetween = function selectAllChildrenBetween(node1, node2, rootDepth, _treeData, _selectedNodes) {
-	    if (_selectedNodes.length == 0 || rootDepth > findNodeInTree(_treeData, _selectedNodes[0]).depth) {
+	    if (_selectedNodes.length === 0 || rootDepth > findNodeInTree(_treeData, _selectedNodes[0]).depth) {
 	        _selectedNodes = [];
 	    }
 	    _selectedNodes = selectAllParentsBetween(node1, node2, _treeData, _selectedNodes);
@@ -8026,6 +8148,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _colorDivisions = __webpack_require__(19);
 	
 	var _colorDivisions2 = _interopRequireDefault(_colorDivisions);
+	
+	var _emFunction = __webpack_require__(35);
+	
+	var _emFunction2 = _interopRequireDefault(_emFunction);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -8116,8 +8242,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    linkToUpdate.donorPosition = donorPosition; // Update donor position
 	                    linkToUpdate.acceptorPosition = acceptorPosition; // Update acceptor position
 	                }
-	                var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition.value).y - _XYvalues2.default.prototype.getXYvalue(prevDonorPosition).y;
-	                var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition.value).x - _XYvalues2.default.prototype.getXYvalue(prevDonorPosition).x;
+	                var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition.value).x * 50 - _XYvalues2.default.prototype.getXYvalue(prevDonorPosition).x * 50;
+	                var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition.value).y * 50 - _XYvalues2.default.prototype.getXYvalue(prevDonorPosition).y * 50;
 	                _shapes = this.moveNodeAndChildren(this.findNodeInTree(_treeData, monoToUpdate), dx, dy, _shapes);
 	            }
 	            updateNodeInTree(_treeData, monoToUpdate, _treeData, _shapes, _glycan); // Update the node in the tree
@@ -8493,23 +8619,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        // If tree is empty, instantiate the glycan with the monosaccharide as the root
 	                        node = { "node": mono };
 	                        shape = this.calculateXandYNode(node, _glycan, _shapes);
-	                        _shapes[node.node.id] = shape;
+	                        _shapes[mono.id] = shape;
 	
-	                        //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+50]; //バグの原因
-	                        var rootShape = [rootPos.x, rootPos.y + 50]; //バグの原因
+	                        var rootShape = [rootPos.x, rootPos.y];
 	                        _shapes.root = rootShape;
 	                        rootDonorPosition = _DonorPosition2.default.UNDEFINED;
 	                        rootAcceptorPosition = _AcceptorPosition2.default.ONE;
 	                        _treeData = this.updateTreeVisualization(undefined, _glycan, _treeData); // Update visualization in the svg
-	                        //this.updateTreeVisualization(); // Update visualization in the svg
 	                    } else {
 	                        if (link instanceof _GlycosidicLinkage2.default) {
-	                            //sb.GlycosidicLinkage) {
 	                            _treeData = this.updateTreeVisualization(link, _glycan, _treeData);
-	                            //this.updateTreeVisualization(link);
 	                            node = { "node": mono };
 	                            shape = this.calculateXandYNode(node, _glycan, _shapes);
-	                            _shapes[node.node.id] = shape;
+	                            _shapes[mono.id] = shape;
 	                        } else {
 	                            _treeData = this.updateTreeVisualization(link, _glycan, _treeData);
 	                        }
@@ -8548,6 +8670,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var sourceX = void 0;
 	                var sourceY = void 0;
 	                var sourceId = void 0;
+	                var sourceNode = void 0;
 	
 	                // Calculate new coordinates for the wanted node
 	                var _iteratorNormalCompletion10 = true;
@@ -8563,11 +8686,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            var source = _shapes[sourceId];
 	                            sourceX = source[0];
 	                            sourceY = source[1];
+	                            sourceNode = n;
 	                        }
 	                    }
 	
 	                    // Modifications we have to do on the obtained value
-	                    //let modificationsXY = XYvalues[donorPosition];
 	                } catch (err) {
 	                    _didIteratorError10 = true;
 	                    _iteratorError10 = err;
@@ -8583,10 +8706,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	
-	                var newX = sourceX + _XYvalues2.default.prototype.getXYvalue(donorPosition).y; // Apply the modification on x
-	                var newY = sourceY + _XYvalues2.default.prototype.getXYvalue(donorPosition).x; // Apply the modification on y
-	                //let newX = sourceX  + modificationsXY[1]; // Apply the modification on x
-	                //let newY = sourceY + modificationsXY[0]; // Apply the modification on y
+	                var usablePos = this.extractUsablePosition(link, _glycan);
+	                if (donorPosition !== "undefined") {
+	                    donorPosition = parseInt(this._pickUsedPosition(usablePos, link));
+	                } else {
+	                    if (usablePos.undefined !== "") {
+	                        donorPosition = this._pickUsedPosition(usablePos, link);
+	                    }
+	                    if (donorPosition !== "undefined") {
+	                        donorPosition = parseInt(donorPosition);
+	                    }
+	                }
+	
+	                var newX = sourceX + _XYvalues2.default.prototype.getXYvalue(donorPosition).x * 50; // Apply the modification on x
+	                var newY = sourceY + _XYvalues2.default.prototype.getXYvalue(donorPosition).y * 50; // Apply the modification on y
 	
 	                var availible = this.isAvailible(newX, newY, _shapes);
 	                if (availible != "") {
@@ -8760,6 +8893,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	            return null;
 	        }
+	    }, {
+	        key: "extractUsablePosition",
+	        value: function extractUsablePosition(_edge, _glycan) {
+	            var ret = {
+	                "undefined": ""
+	            };
+	
+	            //if (this.getNodeChild(_edge.sourceNode, _glycan).length === 1) return ret;
+	
+	            var emFunc = new _emFunction2.default();
+	
+	            for (var i = 1; i < emFunc.getNumberCarbons(_edge.sourceNode); i++) {
+	                ret[i] = "";
+	            }
+	
+	            var _iteratorNormalCompletion12 = true;
+	            var _didIteratorError12 = false;
+	            var _iteratorError12 = undefined;
+	
+	            try {
+	                for (var _iterator12 = _glycan.graph.edges()[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+	                    var edge = _step12.value;
+	
+	                    if (edge.targetNode === _edge.sourceNode && edge.acceptorPosition !== _AcceptorPosition2.default.UNDEFINED) {
+	                        ret[edge.acceptorPosition.value] = edge;
+	                    }
+	                    if (edge.sourceNode === _edge.sourceNode) {
+	                        if (edge.donorPosition !== _DonorPosition2.default.UNDEFINED) {
+	                            ret[edge.donorPosition.value] = edge;
+	                        } else {
+	                            if (ret.undefined === "") {
+	                                ret.undefined = edge;
+	                            } else {
+	                                ret[this._pickUsablePosition(ret)] = edge;
+	                            }
+	                        }
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError12 = true;
+	                _iteratorError12 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion12 && _iterator12.return) {
+	                        _iterator12.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError12) {
+	                        throw _iteratorError12;
+	                    }
+	                }
+	            }
+	
+	            return ret;
+	        }
+	    }, {
+	        key: "getNodeChild",
+	        value: function getNodeChild(_node, _glycan) {
+	            var ret = [];
+	            _glycan.graph.edges().map(function (edge) {
+	                if (edge.source === _node.id) {
+	                    ret.push(edge.targetNode);
+	                }
+	            });
+	
+	            return ret;
+	        }
+	    }, {
+	        key: "_pickUsedPosition",
+	        value: function _pickUsedPosition(_usablePosition, _value) {
+	            var key = Object.keys(_usablePosition).filter(function (key) {
+	                if (_usablePosition[key] === _value) return key;
+	            });
+	
+	            return key[0];
+	        }
+	    }, {
+	        key: "_pickUsablePosition",
+	        value: function _pickUsablePosition(_usablePosition) {
+	            var key = Object.keys(_usablePosition).filter(function (key) {
+	                if (_usablePosition[key] === "") return key;
+	            });
+	
+	            return key.length === 0 ? -1 : key[0];
+	        }
 	    }]);
 	
 	    return visFunction;
@@ -8811,13 +9029,170 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _MonosaccharideGlycoCT = __webpack_require__(15);
+	
+	var _MonosaccharideGlycoCT2 = _interopRequireDefault(_MonosaccharideGlycoCT);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var emFunction = function () {
+	    function emFunction() {
+	        _classCallCheck(this, emFunction);
+	    }
+	
+	    _createClass(emFunction, [{
+	        key: "generateTree",
+	
+	
+	        /**
+	         * Creates a tree from the Glycan
+	         * Called after using the parser, which only returns a Glycan
+	         * @returns {Array}
+	         */
+	        value: function generateTree(_glycan) {
+	            // Put parentId in each node
+	            var nodes = _glycan.graph.nodes();
+	            for (var nodePos in nodes) {
+	                var parent = void 0;
+	                var _iteratorNormalCompletion = true;
+	                var _didIteratorError = false;
+	                var _iteratorError = undefined;
+	
+	                try {
+	                    for (var _iterator = _glycan.graph.edges()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                        var edge = _step.value;
+	
+	                        if (edge.target == nodes[nodePos].id) {
+	                            parent = edge.sourceNode;
+	                        }
+	                    }
+	                } catch (err) {
+	                    _didIteratorError = true;
+	                    _iteratorError = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion && _iterator.return) {
+	                            _iterator.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError) {
+	                            throw _iteratorError;
+	                        }
+	                    }
+	                }
+	
+	                if (parent !== undefined) nodes[nodePos] = { "node": nodes[nodePos], "parentId": parent.id, "children": [] };else nodes[nodePos] = { "node": nodes[nodePos], "children": [] };
+	            }
+	
+	            // Switch to tree view
+	            var map = {},
+	                node = void 0,
+	                roots = [];
+	            var parentsIds = {};
+	            var nodesDepths = {};
+	            for (var i = 0; i < nodes.length; i += 1) {
+	                node = nodes[i];
+	                node.children = [];
+	                map[node.node.id] = i; // use map to look-up the parents
+	                if (node.parentId !== undefined) {
+	                    nodes[map[node.parentId]].children.push(node);
+	                    parentsIds[node.node.id] = node;
+	                    if (node.node.id !== node.parentId) nodes[map[node.parentId]].parent = parentsIds[node.parentId];
+	
+	                    if (nodesDepths[node.node.id] === undefined) {
+	                        nodes[map[node.parentId]].depth = nodesDepths[node.parentId] + 1;
+	                        nodesDepths[node.node.id] = nodesDepths[node.parentId] + 1;
+	                    }
+	
+	                    delete nodes[map[node.parentId]].parentId;
+	                } else {
+	                    roots = node;
+	                    parentsIds[node.node.id] = node;
+	                    nodesDepths[node.node.id] = 0;
+	                    roots.depth = 0;
+	                }
+	            }
+	
+	            delete roots.parent;
+	
+	            return roots;
+	        }
+	
+	        /**
+	         * Returns the number of carbons the residue can be linked by
+	         */
+	
+	    }, {
+	        key: "getNumberCarbons",
+	        value: function getNumberCarbons(node) {
+	            if (node === undefined) {
+	                return 6;
+	            }
+	            var monoName = node.monosaccharideType.name;
+	            var monoType = _MonosaccharideGlycoCT2.default[monoName];
+	            if (monoType === undefined) {
+	                if (monoName.startsWith("d")) {
+	                    monoType = _MonosaccharideGlycoCT2.default[monoName.substring(0, 4)];
+	                }
+	                if (monoName.startsWith("Sixd")) {
+	                    monoType = _MonosaccharideGlycoCT2.default[monoName.substring(0, 7)];
+	                }
+	                if (monoName.startsWith("Neu")) {
+	                    monoType = _MonosaccharideGlycoCT2.default.Kdn;
+	                }
+	                if (monoType === undefined) {
+	                    monoType = _MonosaccharideGlycoCT2.default[monoName.substring(0, 3)];
+	                }
+	
+	                /*
+	                monoType = MonosaccharideGlycoCT[monoName.substring(0,3)];
+	                if (monoType === undefined)
+	                {
+	                    monoType = MonosaccharideGlycoCT[monoName.substring(0,4)];
+	                    if (monoType === undefined && monoName.substring(0,3) === "Neu")
+	                    {
+	                        monoType = MonosaccharideGlycoCT.Kdn;
+	                    }
+	                }
+	                 */
+	            }
+	            var glycoct = monoType.glycoct;
+	            if (glycoct.indexOf("PEN") !== -1) {
+	                return 5;
+	            } else if (glycoct.indexOf("NON") !== -1) {
+	                return 9;
+	            } else {
+	                return 6;
+	            }
+	        }
+	    }]);
+	
+	    return emFunction;
+	}();
+	
+	exports.default = emFunction;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
 	 * Created by Renaud on 18/08/2017.
 	 */
 	
-	var vkbeautify = __webpack_require__(36);
+	var vkbeautify = __webpack_require__(37);
 	
 	var ImageExporter = function () {
 	    function ImageExporter() {
@@ -8898,7 +9273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = ImageExporter;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;!function() {
@@ -18457,7 +18832,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}();
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18476,11 +18851,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _appFunction2 = _interopRequireDefault(_appFunction);
 	
-	var _emFunction = __webpack_require__(38);
+	var _emFunction = __webpack_require__(35);
 	
 	var _emFunction2 = _interopRequireDefault(_emFunction);
 	
-	var _RepeatingUnit = __webpack_require__(28);
+	var _RepeatingUnit = __webpack_require__(26);
 	
 	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
 	
@@ -18488,7 +18863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _Monosaccharide2 = _interopRequireDefault(_Monosaccharide);
 	
-	var _Substituent = __webpack_require__(26);
+	var _Substituent = __webpack_require__(27);
 	
 	var _Substituent2 = _interopRequireDefault(_Substituent);
 	
@@ -18500,7 +18875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _MonosaccharideType2 = _interopRequireDefault(_MonosaccharideType);
 	
-	var _Glycan = __webpack_require__(27);
+	var _Glycan = __webpack_require__(28);
 	
 	var _Glycan2 = _interopRequireDefault(_Glycan);
 	
@@ -18515,6 +18890,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _colorDivisions = __webpack_require__(19);
 	
 	var _colorDivisions2 = _interopRequireDefault(_colorDivisions);
+	
+	var _RepetitionUtility = __webpack_require__(39);
+	
+	var _RepetitionUtility2 = _interopRequireDefault(_RepetitionUtility);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -18583,79 +18962,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: "handleRepetition",
 	        value: function handleRepetition(_shapes, _treeData, _glycan, _clickedNode, _selectedNodes) {
-	            var nodes = [_clickedNode].concat(_selectedNodes);
-	            if (!isRepeated(nodes)) {
-	                findNodesInTree(nodes, _treeData);
-	                var repEntry = void 0,
-	                    repExit = void 0;
-	                if (isBranchSelected(nodes)) // BRANCH
-	                    {
-	                        repEntry = nodes[0].node;
-	                        repExit = findRepExit(nodes[0], _treeData, _clickedNode, _selectedNodes);
-	                        if (repExit.length != 1) // If the rep unit has 2 exits
-	                            {
-	                                return;
-	                            }
-	                        repExit = repExit[0].node;
-	                    } else // NO BRANCH
-	                    {
-	                        var entryExit = findEntryAndExit(nodes);
-	                        if (!entryExit) {
-	                            return;
-	                        }
-	                        repEntry = entryExit[0];
-	                        repExit = entryExit[1];
-	                    }
+	            var repFunc = new _RepetitionUtility2.default(_glycan, _treeData, _shapes);
+	            repFunc.start(_clickedNode, _selectedNodes);
+	            _shapes = moveNodesInsideRep(repFunc.shapes, repFunc.treeData, repFunc.glycan);
+	            displayTree(repFunc.treeData, _shapes, repFunc.glycan);
+	            updateMenu();
 	
-	                if (repExit != undefined) // Doesn't finish by a fork
-	                    {
-	                        var min = prompt("Minimum number of repetitions");
-	                        if (min == null || min == "") {
-	                            return;
-	                        }
-	                        var max = prompt("Maximum number of repetitions");
-	                        if (max == null || max == "") {
-	                            return;
-	                        }
-	                        var donor = prompt("Donor Position on the " + repExit.monosaccharideType.name + " (\"?\" for unknown linkage)");
-	                        if (donor != "?" && (donor > ef.getNumberCarbons(repExit) || donor < 1)) return;
-	                        var acceptor = prompt("Acceptor Position on the " + repEntry.monosaccharideType.name + " (\"?\" for unknown linkage)");
-	                        if (acceptor != "?" && (acceptor > 3 || acceptor < 1)) return;
-	                        var id = af.randomString(7);
-	                        var repeatingUnit = new _RepeatingUnit2.default(id, nodes, min, max, repEntry, repExit, donor, acceptor);
-	                        //let repeatingUnit = new sb.RepeatingUnit(id,nodes,min,max,repEntry,repExit,donor,acceptor);
-	                        var _iteratorNormalCompletion2 = true;
-	                        var _didIteratorError2 = false;
-	                        var _iteratorError2 = undefined;
-	
-	                        try {
-	                            for (var _iterator2 = nodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-	                                var node = _step2.value;
-	
-	                                node.node.repeatingUnit = repeatingUnit;
-	                            }
-	                        } catch (err) {
-	                            _didIteratorError2 = true;
-	                            _iteratorError2 = err;
-	                        } finally {
-	                            try {
-	                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-	                                    _iterator2.return();
-	                                }
-	                            } finally {
-	                                if (_didIteratorError2) {
-	                                    throw _iteratorError2;
-	                                }
-	                            }
-	                        }
-	
-	                        _shapes = moveNodesInsideRep(_shapes, _treeData, _glycan);
-	                        displayTree(_treeData, _shapes, _glycan);
-	                        updateMenu();
-	                    }
-	            }
-	
-	            return;
+	            return _shapes;
 	        }
 	
 	        /**
@@ -18670,13 +18983,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function deleteSubs(node, _glycan, _treeData, _shapes) {
 	            var name = node.monosaccharideType.name;
 	            var deleted = 0;
-	            var _iteratorNormalCompletion3 = true;
-	            var _didIteratorError3 = false;
-	            var _iteratorError3 = undefined;
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
 	
 	            try {
-	                for (var _iterator3 = _glycan.graph.edges()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-	                    var edge = _step3.value;
+	                for (var _iterator2 = _glycan.graph.edges()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                    var edge = _step2.value;
 	
 	                    if (edge.sourceNode == node) {
 	                        if (edge.targetNode instanceof _Substituent2.default) {
@@ -18686,16 +18999,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	            } catch (err) {
-	                _didIteratorError3 = true;
-	                _iteratorError3 = err;
+	                _didIteratorError2 = true;
+	                _iteratorError2 = err;
 	            } finally {
 	                try {
-	                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
-	                        _iterator3.return();
+	                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                        _iterator2.return();
 	                    }
 	                } finally {
-	                    if (_didIteratorError3) {
-	                        throw _iteratorError3;
+	                    if (_didIteratorError2) {
+	                        throw _iteratorError2;
 	                    }
 	                }
 	            }
@@ -18724,19 +19037,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: "reassembleNodes",
 	        value: function reassembleNodes(_glycan, _shapes) {
-	            var _iteratorNormalCompletion4 = true;
-	            var _didIteratorError4 = false;
-	            var _iteratorError4 = undefined;
+	            var _iteratorNormalCompletion3 = true;
+	            var _didIteratorError3 = false;
+	            var _iteratorError3 = undefined;
 	
 	            try {
-	                for (var _iterator4 = _glycan.graph.edges()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-	                    var edge = _step4.value;
+	                for (var _iterator3 = _glycan.graph.edges()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                    var edge = _step3.value;
 	
 	                    var source = edge.source;
 	                    var target = edge.target;
 	                    var donorPosition = edge.donorPosition.value;
-	                    var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition).y;
-	                    var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition).x;
+	                    var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition).x * 50;
+	                    var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition).y * 50;
 	                    var usualX = _shapes[source][0] + dx;
 	                    var usualY = _shapes[source][1] + dy;
 	                    if (_shapes[target] != undefined && (_shapes[target][0] != usualX || _shapes[target][1] != usualY)) {
@@ -18746,6 +19059,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        } else {
 	                            _shapes[target] = af.findNewSpot(usualX, usualY, _shapes, donorPosition);
 	                        }
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError3 = true;
+	                _iteratorError3 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                        _iterator3.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError3) {
+	                        throw _iteratorError3;
+	                    }
+	                }
+	            }
+	
+	            return _shapes;
+	        }
+	
+	        /**
+	         * Delete all children nodes in the graph structure
+	         * @param node The node from which we want to delete children
+	         */
+	
+	    }, {
+	        key: "deleteAllChildrenInGraph",
+	        value: function deleteAllChildrenInGraph(node, _glycan) {
+	            var _iteratorNormalCompletion4 = true;
+	            var _didIteratorError4 = false;
+	            var _iteratorError4 = undefined;
+	
+	            try {
+	                for (var _iterator4 = _glycan.graph.edges()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                    var edge = _step4.value;
+	
+	                    if (edge.sourceNode == node) {
+	                        _glycan = this.deleteAllChildrenInGraph(edge.targetNode, _glycan);
 	                    }
 	                }
 	            } catch (err) {
@@ -18763,17 +19114,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	
-	            return _shapes;
+	            if (node.children === undefined) // leaf
+	                {
+	                    _glycan.removeNodeById(node.id);
+	                }
+	
+	            return _glycan;
 	        }
-	
-	        /**
-	         * Delete all children nodes in the graph structure
-	         * @param node The node from which we want to delete children
-	         */
-	
 	    }, {
-	        key: "deleteAllChildrenInGraph",
-	        value: function deleteAllChildrenInGraph(node, _glycan) {
+	        key: "deleteAllShapesInGraph",
+	        value: function deleteAllShapesInGraph(node, _glycan, _shapes) {
+	            // has to be separate from deleteAllChildrenInGraph because it updates the glycan on the fly
 	            var _iteratorNormalCompletion5 = true;
 	            var _didIteratorError5 = false;
 	            var _iteratorError5 = undefined;
@@ -18783,7 +19134,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var edge = _step5.value;
 	
 	                    if (edge.sourceNode == node) {
-	                        _glycan = this.deleteAllChildrenInGraph(edge.targetNode, _glycan);
+	                        delete _shapes[node.id];
+	                        delete _shapes[edge.target];
+	                        _shapes = this.deleteAllShapesInGraph(edge.targetNode, _glycan, _shapes);
 	                    }
 	                }
 	            } catch (err) {
@@ -18797,46 +19150,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                } finally {
 	                    if (_didIteratorError5) {
 	                        throw _iteratorError5;
-	                    }
-	                }
-	            }
-	
-	            if (node.children === undefined) // leaf
-	                {
-	                    _glycan.removeNodeById(node.id);
-	                }
-	
-	            return _glycan;
-	        }
-	    }, {
-	        key: "deleteAllShapesInGraph",
-	        value: function deleteAllShapesInGraph(node, _glycan, _shapes) {
-	            // has to be separate from deleteAllChildrenInGraph because it updates the glycan on the fly
-	            var _iteratorNormalCompletion6 = true;
-	            var _didIteratorError6 = false;
-	            var _iteratorError6 = undefined;
-	
-	            try {
-	                for (var _iterator6 = _glycan.graph.edges()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-	                    var edge = _step6.value;
-	
-	                    if (edge.sourceNode == node) {
-	                        delete _shapes[node.id];
-	                        delete _shapes[edge.target];
-	                        _shapes = this.deleteAllShapesInGraph(edge.targetNode, _glycan, _shapes);
-	                    }
-	                }
-	            } catch (err) {
-	                _didIteratorError6 = true;
-	                _iteratorError6 = err;
-	            } finally {
-	                try {
-	                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
-	                        _iterator6.return();
-	                    }
-	                } finally {
-	                    if (_didIteratorError6) {
-	                        throw _iteratorError6;
 	                    }
 	                }
 	            }
@@ -18869,15 +19182,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var monosaccharide = new _Monosaccharide2.default(generatedNodeId, monoType, anomericity, isomer, ring); // Create new monosaccharide
 	
 	                var node = void 0;
-	                var gap = 50;
 	                if (Object.keys(_treeData).length === 0) {
 	                    // If tree is empty, instantiate the glycan with the monosaccharide as the root
 	                    _glycan = new _Glycan2.default("glycan", monosaccharide);
 	                    node = { "node": monosaccharide };
 	                    shape = vf.calculateXandYNode(node, _glycan, _shapes);
 	                    _shapes[generatedNodeId] = shape;
-	                    //let rootShape = [OriginalPosition.x.value, OriginalPosition.y.value+gap];
-	                    var rootShape = [rootPos.x, rootPos.y + gap];
+	                    var rootShape = [rootPos.x, rootPos.y];
 	                    _shapes.root = rootShape;
 	                    rootDonorPosition = donorPosition;
 	                    rootAcceptorPosition = acceptorPosition;
@@ -18900,29 +19211,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: "updateNodeType",
 	        value: function updateNodeType(node, type, _glycan) {
-	            var _iteratorNormalCompletion7 = true;
-	            var _didIteratorError7 = false;
-	            var _iteratorError7 = undefined;
+	            var _iteratorNormalCompletion6 = true;
+	            var _didIteratorError6 = false;
+	            var _iteratorError6 = undefined;
 	
 	            try {
-	                for (var _iterator7 = _glycan.graph.nodes()[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-	                    var glycanNode = _step7.value;
+	                for (var _iterator6 = _glycan.graph.nodes()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	                    var glycanNode = _step6.value;
 	
 	                    if (node === glycanNode) {
 	                        glycanNode.monosaccharideType = type;
 	                    }
 	                }
 	            } catch (err) {
-	                _didIteratorError7 = true;
-	                _iteratorError7 = err;
+	                _didIteratorError6 = true;
+	                _iteratorError6 = err;
 	            } finally {
 	                try {
-	                    if (!_iteratorNormalCompletion7 && _iterator7.return) {
-	                        _iterator7.return();
+	                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	                        _iterator6.return();
 	                    }
 	                } finally {
-	                    if (_didIteratorError7) {
-	                        throw _iteratorError7;
+	                    if (_didIteratorError6) {
+	                        throw _iteratorError6;
 	                    }
 	                }
 	            }
@@ -18934,71 +19245,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return menuFunction;
 	}();
 	
-	// Checks if the selection array "nodes" is linear or has a fork
-	
-	
-	exports.default = menuFunction;
-	var isBranchSelected = function isBranchSelected(nodes) {
-	    var _iteratorNormalCompletion8 = true;
-	    var _didIteratorError8 = false;
-	    var _iteratorError8 = undefined;
-	
-	    try {
-	        for (var _iterator8 = nodes[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-	            var node = _step8.value;
-	
-	            if (node.children != undefined) {
-	                var selectedChildren = 0;
-	                var _iteratorNormalCompletion9 = true;
-	                var _didIteratorError9 = false;
-	                var _iteratorError9 = undefined;
-	
-	                try {
-	                    for (var _iterator9 = node.children[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-	                        var child = _step9.value;
-	
-	                        if (nodes.includes(child)) {
-	                            selectedChildren++;
-	                        }
-	                    }
-	                } catch (err) {
-	                    _didIteratorError9 = true;
-	                    _iteratorError9 = err;
-	                } finally {
-	                    try {
-	                        if (!_iteratorNormalCompletion9 && _iterator9.return) {
-	                            _iterator9.return();
-	                        }
-	                    } finally {
-	                        if (_didIteratorError9) {
-	                            throw _iteratorError9;
-	                        }
-	                    }
-	                }
-	
-	                if (selectedChildren > 1) {
-	                    return true;
-	                }
-	            }
-	        }
-	    } catch (err) {
-	        _didIteratorError8 = true;
-	        _iteratorError8 = err;
-	    } finally {
-	        try {
-	            if (!_iteratorNormalCompletion8 && _iterator8.return) {
-	                _iterator8.return();
-	            }
-	        } finally {
-	            if (_didIteratorError8) {
-	                throw _iteratorError8;
-	            }
-	        }
-	    }
-	
-	    return false;
-	};
-	
 	/**
 	 *
 	 * @param startX
@@ -19008,6 +19254,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param repCoord
 	 * This function will check if a node can escape a repeating unit without hitting another node
 	 */
+	
+	
+	exports.default = menuFunction;
 	var checkNodesInLine = function checkNodesInLine(startX, startY, dy, dx, repCoord, _shapes) {
 	    var limit = void 0;
 	    var x = startX + dx,
@@ -19050,176 +19299,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return false;
 	};
 	
-	// Find the entry and exit of a bunch of nodes (for repeating units)
-	var findEntryAndExit = function findEntryAndExit(nodes) {
-	    var maxDepth = nodes[0].depth;
-	    var minDepth = nodes[0].depth;
-	    var maxNode = nodes[0].node;
-	    var minNode = nodes[0].node;
-	    var unselectedChildren = 0;
-	    var _iteratorNormalCompletion10 = true;
-	    var _didIteratorError10 = false;
-	    var _iteratorError10 = undefined;
-	
-	    try {
-	        for (var _iterator10 = nodes[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-	            var node = _step10.value;
-	
-	            unselectedChildren += countUnselectedChildren(node, nodes);
-	            if (node.depth > maxDepth) {
-	                maxDepth = node.depth;
-	                maxNode = node.node;
-	            }
-	            if (node.depth < minDepth) {
-	                minDepth = node.depth;
-	                minNode = node.node;
-	            }
-	        }
-	    } catch (err) {
-	        _didIteratorError10 = true;
-	        _iteratorError10 = err;
-	    } finally {
-	        try {
-	            if (!_iteratorNormalCompletion10 && _iterator10.return) {
-	                _iterator10.return();
-	            }
-	        } finally {
-	            if (_didIteratorError10) {
-	                throw _iteratorError10;
-	            }
-	        }
-	    }
-	
-	    if (unselectedChildren > 1) {
-	        return false;
-	    } else {
-	        return [minNode, maxNode];
-	    }
-	};
-	
-	// Used to check if the repetition can be done on the array "nodes"
-	// If there are more than 1 unselected children in the array, there are several exits to the repeating unit, which is impossible.
-	// If there are 0 unselected children, the repetition is only possible if there are no branches selected:
-	// if you select the end of a linear glycan, there are no exits because the last selected node is the last node of the glycan (Repetition OK)
-	// however, if there is a branch an no unselected children, the group of nodes ends with a fork, which is impossible
-	var countUnselectedChildren = function countUnselectedChildren(node, nodes) {
-	    var count = 0;
-	    if (node.children != undefined) {
-	        var _iteratorNormalCompletion11 = true;
-	        var _didIteratorError11 = false;
-	        var _iteratorError11 = undefined;
-	
-	        try {
-	            for (var _iterator11 = node.children[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-	                var child = _step11.value;
-	
-	                if (!nodes.includes(child) && child.node instanceof _Monosaccharide2.default) {
-	                    count++;
-	                }
-	            }
-	        } catch (err) {
-	            _didIteratorError11 = true;
-	            _iteratorError11 = err;
-	        } finally {
-	            try {
-	                if (!_iteratorNormalCompletion11 && _iterator11.return) {
-	                    _iterator11.return();
-	                }
-	            } finally {
-	                if (_didIteratorError11) {
-	                    throw _iteratorError11;
-	                }
-	            }
-	        }
-	
-	        return count;
-	    } else {
-	        return 0;
-	    }
-	};
-	
-	// Find the exit(s) of a group of nodes (for repeating unit)
-	var findRepExit = function findRepExit(root, _treeData, _clickedNode, _selectedNodes) {
-	    var wholeSelection = [_clickedNode].concat(_selectedNodes);
-	    findNodesInTree(wholeSelection, _treeData);
-	    var exits = [];
-	    var stack = [root];
-	
-	    while (stack.length > 0) {
-	        var node = stack.pop();
-	        if (countUnselectedChildren(node, wholeSelection) == 1) {
-	            if (!exits.includes(node)) exits.push(node);
-	        }
-	        if (node.children != undefined) {
-	            var _iteratorNormalCompletion12 = true;
-	            var _didIteratorError12 = false;
-	            var _iteratorError12 = undefined;
-	
-	            try {
-	                for (var _iterator12 = node.children[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-	                    var child = _step12.value;
-	
-	                    if (wholeSelection.includes(child)) stack.push(child);
-	                }
-	            } catch (err) {
-	                _didIteratorError12 = true;
-	                _iteratorError12 = err;
-	            } finally {
-	                try {
-	                    if (!_iteratorNormalCompletion12 && _iterator12.return) {
-	                        _iterator12.return();
-	                    }
-	                } finally {
-	                    if (_didIteratorError12) {
-	                        throw _iteratorError12;
-	                    }
-	                }
-	            }
-	        }
-	    }
-	    return exits;
-	};
-	
-	// Turns an array of Monosaccharides into an array of tree nodes
-	var findNodesInTree = function findNodesInTree(arr, _treeData) {
-	    for (var i in arr) {
-	        arr[i] = vf.findNodeInTree(_treeData, arr[i]);
-	    }
-	    return arr;
-	};
-	
-	// Check if any of the nodes in arr are already in a REP
-	var isRepeated = function isRepeated(arr) {
-	    var _iteratorNormalCompletion13 = true;
-	    var _didIteratorError13 = false;
-	    var _iteratorError13 = undefined;
-	
-	    try {
-	        for (var _iterator13 = arr[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
-	            var node = _step13.value;
-	
-	            if (node.repeatingUnit !== undefined) {
-	                return true;
-	            }
-	        }
-	    } catch (err) {
-	        _didIteratorError13 = true;
-	        _iteratorError13 = err;
-	    } finally {
-	        try {
-	            if (!_iteratorNormalCompletion13 && _iterator13.return) {
-	                _iterator13.return();
-	            }
-	        } finally {
-	            if (_didIteratorError13) {
-	                throw _iteratorError13;
-	            }
-	        }
-	    }
-	
-	    return false;
-	};
-	
 	var makeDivisionBlocks = function makeDivisionBlocks() {
 	    var ret = [];
 	
@@ -19243,24 +19322,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	var moveNodesInsideRep = function moveNodesInsideRep(_shapes, _treeData, _glycan) {
 	    var nodes = tree.nodes(_treeData);
 	    var repeatingUnits = af.generateRepeatingUnits(nodes);
-	    var _iteratorNormalCompletion14 = true;
-	    var _didIteratorError14 = false;
-	    var _iteratorError14 = undefined;
+	    var _iteratorNormalCompletion7 = true;
+	    var _didIteratorError7 = false;
+	    var _iteratorError7 = undefined;
 	
 	    try {
-	        for (var _iterator14 = repeatingUnits[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) // for each Repeating unit
+	        for (var _iterator7 = repeatingUnits[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) // for each Repeating unit
 	        {
-	            var rep = _step14.value;
+	            var rep = _step7.value;
 	
 	            var repCoord = af.getRepCoord(rep, _shapes);
-	            var _iteratorNormalCompletion15 = true;
-	            var _didIteratorError15 = false;
-	            var _iteratorError15 = undefined;
+	            var _iteratorNormalCompletion8 = true;
+	            var _didIteratorError8 = false;
+	            var _iteratorError8 = undefined;
 	
 	            try {
-	                for (var _iterator15 = nodes[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) // and for each node
+	                for (var _iterator8 = nodes[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) // and for each node
 	                {
-	                    var node = _step15.value;
+	                    var node = _step8.value;
 	
 	                    if (node.node instanceof _Monosaccharide2.default) {
 	                        var donorPosition = void 0;
@@ -19268,34 +19347,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        // if the node is not part of the repeating unit AND is located inside the square, move it
 	                        while ((node.node.repeatingUnit == undefined || node.node.repeatingUnit.id != rep.id) && _shapes[node.node.id][0] >= repCoord[0] && _shapes[node.node.id][0] <= repCoord[1] && _shapes[node.node.id][1] >= repCoord[2] && _shapes[node.node.id][1] <= repCoord[3] && !dontMove) {
 	                            var link = void 0;
-	                            var _iteratorNormalCompletion16 = true;
-	                            var _didIteratorError16 = false;
-	                            var _iteratorError16 = undefined;
+	                            var _iteratorNormalCompletion9 = true;
+	                            var _didIteratorError9 = false;
+	                            var _iteratorError9 = undefined;
 	
 	                            try {
-	                                for (var _iterator16 = _glycan.graph.edges()[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
-	                                    var e = _step16.value;
+	                                for (var _iterator9 = _glycan.graph.edges()[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+	                                    var e = _step9.value;
 	
 	                                    if (e.target == node.node.id) link = e;
 	                                }
 	                            } catch (err) {
-	                                _didIteratorError16 = true;
-	                                _iteratorError16 = err;
+	                                _didIteratorError9 = true;
+	                                _iteratorError9 = err;
 	                            } finally {
 	                                try {
-	                                    if (!_iteratorNormalCompletion16 && _iterator16.return) {
-	                                        _iterator16.return();
+	                                    if (!_iteratorNormalCompletion9 && _iterator9.return) {
+	                                        _iterator9.return();
 	                                    }
 	                                } finally {
-	                                    if (_didIteratorError16) {
-	                                        throw _iteratorError16;
+	                                    if (_didIteratorError9) {
+	                                        throw _iteratorError9;
 	                                    }
 	                                }
 	                            }
 	
 	                            donorPosition = link.donorPosition.value;
-	                            var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition).x;
-	                            var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition).y;
+	                            var dy = _XYvalues2.default.prototype.getXYvalue(donorPosition).y * 50;
+	                            var dx = _XYvalues2.default.prototype.getXYvalue(donorPosition).x * 50;
 	                            var startX = _shapes[node.node.id][0];
 	                            var startY = _shapes[node.node.id][1];
 	                            if (!checkNodesInLine(startX, startY, dy, dx, repCoord, _shapes)) _shapes = vf.moveNodeAndChildren(node, dx, dy);else {
@@ -19305,31 +19384,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                }
 	            } catch (err) {
-	                _didIteratorError15 = true;
-	                _iteratorError15 = err;
+	                _didIteratorError8 = true;
+	                _iteratorError8 = err;
 	            } finally {
 	                try {
-	                    if (!_iteratorNormalCompletion15 && _iterator15.return) {
-	                        _iterator15.return();
+	                    if (!_iteratorNormalCompletion8 && _iterator8.return) {
+	                        _iterator8.return();
 	                    }
 	                } finally {
-	                    if (_didIteratorError15) {
-	                        throw _iteratorError15;
+	                    if (_didIteratorError8) {
+	                        throw _iteratorError8;
 	                    }
 	                }
 	            }
 	        }
 	    } catch (err) {
-	        _didIteratorError14 = true;
-	        _iteratorError14 = err;
+	        _didIteratorError7 = true;
+	        _iteratorError7 = err;
 	    } finally {
 	        try {
-	            if (!_iteratorNormalCompletion14 && _iterator14.return) {
-	                _iterator14.return();
+	            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	                _iterator7.return();
 	            }
 	        } finally {
-	            if (_didIteratorError14) {
-	                throw _iteratorError14;
+	            if (_didIteratorError7) {
+	                throw _iteratorError7;
 	            }
 	        }
 	    }
@@ -19338,7 +19417,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19349,132 +19428,681 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _MonosaccharideGlycoCT = __webpack_require__(15);
+	var _RepeatingUnit = __webpack_require__(26);
 	
-	var _MonosaccharideGlycoCT2 = _interopRequireDefault(_MonosaccharideGlycoCT);
+	var _RepeatingUnit2 = _interopRequireDefault(_RepeatingUnit);
+	
+	var _Monosaccharide = __webpack_require__(25);
+	
+	var _Monosaccharide2 = _interopRequireDefault(_Monosaccharide);
+	
+	var _emFunction = __webpack_require__(35);
+	
+	var _emFunction2 = _interopRequireDefault(_emFunction);
+	
+	var _appFunction = __webpack_require__(33);
+	
+	var _appFunction2 = _interopRequireDefault(_appFunction);
+	
+	var _visFunction = __webpack_require__(34);
+	
+	var _visFunction2 = _interopRequireDefault(_visFunction);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var emFunction = function () {
-	    function emFunction() {
-	        _classCallCheck(this, emFunction);
+	/**
+	    This source code moved from src/js/views/menu.js
+	 */
+	
+	var RepetitionUtility = function () {
+	    function RepetitionUtility(_glycan, _treeData, _shapes) {
+	        _classCallCheck(this, RepetitionUtility);
+	
+	        this._shapes = _shapes;
+	        this._treeData = _treeData;
+	        this._glycan = _glycan;
 	    }
 	
-	    _createClass(emFunction, [{
-	        key: "generateTree",
+	    _createClass(RepetitionUtility, [{
+	        key: "start",
 	
 	
-	        /**
-	         * Creates a tree from the Glycan
-	         * Called after using the parser, which only returns a Glycan
-	         * @returns {Array}
-	         */
-	        value: function generateTree(_glycan) {
-	            // Put parentId in each node
-	            var nodes = _glycan.graph.nodes();
-	            for (var nodePos in nodes) {
-	                var parent = void 0;
-	                var _iteratorNormalCompletion = true;
-	                var _didIteratorError = false;
-	                var _iteratorError = undefined;
+	        // Verifies if the selection is legal for a repetion, then creates it
+	        value: function start(_clickedNode, _selectedNodes) {
+	            var ef = new _emFunction2.default();
+	            var af = new _appFunction2.default();
+	            var vf = new _visFunction2.default();
+	            var nodes = [_clickedNode].concat(_selectedNodes);
+	            if (!this.isRepeated(nodes)) {
+	                var treeNodes = this.findNodesInTree(nodes, this.treeData);
+	                var repEntry = void 0,
+	                    repExit = void 0;
+	                if (this.isBranchSelected(treeNodes)) // BRANCH
+	                    {
+	                        repEntry = treeNodes[0].node;
+	                        repExit = this.findRepExit(treeNodes[0], this.treeData, _clickedNode, _selectedNodes);
+	                        if (repExit.length !== 1) // If the rep unit has 2 exits
+	                            {
+	                                return;
+	                            }
+	                        repExit = repExit[0].node;
+	                    } else // NO BRANCH
+	                    {
+	                        var entryExit = this.findEntryAndExit(treeNodes);
+	                        if (!entryExit) {
+	                            return;
+	                        }
+	                        repEntry = entryExit[0];
+	                        repExit = entryExit[1];
+	                    }
 	
+	                if (repExit !== undefined) // Doesn't finish by a fork
+	                    {
+	                        var min = prompt("Minimum number of repetitions");
+	                        if (min == null || min === "") {
+	                            return;
+	                        }
+	                        var max = prompt("Maximum number of repetitions");
+	                        if (max == null || max === "") {
+	                            return;
+	                        }
+	                        var donor = prompt("Donor Position on the " + repExit.monosaccharideType.name + " (\"?\" for unknown linkage)");
+	                        if (donor !== "?" && (donor > ef.getNumberCarbons(repExit) || donor < 1)) return;
+	                        var acceptor = prompt("Acceptor Position on the " + repEntry.monosaccharideType.name + " (\"?\" for unknown linkage)");
+	                        if (acceptor !== "?" && (acceptor > 3 || acceptor < 1)) return;
+	                        var id = af.randomString(7);
+	                        var repeatingUnit = new _RepeatingUnit2.default(id, treeNodes, min, max, repEntry, repExit, donor, acceptor);
+	                        var _iteratorNormalCompletion = true;
+	                        var _didIteratorError = false;
+	                        var _iteratorError = undefined;
+	
+	                        try {
+	                            for (var _iterator = nodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                                var node = _step.value;
+	
+	                                vf.findNodeInTree(this.treeData, node).node = repeatingUnit;
+	                                node.repeatingUnit = repeatingUnit;
+	                            }
+	                        } catch (err) {
+	                            _didIteratorError = true;
+	                            _iteratorError = err;
+	                        } finally {
+	                            try {
+	                                if (!_iteratorNormalCompletion && _iterator.return) {
+	                                    _iterator.return();
+	                                }
+	                            } finally {
+	                                if (_didIteratorError) {
+	                                    throw _iteratorError;
+	                                }
+	                            }
+	                        }
+	                    }
+	            }
+	
+	            return;
+	        }
+	
+	        // Checks if the selection array "nodes" is linear or has a fork
+	
+	    }, {
+	        key: "isBranchSelected",
+	        value: function isBranchSelected(nodes) {
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
+	
+	            try {
+	                for (var _iterator2 = nodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                    var node = _step2.value;
+	
+	                    if (node.children != undefined) {
+	                        var selectedChildren = 0;
+	                        var _iteratorNormalCompletion3 = true;
+	                        var _didIteratorError3 = false;
+	                        var _iteratorError3 = undefined;
+	
+	                        try {
+	                            for (var _iterator3 = node.children[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	                                var child = _step3.value;
+	
+	                                if (nodes.includes(child)) {
+	                                    selectedChildren++;
+	                                }
+	                            }
+	                        } catch (err) {
+	                            _didIteratorError3 = true;
+	                            _iteratorError3 = err;
+	                        } finally {
+	                            try {
+	                                if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	                                    _iterator3.return();
+	                                }
+	                            } finally {
+	                                if (_didIteratorError3) {
+	                                    throw _iteratorError3;
+	                                }
+	                            }
+	                        }
+	
+	                        if (selectedChildren > 1) {
+	                            return true;
+	                        }
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError2 = true;
+	                _iteratorError2 = err;
+	            } finally {
 	                try {
-	                    for (var _iterator = _glycan.graph.edges()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                        var edge = _step.value;
-	
-	                        if (edge.target == nodes[nodePos].id) {
-	                            parent = edge.sourceNode;
-	                        }
+	                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                        _iterator2.return();
 	                    }
-	                } catch (err) {
-	                    _didIteratorError = true;
-	                    _iteratorError = err;
 	                } finally {
+	                    if (_didIteratorError2) {
+	                        throw _iteratorError2;
+	                    }
+	                }
+	            }
+	
+	            return false;
+	        }
+	
+	        // Find the entry and exit of a bunch of nodes (for repeating units)
+	
+	    }, {
+	        key: "findEntryAndExit",
+	        value: function findEntryAndExit(nodes) {
+	            var maxDepth = nodes[0].depth;
+	            var minDepth = nodes[0].depth;
+	            var maxNode = nodes[0].node;
+	            var minNode = nodes[0].node;
+	            var unselectedChildren = 0;
+	            var _iteratorNormalCompletion4 = true;
+	            var _didIteratorError4 = false;
+	            var _iteratorError4 = undefined;
+	
+	            try {
+	                for (var _iterator4 = nodes[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                    var node = _step4.value;
+	
+	                    unselectedChildren += this.countUnselectedChildren(node, nodes);
+	                    if (node.depth > maxDepth) {
+	                        maxDepth = node.depth;
+	                        maxNode = node.node;
+	                    }
+	                    if (node.depth < minDepth) {
+	                        minDepth = node.depth;
+	                        minNode = node.node;
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError4 = true;
+	                _iteratorError4 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	                        _iterator4.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError4) {
+	                        throw _iteratorError4;
+	                    }
+	                }
+	            }
+	
+	            if (unselectedChildren > 1) {
+	                return false;
+	            } else {
+	                return [minNode, maxNode];
+	            }
+	        }
+	
+	        // Find the exit(s) of a group of nodes (for repeating unit)
+	
+	    }, {
+	        key: "findRepExit",
+	        value: function findRepExit(root, _treeData, _clickedNode, _selectedNodes) {
+	            var wholeSelection = [_clickedNode].concat(_selectedNodes);
+	            var treeNode = this.findNodesInTree(wholeSelection, _treeData);
+	            var exits = [];
+	            var stack = [root];
+	
+	            while (stack.length > 0) {
+	                var node = stack.pop();
+	                if (this.countUnselectedChildren(node, treeNode) === 1) {
+	                    if (!exits.includes(node)) exits.push(node);
+	                }
+	                if (node.children !== undefined) {
+	                    var _iteratorNormalCompletion5 = true;
+	                    var _didIteratorError5 = false;
+	                    var _iteratorError5 = undefined;
+	
 	                    try {
-	                        if (!_iteratorNormalCompletion && _iterator.return) {
-	                            _iterator.return();
+	                        for (var _iterator5 = node.children[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	                            var child = _step5.value;
+	
+	                            if (treeNode.includes(child)) stack.push(child);
 	                        }
+	                    } catch (err) {
+	                        _didIteratorError5 = true;
+	                        _iteratorError5 = err;
 	                    } finally {
-	                        if (_didIteratorError) {
-	                            throw _iteratorError;
+	                        try {
+	                            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	                                _iterator5.return();
+	                            }
+	                        } finally {
+	                            if (_didIteratorError5) {
+	                                throw _iteratorError5;
+	                            }
 	                        }
 	                    }
 	                }
-	
-	                if (parent !== undefined) nodes[nodePos] = { "node": nodes[nodePos], "parentId": parent.id, "children": [] };else nodes[nodePos] = { "node": nodes[nodePos], "children": [] };
 	            }
+	            return exits;
+	        }
 	
-	            // Switch to tree view
-	            var map = {},
-	                node = void 0,
-	                roots = [];
-	            var parentsIds = {};
-	            var nodesDepths = {};
-	            for (var i = 0; i < nodes.length; i += 1) {
-	                node = nodes[i];
-	                node.children = [];
-	                map[node.node.id] = i; // use map to look-up the parents
-	                if (node.parentId !== undefined) {
-	                    nodes[map[node.parentId]].children.push(node);
-	                    parentsIds[node.node.id] = node;
-	                    if (node.node.id !== node.parentId) nodes[map[node.parentId]].parent = parentsIds[node.parentId];
+	        // Turns an array of Monosaccharides into an array of tree nodes
 	
-	                    if (nodesDepths[node.node.id] === undefined) {
-	                        nodes[map[node.parentId]].depth = nodesDepths[node.parentId] + 1;
-	                        nodesDepths[node.node.id] = nodesDepths[node.parentId] + 1;
+	    }, {
+	        key: "findNodesInTree",
+	        value: function findNodesInTree(arr, _treeData) {
+	            var ret = [];
+	            var vf = new _visFunction2.default();
+	            for (var i in arr) {
+	                ret[i] = vf.findNodeInTree(_treeData, arr[i]);
+	            }
+	            return ret;
+	        }
+	
+	        // Check if any of the nodes in arr are already in a REP
+	
+	    }, {
+	        key: "isRepeated",
+	        value: function isRepeated(arr) {
+	            var _iteratorNormalCompletion6 = true;
+	            var _didIteratorError6 = false;
+	            var _iteratorError6 = undefined;
+	
+	            try {
+	                for (var _iterator6 = arr[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	                    var node = _step6.value;
+	
+	                    if (node.repeatingUnit !== undefined) {
+	                        return true;
 	                    }
-	
-	                    delete nodes[map[node.parentId]].parentId;
-	                } else {
-	                    roots = node;
-	                    parentsIds[node.node.id] = node;
-	                    nodesDepths[node.node.id] = 0;
-	                    roots.depth = 0;
+	                }
+	            } catch (err) {
+	                _didIteratorError6 = true;
+	                _iteratorError6 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	                        _iterator6.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError6) {
+	                        throw _iteratorError6;
+	                    }
 	                }
 	            }
 	
-	            delete roots.parent;
-	
-	            return roots;
+	            return false;
 	        }
 	
 	        /**
-	         * Returns the number of carbons the residue can be linked by
+	            Used to check if the repetition can be done on the array "nodes".
+	            If there are more than 1 unselected children in the array, there are several exits to the repeating unit, which is impossible.
+	            If there are 0 unselected children, the repetition is only possible if there are no branches selected:
+	            If you select the end of a linear glycan, there are no exits because the last selected node is the last node of the glycan (Repetition OK)
+	            however, if there is a branch an no unselected children, the group of nodes ends with a fork, which is impossible
 	         */
 	
 	    }, {
-	        key: "getNumberCarbons",
-	        value: function getNumberCarbons(node) {
-	            if (node == undefined) {
-	                return 6;
-	            }
-	            var monoType = _MonosaccharideGlycoCT2.default[node.monosaccharideType.name];
-	            if (monoType == undefined) {
-	                monoType = _MonosaccharideGlycoCT2.default[node.monosaccharideType.name.substring(0, 3)];
-	                if (monoType == undefined) {
-	                    monoType = _MonosaccharideGlycoCT2.default[node.monosaccharideType.name.substring(0, 4)];
-	                    if (monoType == undefined && node.monosaccharideType.name.substring(0, 3) == "Neu") {
-	                        monoType = _MonosaccharideGlycoCT2.default.Kdn;
+	        key: "countUnselectedChildren",
+	        value: function countUnselectedChildren(node, nodes) {
+	            var count = 0;
+	            if (node.children != undefined) {
+	                var _iteratorNormalCompletion7 = true;
+	                var _didIteratorError7 = false;
+	                var _iteratorError7 = undefined;
+	
+	                try {
+	                    for (var _iterator7 = node.children[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	                        var child = _step7.value;
+	
+	                        if (!nodes.includes(child) && child.node instanceof _Monosaccharide2.default) {
+	                            count++;
+	                        }
+	                    }
+	                } catch (err) {
+	                    _didIteratorError7 = true;
+	                    _iteratorError7 = err;
+	                } finally {
+	                    try {
+	                        if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	                            _iterator7.return();
+	                        }
+	                    } finally {
+	                        if (_didIteratorError7) {
+	                            throw _iteratorError7;
+	                        }
 	                    }
 	                }
-	            }
-	            var glycoct = monoType.glycoct;
-	            if (glycoct.indexOf("PEN") != -1) {
-	                return 5;
-	            } else if (glycoct.indexOf("NON") != -1) {
-	                return 9;
+	
+	                return count;
 	            } else {
-	                return 6;
+	                return 0;
 	            }
+	        }
+	    }, {
+	        key: "glycan",
+	        set: function set(_glycan) {
+	            this._glycan = _glycan;
+	        },
+	        get: function get() {
+	            return this._glycan;
+	        }
+	    }, {
+	        key: "treeData",
+	        set: function set(_treeData) {
+	            this._treeData = _treeData;
+	        },
+	        get: function get() {
+	            return this._treeData;
+	        }
+	    }, {
+	        key: "shapes",
+	        set: function set(_shapes) {
+	            this._shapes = _shapes;
+	        },
+	        get: function get() {
+	            return this._shapes;
 	        }
 	    }]);
 	
-	    return emFunction;
+	    return RepetitionUtility;
 	}();
 	
-	exports.default = emFunction;
+	exports.default = RepetitionUtility;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.displayLabels = exports.createTriangleLinearGradient = exports.createDiamondLinearGradient = exports.createSquareLinearGradient = undefined;
+	
+	var _Substituent = __webpack_require__(27);
+	
+	var _Substituent2 = _interopRequireDefault(_Substituent);
+	
+	var _XYLinkLabels = __webpack_require__(21);
+	
+	var _XYLinkLabels2 = _interopRequireDefault(_XYLinkLabels);
+	
+	var _visFunction = __webpack_require__(34);
+	
+	var _visFunction2 = _interopRequireDefault(_visFunction);
+	
+	var _SubstituentLabels = __webpack_require__(20);
+	
+	var _SubstituentLabels2 = _interopRequireDefault(_SubstituentLabels);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/**
+	 * Create a linear gradient for a square
+	 * @param color The color that the square has to have
+	 * @param gradientId The generated id of the linear gradient
+	 */
+	var createSquareLinearGradient = exports.createSquareLinearGradient = function createSquareLinearGradient(color, gradientId) {
+	    var svg = d3.select("#svgTree"); // Get the svgTree
+	    // Create a linearGradient using the gradientId
+	    var linearGradient = svg.append("linearGradient").attr("id", gradientId).attr("x1", "0%").attr("y1", "100%").attr("x2", "100%").attr("y2", "0%").attr("spreadMethod", "pad");
+	
+	    // First half of the square, in white
+	    linearGradient.append("stop").attr("offset", "48%").attr("stop-color", "#fff").attr("stop-opacity", 1);
+	
+	    // Separation in the middle, in black
+	    linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "#000").attr("stop-opacity", 1);
+	
+	    // Second half of the square, in the wanted color
+	    linearGradient.append("stop").attr("offset", "52%").attr("stop-color", color).attr("stop-opacity", 1);
+	};
+	
+	/**
+	 * Create a linear gradient for a diamond
+	 * @param type The type of the monosaccharide that the diamond has to have
+	 * @param gradientId The generated id of the linear gradient
+	 */
+	var createDiamondLinearGradient = exports.createDiamondLinearGradient = function createDiamondLinearGradient(type, gradientId) {
+	    var svg = d3.select("#svgTree"); // Get the svgTree
+	    var linearGradient = void 0;
+	    // AltA and IdoA are reverted diamonds so we don't append the same linearGradient
+	    if (type === MonosaccharideType.AltA || type === MonosaccharideType.IdoA) {
+	        linearGradient = svg.append("linearGradient").attr("id", gradientId).attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%").attr("spreadMethod", "pad");
+	    } else {
+	        linearGradient = svg.append("linearGradient").attr("id", gradientId).attr("x1", "0%").attr("y1", "100%").attr("x2", "0%").attr("y2", "0%").attr("spreadMethod", "pad");
+	    }
+	
+	    // First half of the diamond, in white
+	    linearGradient.append("stop").attr("offset", "48%").attr("stop-color", "#fff").attr("stop-opacity", 1);
+	
+	    // Separation of the diamond, in black
+	    linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "#000").attr("stop-opacity", 1);
+	
+	    // Second half of the diamond, in the wanted color
+	    linearGradient.append("stop").attr("offset", "52%").attr("stop-color", type.color).attr("stop-opacity", 1);
+	};
+	
+	/**
+	 * Create a linear gradient for a triangle
+	 * @param color The color that the triangle has to have
+	 * @param gradientId The generated id of the linear gradient
+	 */
+	var createTriangleLinearGradient = exports.createTriangleLinearGradient = function createTriangleLinearGradient(color, gradientId) {
+	    var svg = d3.select("#svgTree");
+	    var linearGradient = svg.append("linearGradient").attr("id", gradientId).attr("x1", "0%").attr("y1", "54%").attr("x2", "50%").attr("y2", "22%").attr("spreadMethod", "pad");
+	
+	    // First half of the triangle, in white
+	    linearGradient.append("stop").attr("offset", "40%").attr("stop-color", "#fff").attr("stop-opacity", 1);
+	
+	    // Separation of the triangle, in black
+	    linearGradient.append("stop").attr("offset", "50%").attr("stop-color", "#000").attr("stop-opacity", 1);
+	
+	    // Second half of the triangle, in the wanted color
+	    linearGradient.append("stop").attr("offset", "60%").attr("stop-color", color).attr("stop-opacity", 1);
+	};
+	
+	/**
+	 * Called once to display the donorPosition and acceptorPosition of the link,
+	 * Then once more to display the anomericity (with a different font-family)
+	 * A Monospace font is used so that no matter what the two labels contain,
+	 * they won't overlap each other
+	 * @param linkLabel
+	 * @param links
+	 * @param anom
+	 */
+	var displayLabels = exports.displayLabels = function displayLabels(linkLabel, links, anom) {
+	    var root = { "node": { "id": "root" } };
+	    var rootLink = { "source": root, "target": treeData };
+	    var visFunc = new _visFunction2.default();
+	    links.push(rootLink);
+	    linkLabel.data(links).enter().append("text").attr("class", "linkLabel").style("fill", function (d) {
+	        if (!exporting) {
+	            var allSelectedNodes = [clickedNode].concat(selectedNodes);
+	            if (d.target.node instanceof _Substituent2.default && d.source.node === clickedNode && selectedNodes.length === 0) {
+	                return "red";
+	            }
+	            if (d.target.node instanceof _Substituent2.default && allSelectedNodes.includes(d.source.node) || // If it's a sub and its parent is selected
+	            allSelectedNodes.includes(d.target.node) && allSelectedNodes.includes(d.source.node)) {
+	                // or both are monosaccharides are selected
+	                return "#58ACFA";
+	            } else if (anom) {
+	                return "#4b4b4b";
+	            }
+	            return "black";
+	        }
+	        return "black";
+	    }).style("font-family", function (d) {
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                return "Courier New";
+	            } else {
+	            return "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue";
+	        }
+	    }).style("font-size", "10px").style("alignment-baseline", "text-before-edge").style("dominant-baseline", "text-before-edge").style("text-anchor", function (d) {
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                return "middle";
+	            } else {
+	            var linked = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	            if (linked === 2 || linked === 3 || linked === 6 || linked === "undefined") {
+	                return "middle";
+	            } else if (linked === 1) {
+	                return "left";
+	            } else if (linked === 4 || linked === 5) {
+	                return "right";
+	            }
+	        }
+	        return "middle";
+	    }).style("font-style", function (d) {
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                if (anom) {
+	                    return "italic";
+	                }
+	            }
+	        return "";
+	    }).attr("x", function (d) {
+	        var finalX = void 0; // Final x of the label
+	        var source = shapes[d.source.node.id]; // Calculate source coordinates
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                var target = shapes[d.target.node.id]; // Calculate target coordinates
+	                var usualX = (source[0] + target[0]) / 2; // Get x of the middle of the link
+	                if (d.source.node.id === "root") finalX = (shapes["root"][0] * 2 + 50) / 2;
+	                // Add value to have a visible display (not on the line)
+	                else {
+	                        var donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                        finalX = usualX + _XYLinkLabels2.default.prototype.getXYLinkLabel(donorPos).x; // Add value to have a visible display (not on the line)
+	                    }
+	            } else // Substituant
+	            {
+	                /*
+	                                let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                                let y = source[1] + SubstituentLabels.prototype.getSubstituentLabel(donorPos).y;
+	                                finalX = y;
+	                                finalX = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[0];
+	                 */
+	                var _donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                finalX = _SubstituentLabels2.default.prototype.getSubstituentLabel(_donorPos).x + source[0];
+	            }
+	
+	        return finalX; // Return the obtained value
+	    }).attr("y", function (d) {
+	        var finalY = void 0; // Final y of the label
+	        var source = shapes[d.source.node.id]; // Get source coordinates
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                var target = shapes[d.target.node.id]; // Calculate target coordinates
+	                var usualY = (source[1] + target[1]) / 2; // Get y of the middle of the link
+	                if (d.source.node.id === "root") finalY = shapes["root"][1] + 4;
+	                // Add value to have a visible display
+	                else {
+	                        var donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                        finalY = usualY + _XYLinkLabels2.default.prototype.getXYLinkLabel(donorPos).y; // Add value to have a visible display (not on the line)
+	                    }
+	            } else // Substituant
+	            {
+	                /*
+	                                let donorPos = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                                let x = source[0] + SubstituentLabels.prototype.getSubstituentLabel(donorPos).x;
+	                                finalY = appFunc.findSubstituantLabelSpot(source[0], source[1], visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value)[1];
+	                 */
+	                var _donorPos2 = visFunc.findLinkForMono(d.target.node, glycan).donorPosition.value;
+	                finalY = _SubstituentLabels2.default.prototype.getSubstituentLabel(_donorPos2).y + source[1];
+	            }
+	        return finalY; // Return the obtained value
+	    }).style("stroke", function (d) {
+	        if (!exporting) {
+	            var allSelectedNodes = [clickedNode].concat(selectedNodes);
+	            if (d.target.node instanceof _Substituent2.default && d.source.node === clickedNode && selectedNodes.length === 0) {
+	                return "red";
+	            }
+	            if (d.target.node instanceof _Substituent2.default && allSelectedNodes.includes(d.source.node) || // If it's a sub and its parent is selected
+	            allSelectedNodes.includes(d.target.node) && allSelectedNodes.includes(d.source.node)) {
+	                // or both are monosaccharides are selected
+	                return "#58ACFA";
+	            } else if (anom) {
+	                return "#4b4b4b";
+	            }
+	            return "black";
+	        }
+	        return "black";
+	    }).text(function (d) {
+	        if (d.target.node["anomericity"]) // Monosaccharide
+	            {
+	                var link = visFunc.findLinkForMono(d.target.node, glycan); // Get the link to which we want to add a label
+	                var anomericity = void 0; // Anomericity of the target node
+	                if (!anom) anomericity = "\xA0";else {
+	                    if (d.target.node.anomericity.name === "ALPHA") {
+	                        anomericity = "α";
+	                    } else if (d.target.node.anomericity.name === "BETA") {
+	                        anomericity = "β";
+	                    } else {
+	                        anomericity = "?\xA0";
+	                    }
+	                }
+	                var acceptorPositionLabel = void 0;
+	                if (anom) acceptorPositionLabel = "\xA0";else {
+	                    if (d.source.node.id === "root") {
+	                        if (rootAcceptorPosition.value === "undefined") {
+	                            acceptorPositionLabel = "?";
+	                        } else {
+	                            acceptorPositionLabel = rootAcceptorPosition.value;
+	                        }
+	                    } else {
+	                        if (link.acceptorPosition.value === "undefined") {
+	                            acceptorPositionLabel = "?";
+	                        } else {
+	                            acceptorPositionLabel = link.acceptorPosition.value;
+	                        }
+	                    }
+	                }
+	
+	                var donorPositionLabel = void 0;
+	                if (anom) donorPositionLabel = "\xA0";else {
+	                    if (d.source.node.id === "root") {
+	                        if (rootDonorPosition.value === 'undefined') {
+	                            donorPositionLabel = "?";
+	                        } else {
+	                            donorPositionLabel = rootDonorPosition.value;
+	                        }
+	                    } else {
+	                        if (link.donorPosition.value === 'undefined') {
+	                            donorPositionLabel = "?";
+	                        } else {
+	                            donorPositionLabel = link.donorPosition.value;
+	                        }
+	                    }
+	                }
+	                var coma = void 0;
+	                if (anom) coma = "\xA0";else coma = ",";
+	                return anomericity + acceptorPositionLabel + coma + donorPositionLabel; // Text of the label
+	            } else {
+	            return d.target.node._substituentType.label;
+	        }
+	    });
+	};
 
 /***/ })
 /******/ ])
