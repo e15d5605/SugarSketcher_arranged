@@ -15,6 +15,7 @@ import SubstituentsPositions from "./SubstituentsPositions";
 import DonorPosition from "../../glycomics/dictionary/DonorPosition";
 import AcceptorPosition from "../../glycomics/dictionary/AcceptorPosition";
 import appFunction from "../../../guifunction/appFunction";
+import Monosaccharide from "../../glycomics/nodes/Monosaccharide";
 
 export default class GlycoCTWriter{
 
@@ -24,6 +25,9 @@ export default class GlycoCTWriter{
         this.res = [];
         this.rep = [];
         this.edges = [];
+
+        // 20210609, S.TSUCHIYA added
+        this.nodeLists = {};
     }
 
     // Get SubstituentType
@@ -33,7 +37,7 @@ export default class GlycoCTWriter{
         {
             return SubstituentType.NGlycolyl;
         }
-        for (var sub of SubstituentType)
+        for (let sub of SubstituentType)
         {
             if (sub.label.toLowerCase() === label.toLowerCase())
                 return sub;
@@ -44,7 +48,7 @@ export default class GlycoCTWriter{
     // Get MonosaccharideType
     getMono(name)
     {
-        for (var mono of MonosaccharideType)
+        for (let mono of MonosaccharideType)
         {
             if (mono.name.toLowerCase() === name.toLowerCase())
                 return mono;
@@ -54,12 +58,12 @@ export default class GlycoCTWriter{
     // Add a Substituent residue line to the formula
     writeSub(i, substituent)
     {
-        var formula = "";
+        let formula = "";
         // Substituents start with index + "s"
         formula += i+1 + "s:";
-        var subName = substituent.substituentType.name;
-        var substituentType = "";
-        for (var sub of GlycoCTSubstituents) {
+        let subName = substituent.substituentType.name;
+        let substituentType = "";
+        for (let sub of GlycoCTSubstituents) {
             if (subName.toLowerCase() === sub.name.toLowerCase()) {
                 substituentType = sub.glycoct;
             }
@@ -79,9 +83,9 @@ export default class GlycoCTWriter{
     // Add a substituent link to the formula
     writeSubLink(i,source, target, donorPosition, acceptorPosition)
     {
-        var formula = "";
-        // Substituent links start with index, and "d"
-        formula += i+1 + ":" + source + "d";
+        let formula = "";
+        // Substituent links start with index, and "d" or "o"
+        formula += i+1 + ":" + source + this.checkSubLinkageType(source, target);
 
         formula += "(" + donorPosition;
         formula += "+";
@@ -98,7 +102,7 @@ export default class GlycoCTWriter{
     // Add a Monosaccharide link to the formula
     writeMonoLink(i, source, target, donorPosition, acceptorPosition, prefix = "o", suffix = "d")
     {
-        var formula = "";
+        let formula = "";
         // Monosaccharide links start by either "n" if the source node is ending a Repeating Unit, or "o" otherwise
         formula += i + ":" + source + prefix;
 
@@ -121,22 +125,22 @@ export default class GlycoCTWriter{
         {
             return -1;
         }
-        var comp = new EdgeComparator();
-        var edge1 = this.getLink(a.parent.node.id,a.node.id);
-        var edge2 = this.getLink(b.parent.node.id, b.node.id);
+        let comp = new EdgeComparator();
+        let edge1 = this.getLink(a.parent.node.id,a.node.id);
+        let edge2 = this.getLink(b.parent.node.id, b.node.id);
         return comp.compare(edge1,edge2);
     }
 
     // Basic sorting algorithm to sort a node's children to get the right order for the GlycoCT
     sort(arr) {
 
-        var arr2 = Object.assign({},arr);
-        var len = arr.length;
+        let arr2 = Object.assign({},arr);
+        let len = arr.length;
 
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             while (i > -1) {
                 if (this.comparatorFunction(arr[i],arr[i + 1]) > 0) {
-                    var temp = arr[i];
+                    let temp = arr[i];
                     arr[i] = arr[i + 1];
                     arr[i + 1] = temp;
                     i--;
@@ -151,9 +155,9 @@ export default class GlycoCTWriter{
     // Get a link between two nodes whose ids are given
     getLink(id1, id2)
     {
-        for (var edge of this.glycan.graph.edges())
+        for (let edge of this.glycan.graph.edges())
         {
-            if ((edge.source == id1 && edge.target == id2) || (edge.source == id2 && edge.target == id1))
+            if ((edge.source === id1 && edge.target === id2) || (edge.source === id2 && edge.target === id1))
             {
                 return edge;
             }
@@ -162,7 +166,7 @@ export default class GlycoCTWriter{
 
     /**
      * Puts all the info we need in the arrays res, edges and rep
-     * This function is used for the main RES, but also for the RES inside a REP so we have this "unit" var to keep track of this
+     * This function is used for the main RES, but also for the RES inside a REP so we have this "unit" let to keep track of this
      * @param root
      * @param unit: id of the repeating unit if we're writing lines within a rep
      */
@@ -177,15 +181,15 @@ export default class GlycoCTWriter{
             this.rep = [];
             return;
         }
-        var stack = [];
+        let stack = [];
         stack.push(root);
         if (root.node !== undefined)
         {
             // We go through the tree
             while (stack.length > 0)
             {
-                var node = stack.pop();
-                var nodeUnit = node.node.repeatingUnit;
+                let node = stack.pop();
+                let nodeUnit = node.node.repeatingUnit;
                 // if (we're not writing for a REP && current node is in no REP) || (we're writing for a REP && the current's node's repeating unit is the unit we're writing for)
                 if (unit === "" && nodeUnit === undefined || unit !== "" && (nodeUnit !== undefined && nodeUnit.id === unit))
                 {
@@ -208,7 +212,7 @@ export default class GlycoCTWriter{
                             if (node.children !== undefined)
                             {
                                 // We go through the children, if they are also part of the unit we add the link
-                                for (var rootChild of node.children)
+                                for (let rootChild of node.children)
                                 {
                                     if (rootChild.node.repeatingUnit !== nodeUnit)
                                     {
@@ -227,14 +231,14 @@ export default class GlycoCTWriter{
                 }
 
                 // Finally we add the children to the stack, in the right order
-                var children = node.children;
+                let children = node.children;
                 if (children !== undefined)
                 {
                     if (children.length > 1)
                     {
                         children = this.sort(children);
                     }
-                    for (var child of children) {
+                    for (let child of children) {
                         stack.push(child);
                     }
                 }
@@ -258,8 +262,8 @@ export default class GlycoCTWriter{
      */
     generateRES(resId, repId, res, associatedSubs, repNumber, offset = 0) { // Offset: if we have some Repeating Units, we generate the RES section within the REP
         // with this function, but the offset will create a continuity with the previous indexes
-        var formula = "RES\n";
-        var i;
+        let formula = "RES\n";
+        let i;
         // For every residue (whether it's a sub, mono, or rep)
         for (i = 0; i < res.length; i++)
         {
@@ -293,7 +297,7 @@ export default class GlycoCTWriter{
                 }
                 formula += "-";
 
-                var resName = res[i].node._monosaccharideType.name;
+                let resName = res[i].node._monosaccharideType.name;
 
                 // In this function, we'll rename weird Monosaccharides names so we can recognize them more easily.
                 // E.g: Neu5Ac => KdnNAc so we can recognize Kdn and NAc
@@ -314,7 +318,7 @@ export default class GlycoCTWriter{
                         break;
                 }
 
-                var transform;
+                let transform;
                 let appFunc = new appFunction();
 
                 // These types either don't need a specified isomericity or already bear it by default in their glycoct in the database
@@ -342,7 +346,7 @@ export default class GlycoCTWriter{
                 }
                 else // It can be that the residue is a Mono+Sub (GalNAc...)
                 {
-                    var monoName, subName, assocSubType, assocSub, donorPosition;
+                    let monoName, subName, assocSubType, assocSub, donorPosition;
                     if (MonosaccharideGlycoCT[resName.substring(0,3)] !== undefined) // If the 3 first letters make a monosaccharide
                     {
                         // We get the raw monosaccharide type, and we put the substituent in an array to be treated later
@@ -399,15 +403,21 @@ export default class GlycoCTWriter{
 
                 formula += "\n";
             }
-
+            // 20210609, S.TSUCHIYA added
+            this.nodeLists[i + 1] = res[i].node;
+            //
         }
         // Finally we treat the associatedSubs
-        for (var pair of associatedSubs)
+        for (let pair of associatedSubs)
         {
-            var associatedSub = pair[0];
+            let associatedSub = pair[0];
             formula += this.writeSub(i+offset, associatedSub);
             i++;
-            pair[0] = i + offset;
+            pair[0] = i + offset; // 20210601, S.TSUCHIYA modified
+
+            // 20210609, S.TSUCHIYA added
+            this.nodeLists[i + offset] = associatedSub;
+            //
         }
 
         return [i+offset,formula];
@@ -422,19 +432,19 @@ export default class GlycoCTWriter{
      * @returns {[*,*]}
      */
     generateLIN(resId, associatedSubs, offset = 0, unit = "") {
-        var formula = "";
-        var i;
+        let formula = "";
+        let i;
         if (this.res.length + associatedSubs.length > 1)
         {
             formula += "LIN\n";
-            var edges = this.edges;
-            var prevSource = 0, prevTarget = 0;
+            let edges = this.edges;
+            let prevSource = 0, prevTarget = 0;
             for (i = 0; i < edges.length; i++)
             {
                 // We get the link information
-                var source = (edges[i].sourceNode.repeatingUnit === undefined || unit !== "") ? resId[edges[i].sourceNode.getId()] : resId[edges[i].sourceNode.repeatingUnit.id];
-                var donorPosition = edges[i].donorPosition.value === "undefined" ? -1 : edges[i].donorPosition.value;
-                var acceptorPosition;
+                let source = (edges[i].sourceNode.repeatingUnit === undefined || unit !== "") ? resId[edges[i].sourceNode.getId()] : resId[edges[i].sourceNode.repeatingUnit.id];
+                let donorPosition = edges[i].donorPosition.value === "undefined" ? -1 : edges[i].donorPosition.value;
+                let acceptorPosition;
                 if (edges[i] instanceof SubstituentLinkage)
                     acceptorPosition = 1;
                 else if (edges[i].acceptorPosition.value === "undefined")
@@ -443,7 +453,7 @@ export default class GlycoCTWriter{
                     acceptorPosition = edges[i].acceptorPosition.value;
 
 
-                var target = (edges[i].targetNode.repeatingUnit === undefined || unit !== "") ? resId[edges[i].targetNode.getId()] : resId[edges[i].targetNode.repeatingUnit.id];
+                let target = (edges[i].targetNode.repeatingUnit === undefined || unit !== "") ? resId[edges[i].targetNode.getId()] : resId[edges[i].targetNode.repeatingUnit.id];
 
                 if (prevSource !== source || prevTarget !== target) // Cheap fix to this bug: When operating with repeating units, some links are duplicated
                 {
@@ -452,10 +462,10 @@ export default class GlycoCTWriter{
 
                     if (edges[i] instanceof GlycosidicLinkage)
                     {
-                        var prefix = "o";
-                        var suffix = "d";
-                        var sourceRep = findNodeInTree(this.tree,edges[i].sourceNode).node.repeatingUnit;
-                        var targetRep = findNodeInTree(this.tree,edges[i].targetNode).node.repeatingUnit;
+                        let prefix = "o";
+                        let suffix = "d";
+                        let sourceRep = this.findNodeInTree(this.tree,edges[i].sourceNode).node.repeatingUnit;
+                        let targetRep = this.findNodeInTree(this.tree,edges[i].targetNode).node.repeatingUnit;
                         // Set the prefix and suffix to get the right ones according to repeating units
                         if (sourceRep !== targetRep)
                         {
@@ -483,8 +493,9 @@ export default class GlycoCTWriter{
             }
 
 
-            for (var pair of associatedSubs)
+            for (let pair of associatedSubs)
             {
+                // 20210601, S.TSUCHIYA modified
                 formula += this.writeSubLink(i+offset, pair[1], pair[0], pair[2], 1);
                 i++;
             }
@@ -493,57 +504,36 @@ export default class GlycoCTWriter{
         return [0, ""];
     }
 
-/*
-    findNodeInTree(tree,node1)
-    {
-        var stack = [], node, i;
-        stack.push(tree);
-
-        while (stack.length > 0) {
-            node = stack.pop();
-            if (node.node == node1) {
-                return node;
-            } else if (node.children != undefined) {
-                for (i = 0; i < node.children.length; i += 1) {
-                    stack.push(node.children[i]);
-                }
-            }
-        }
-        return null;
-    }
- */
-
-
     /**
      * Main function called from outside the class to return the final formula
      * @returns {*}
      */
     exportGlycoCT() {
-        var resId = {};
-        var repId = {};
+        let resId = {};
+        let repId = {};
         this.generateArrays(this.tree);
-        var res = this.res;
-        var associatedSubs = [];
+        let res = this.res;
+        let associatedSubs = [];
         if (res.length === 0)
         {
             return "";
         }
-        var repNumber = 1;
+        let repNumber = 1;
 
         // RES
-        var resInfo = this.generateRES(resId, repId, res, associatedSubs, repNumber);
-        var formula = resInfo[1];
-        var lastResId = resInfo[0];
+        let resInfo = this.generateRES(resId, repId, res, associatedSubs, repNumber);
+        let formula = resInfo[1];
+        let lastResId = resInfo[0];
 
         // LIN
-        var linInfo = this.generateLIN(resId, associatedSubs);
+        let linInfo = this.generateLIN(resId, associatedSubs);
         formula += linInfo[1];
-        var lastLinId = linInfo[0];
+        let lastLinId = linInfo[0];
 
 
         // REP
 
-        for (var residue of this.res)
+        for (let residue of this.res)
         {
             if (residue instanceof RepeatingUnit)
             {
@@ -553,14 +543,14 @@ export default class GlycoCTWriter{
         if (this.rep.length !== 0) // if we have REPs
         {
             formula += "REP\n";
-            for (var rep of this.rep)
+            for (let rep of this.rep)
             {
                 this.generateArrays(this.findRepMinDepth(rep),rep.id);
-                var entryId = lastResId+1;
+                let entryId = lastResId+1;
                 associatedSubs = [];
                 resInfo = this.generateRES(resId,repId,this.res,associatedSubs,repNumber,lastResId);
                 lastResId = resInfo[0];
-                var exitId = lastResId;
+                let exitId = lastResId;
                 formula += "REP" + repId[rep.id] + ":" + exitId + "o(";
                 //TODO: 結合位置がundefinedの場合に対応できていない
                 formula += rep.donorPosition === DonorPosition.UNDEFINED ? "-1" : rep.donorPosition;
@@ -577,7 +567,7 @@ export default class GlycoCTWriter{
             }
         }
 
-        if (formula.substring(formula.length-1) == '\n') // Remove final \n
+        if (formula.substring(formula.length-1) === '\n') // Remove final \n
         {
             formula = formula.substring(0,formula.length-1);
         }
@@ -588,9 +578,9 @@ export default class GlycoCTWriter{
     // Returns the node with the minimum depth in tree (aka the entry)
     findRepMinDepth(rep)
     {
-        var minVal = rep.nodes[0].depth;
-        var minNode = rep.nodes[0];
-        for (var node of rep.nodes)
+        let minVal = rep.nodes[0].depth;
+        let minNode = rep.nodes[0];
+        for (let node of rep.nodes)
         {
             if (node.depth < minVal)
             {
@@ -601,23 +591,36 @@ export default class GlycoCTWriter{
         return minNode;
     }
 
+    findNodeInTree (tree, node1) {
+        let stack = [], node, i;
+        stack.push(tree);
 
-}
-
-const findNodeInTree = (tree,node1) =>
-{
-    let stack = [], node, i;
-    stack.push(tree);
-
-    while (stack.length > 0) {
-        node = stack.pop();
-        if (node.node == node1) {
-            return node;
-        } else if (node.children != undefined) {
-            for (i = 0; i < node.children.length; i += 1) {
-                stack.push(node.children[i]);
+        while (stack.length > 0) {
+            node = stack.pop();
+            if (node.node === node1) {
+                return node;
+            } else if (node.children !== undefined) {
+                for (i = 0; i < node.children.length; i += 1) {
+                    stack.push(node.children[i]);
+                }
             }
         }
+        return null;
     }
-    return null;
-};
+
+    // 20210609, S.TSUCHIYA added
+    checkSubLinkageType (sourceID, targetID) {
+        const source = this.nodeLists[sourceID];
+        const target = this.nodeLists[targetID];
+
+        if (target instanceof Monosaccharide) return;
+
+        const substituentType = target.substituentType;
+
+        if (substituentType.label.startsWith("N")) {
+            return "d";
+        } else {
+            return "o";
+        }
+    }
+}
